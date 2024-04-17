@@ -8,4 +8,7 @@ partial class Shop
     }
 }
 
-class Product;
+record Product(string Name)
+{
+    public override string ToString() => Name;
+}
