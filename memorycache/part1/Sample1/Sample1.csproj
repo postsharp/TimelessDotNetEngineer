@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Castle.Core" Version="5.1.1" />
+        <PackageReference Include="Metalama.Patterns.Caching.Aspects" Version="2024.1.11-rc" />
+        <PackageReference Include="System.Interactive.Async" Version="6.0.1" />
+    </ItemGroup>
+    
+</Project>
