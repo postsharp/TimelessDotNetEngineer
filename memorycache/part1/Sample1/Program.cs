@@ -1,6 +1,11 @@
+using Metalama.Framework.Services;
 using Metalama.Patterns.Caching.Building;
+using Polly.Caching;
+using Polly.Registry;
+using Polly;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Reflection;
 
 namespace Sample1
 {
@@ -11,9 +16,29 @@ namespace Sample1
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddRazorPages();
+            builder.Services.AddRazorPages( options =>
+            {
+                options.Conventions.AddPageRoute("/", "/Step1");
+            });
+
             builder.Services.AddMemoryCache();
             builder.Services.AddCaching();
+
+            builder.Services.AddSingleton<IAsyncCacheProvider, Polly.Caching.Memory.MemoryCacheProvider>();
+
+            builder.Services.AddSingleton<IReadOnlyPolicyRegistry<string>, PolicyRegistry>((serviceProvider) =>
+            {
+                PolicyRegistry registry = new PolicyRegistry();
+
+                registry.Add("step4CachePolicy",
+                    Policy.CacheAsync(
+                        serviceProvider
+                            .GetRequiredService<IAsyncCacheProvider>()
+                            .AsyncFor<(string Symbol, string Type, decimal Rate)>(),
+                        TimeSpan.FromMinutes(0.5)));
+
+                return registry;
+            });
 
             var app = builder.Build();
 
@@ -52,8 +77,6 @@ namespace Sample1
 
                     await context.Response.WriteAsync(Regex.Replace(text, @"<render_time [a-z0-9-]* />", $@"<span>{sw.ElapsedMilliseconds} ms</span>"));
                 }
-
-
             });
 
             app.MapRazorPages();
