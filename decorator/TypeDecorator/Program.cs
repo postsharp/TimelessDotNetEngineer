@@ -3,8 +3,8 @@ using Services;
 using TypeDecorator;
 
 var collection = new ServiceCollection();
-collection.AddSingleton<IExceptionReportingService>(new ExceptionReportingService());
-collection.AddSingleton<IMessenger>(new Messenger());
+collection.AddSingleton<IExceptionReportingService, ExceptionReportingService>();
+collection.AddSingleton<IMessenger, Messenger>();
 collection.Decorate<IMessenger, RetryingMessenger>();
 collection.Decorate<IMessenger, ExceptionReportingMessenger>();
 var services = collection.BuildServiceProvider();

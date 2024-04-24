@@ -24,8 +24,6 @@ public class Messenger : IMessenger
     {
         Console.WriteLine("Receiving message...");
 
-        Console.WriteLine("Receiving message...");
-
         // Simulate unreliable message receiving
         if (++this._receiveCount % 3 == 0)
         {
