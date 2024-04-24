@@ -5,7 +5,7 @@ public partial class Messenger
     private int _sendCount = 0;
     private int _receiveCount = 0;
 
-    [ReportExceptions, Retry]
+    [Retry]
     public void Send(Message message)
     {
         Console.WriteLine("Sending message...");
@@ -21,7 +21,7 @@ public partial class Messenger
         }
     }
 
-    [ReportExceptions, Retry]
+    [Retry]
     public Message Receive()
     {
         Console.WriteLine("Receiving message...");
