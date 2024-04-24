@@ -1,18 +1,17 @@
-﻿using MetalamaMethodDecorator;
+﻿namespace MetalamaMethodDecorator;
 
-namespace NoDecorator;
-
-public class Messenger
+public partial class Messenger
 {
     private int _sendCount = 0;
     private int _receiveCount = 0;
 
+    [ReportExceptions, Retry]
     public void Send(Message message)
     {
         Console.WriteLine("Sending message...");
 
-        // Simulate sending message
-        if (this._sendCount++ % 2 == 0)
+        // Simulate unreliable message sending
+        if (++this._sendCount % 3 == 0)
         {
             Console.WriteLine("Message sent successfully.");
         }
@@ -22,15 +21,16 @@ public class Messenger
         }
     }
 
+    [ReportExceptions, Retry]
     public Message Receive()
     {
         Console.WriteLine("Receiving message...");
 
-        // Simulate receiving message
-        if (this._receiveCount++ % 2 == 0)
+        // Simulate unreliable message receiving
+        if (++this._receiveCount % 3 == 0)
         {
             Console.WriteLine("Message received successfully.");
-            return new();
+            return new("Hi!");
         }
         else
         {

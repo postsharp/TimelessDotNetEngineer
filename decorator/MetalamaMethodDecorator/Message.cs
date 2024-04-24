@@ -1,3 +1,3 @@
 ﻿namespace MetalamaMethodDecorator;
 
-public record Message;
+public record Message(string Text);
