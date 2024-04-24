@@ -1,6 +1,6 @@
 ﻿namespace TypeDecorator;
 
-public class Messenger
+public class Messenger : IMessenger
 {
     private int _sendCount = 0;
     private int _receiveCount = 0;
@@ -9,8 +9,8 @@ public class Messenger
     {
         Console.WriteLine("Sending message...");
 
-        // Simulate sending message
-        if (_sendCount++ % 2 == 0)
+        // Simulate unreliable message sending
+        if (++this._sendCount % 3 == 0)
         {
             Console.WriteLine("Message sent successfully.");
         }
@@ -24,11 +24,13 @@ public class Messenger
     {
         Console.WriteLine("Receiving message...");
 
-        // Simulate receiving message
-        if (_receiveCount++ % 2 == 0)
+        Console.WriteLine("Receiving message...");
+
+        // Simulate unreliable message receiving
+        if (++this._receiveCount % 3 == 0)
         {
             Console.WriteLine("Message received successfully.");
-            return new();
+            return new("Hi!");
         }
         else
         {

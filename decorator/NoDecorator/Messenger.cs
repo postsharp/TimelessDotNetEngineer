@@ -79,12 +79,12 @@ public class Messenger
                 {
                     var delay = _retryDelay * Math.Pow(2, i);
 
-                    Console.WriteLine($"Failed to send message. Retrying in {delay / 1000} seconds... ({i + 1}/{_retryAttempts})");
+                    Console.WriteLine($"Failed to receive message. Retrying in {delay / 1000} seconds... ({i + 1}/{_retryAttempts})");
                     Thread.Sleep((int)delay);
                 }
                 else
                 {
-                    this._reportingService.ReportException("Failed to send message", e);
+                    this._reportingService.ReportException("Failed to receive message", e);
                     throw;
                 }
             }

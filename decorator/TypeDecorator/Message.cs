@@ -1,3 +1,3 @@
 ﻿namespace TypeDecorator;
 
-public record Message;
+public record Message(string Text);
