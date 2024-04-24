@@ -2,10 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Services;
 
-var collection = new ServiceCollection();
-collection.AddSingleton<IExceptionReportingService, ExceptionReportingService>();
-collection.AddSingleton<Messenger>();
-var services = collection.BuildServiceProvider();
+var services = new ServiceCollection()
+    .AddSingleton<IExceptionReportingService, ExceptionReportingService>()
+    .AddSingleton<Messenger>()
+    .BuildServiceProvider();
 
 var messenger = services.GetRequiredService<Messenger>();
 messenger.Send(new Message("Hello!"));

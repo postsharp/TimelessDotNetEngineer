@@ -2,12 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Services;
 
-var collection = new ServiceCollection();
-collection.AddSingleton<IExceptionReportingService, ExceptionReportingService>();
-collection.AddSingleton<IExceptionHandler, ExceptionHandler>();
-collection.AddSingleton<IRetryHandler, RetryHandler>();
-collection.AddSingleton<Messenger>();
-var services = collection.BuildServiceProvider();
+var services = new ServiceCollection()
+    .AddSingleton<IExceptionReportingService, ExceptionReportingService>()
+    .AddSingleton<IExceptionHandler, ExceptionHandler>()
+    .AddSingleton<IRetryHandler, RetryHandler>()
+    .AddSingleton<Messenger>()
+    .BuildServiceProvider();
 
 var messenger = services.GetRequiredService<Messenger>();
 messenger.Send(new Message("Hello!"));
