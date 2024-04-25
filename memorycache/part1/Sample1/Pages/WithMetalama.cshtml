@@ -1,0 +1,19 @@
+﻿@page
+@model WithMetalamaModel
+@using System.Globalization
+@using Microsoft.Extensions.Caching.Memory
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    @{
+        foreach (var currency in Model.Currencies)
+        {
+            var data = await Model.GetCurrencyData(currency);
+
+            // Output a paragraph with symbol and rate.
+            @:<p>@(data.Symbol)(@data.Type): @data.Rate.ToString("F3", CultureInfo.InvariantCulture)</p>
+        }
+    }
+</div>

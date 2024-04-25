@@ -16,29 +16,31 @@ namespace Sample1
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddRazorPages( options =>
-            {
-                options.Conventions.AddPageRoute("/", "/Step1");
-            });
+            builder.Services.AddRazorPages(options => { options.Conventions.AddPageRoute("/", "/Step1"); });
 
             builder.Services.AddMemoryCache();
+            
+            // Adds the Metalama Caching service. Only used by the Metalama example.
             builder.Services.AddCaching();
 
+            
+            // Adds the Polly service. Only used by the Polly example.
             builder.Services.AddSingleton<IAsyncCacheProvider, Polly.Caching.Memory.MemoryCacheProvider>();
+            builder.Services.AddSingleton<IReadOnlyPolicyRegistry<string>, PolicyRegistry>(
+                serviceProvider =>
+                {
+                    var cachingPolicy = Policy.CacheAsync(
+                        serviceProvider.GetRequiredService<IAsyncCacheProvider>(),
+                        TimeSpan.FromMinutes(0.5));
 
-            builder.Services.AddSingleton<IReadOnlyPolicyRegistry<string>, PolicyRegistry>((serviceProvider) =>
-            {
-                PolicyRegistry registry = new PolicyRegistry();
+                    var retryPolicy = Policy.Handle<Exception>().RetryAsync();
 
-                registry.Add("step4CachePolicy",
-                    Policy.CacheAsync(
-                        serviceProvider
-                            .GetRequiredService<IAsyncCacheProvider>()
-                            .AsyncFor<(string Symbol, string Type, decimal Rate)>(),
-                        TimeSpan.FromMinutes(0.5)));
+                    var policy = Policy.WrapAsync(cachingPolicy, retryPolicy);
 
-                return registry;
-            });
+                    var registry = new PolicyRegistry { ["defaultPolicy"] = policy };
+
+                    return registry;
+                });
 
             var app = builder.Build();
 
@@ -75,7 +77,8 @@ namespace Sample1
 
                     context.Response.Body = originalResponse;
 
-                    await context.Response.WriteAsync(Regex.Replace(text, @"<render_time [a-z0-9-]* />", $@"<span>{sw.ElapsedMilliseconds} ms</span>"));
+                    await context.Response.WriteAsync(Regex.Replace(text, @"<render_time [a-z0-9-]* />",
+                        $@"<span>{sw.ElapsedMilliseconds} ms</span>"));
                 }
             });
 
