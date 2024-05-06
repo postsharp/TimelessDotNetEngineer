@@ -1,7 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using Polly;
-using Polly.Registry;
 using Polly.Retry;
 using PollyManual;
 using System.Data.Common;
@@ -14,8 +13,8 @@ connection.Open();
 await CreateSchemaAsync();
 await PopulateDataAsync();
 
-var resiliencePipelineRegistry = CreateResilienceStrategies();
-var accounts = new Accounts(connection, resiliencePipelineRegistry);
+var resiliencePipeline = CreateRetryOnDbExceptionPipeline();
+var accounts = new Accounts(connection, resiliencePipeline);
 
 Console.WriteLine("Before transfer:");
 await PrintAccountsAsync();
@@ -71,21 +70,14 @@ void SimulateTemporaryFailure()
     _ = Task.Delay(1500).ContinueWith(_ => connection.IsAvailable = true);
 }
 
-ResiliencePipelineRegistry<string> CreateResilienceStrategies()
-{
-    var registry = new ResiliencePipelineRegistry<string>();
-
-    registry.TryAddBuilder(nameof(DbException), (builder, context) =>
-    builder
-    .AddRetry(new RetryStrategyOptions
-    {
-        ShouldHandle = new PredicateBuilder().Handle<DbException>(),
-        Delay = TimeSpan.FromSeconds(1),
-        MaxRetryAttempts = 3,
-        BackoffType = DelayBackoffType.Exponential
-    })
-    .ConfigureTelemetry(LoggerFactory.Create(builder => builder.AddConsole()))
-    );
-
-    return registry;
-}
+ResiliencePipeline CreateRetryOnDbExceptionPipeline()
+    => new ResiliencePipelineBuilder()
+            .AddRetry(new RetryStrategyOptions
+            {
+                ShouldHandle = new PredicateBuilder().Handle<DbException>(),
+                Delay = TimeSpan.FromSeconds(1),
+                MaxRetryAttempts = 3,
+                BackoffType = DelayBackoffType.Exponential
+            })
+            .ConfigureTelemetry(LoggerFactory.Create(builder => builder.AddConsole()))
+            .Build();

@@ -1,87 +1,79 @@
-﻿using System.Data;
+﻿using Polly;
+using System.Data;
 using System.Data.Common;
 
 namespace PollyDecorator;
 
 public class ResilientDbCommand : DbCommand
 {
-    private readonly DbCommand _underlying;
+    private readonly DbCommand _underlyingCommand;
+    private readonly ResiliencePipeline _resiliencePipeline;
 
-    public ResilientDbCommand(DbCommand underlying)
+    public ResilientDbCommand(DbCommand underlyingCommand, ResiliencePipeline resiliencePipeline)
     {
-        _underlying = underlying;
+        this._underlyingCommand = underlyingCommand;
+        this._resiliencePipeline = resiliencePipeline;
     }
 
     public override string CommandText
     {
-        get => _underlying.CommandText;
-        set => _underlying.CommandText = value;
+        get => this._underlyingCommand.CommandText;
+        set => this._underlyingCommand.CommandText = value;
     }
 
     public override int CommandTimeout
     {
-        get => _underlying.CommandTimeout;
-        set => _underlying.CommandTimeout = value;
+        get => this._underlyingCommand.CommandTimeout;
+        set => this._underlyingCommand.CommandTimeout = value;
     }
 
     public override CommandType CommandType
     {
-        get => _underlying.CommandType;
-        set => _underlying.CommandType = value;
+        get => this._underlyingCommand.CommandType;
+        set => this._underlyingCommand.CommandType = value;
     }
 
     public override bool DesignTimeVisible
     {
-        get => _underlying.DesignTimeVisible;
-        set => _underlying.DesignTimeVisible = value;
+        get => this._underlyingCommand.DesignTimeVisible;
+        set => this._underlyingCommand.DesignTimeVisible = value;
     }
 
     public override UpdateRowSource UpdatedRowSource
     {
-        get => _underlying.UpdatedRowSource;
-        set => _underlying.UpdatedRowSource = value;
-    }
-    protected override DbConnection? DbConnection
-    {
-        get => _underlying.Connection;
-        set => _underlying.Connection = value;
+        get => this._underlyingCommand.UpdatedRowSource;
+        set => this._underlyingCommand.UpdatedRowSource = value;
     }
 
-    protected override DbParameterCollection DbParameterCollection => _underlying.Parameters;
+    protected override DbConnection? DbConnection
+    {
+        get => this._underlyingCommand.Connection;
+        set => this._underlyingCommand.Connection = value;
+    }
+
+    protected override DbParameterCollection DbParameterCollection => this._underlyingCommand.Parameters;
 
     protected override DbTransaction? DbTransaction
     {
-        get => _underlying.Transaction;
-        set => _underlying.Transaction = value;
-    }
-
-    public override void Prepare()
-    {
-        _underlying.Prepare();
-    }
-
-    public override void Cancel()
-    {
-        _underlying.Cancel();
+        get => this._underlyingCommand.Transaction;
+        set => this._underlyingCommand.Transaction = value;
     }
 
     public override int ExecuteNonQuery()
-    {
-        return _underlying.ExecuteNonQuery();
-    }
+        => this._resiliencePipeline.Execute(this._underlyingCommand.ExecuteNonQuery);
 
     public override object? ExecuteScalar()
-    {
-        return _underlying.ExecuteScalar();
-    }
-
-    protected override DbParameter CreateDbParameter()
-    {
-        return _underlying.CreateParameter();
-    }
+        => this._resiliencePipeline.Execute(this._underlyingCommand.ExecuteScalar);
 
     protected override DbDataReader ExecuteDbDataReader(CommandBehavior behavior)
-    {
-        return _underlying.ExecuteReader(behavior);
-    }
+        => this._resiliencePipeline.Execute(() => this._underlyingCommand.ExecuteReader(behavior));
+
+    public override void Prepare()
+        => this._resiliencePipeline.Execute(this._underlyingCommand.Prepare);
+
+    protected override DbParameter CreateDbParameter()
+        => this._underlyingCommand.CreateParameter();
+
+    public override void Cancel()
+        => this._resiliencePipeline.Execute(this._underlyingCommand.Cancel);
 }
