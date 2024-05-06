@@ -1,5 +1,10 @@
 ﻿using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Logging;
+using Polly;
+using Polly.Registry;
+using Polly.Retry;
 using PollyManual;
+using System.Data.Common;
 using UnreliableDb;
 
 using var connection = new UnreliableDbConnection( new SqliteConnection($"Data Source=:memory:"));
@@ -9,19 +14,13 @@ connection.Open();
 await CreateSchemaAsync();
 await PopulateDataAsync();
 
-var accounts = new Accounts(connection);
+var resiliencePipelineRegistry = CreateResilienceStrategies();
+var accounts = new Accounts(connection, resiliencePipelineRegistry);
 
 Console.WriteLine("Before transfer:");
 await PrintAccountsAsync();
 
-// Simulate a glitch in the database connection
-connection.IsAvailable = false;
-
-_ = Task.Run(async () =>
-{
-    await Task.Delay(1000);
-    connection.IsAvailable = true;
-});
+SimulateTemporaryFailure();
 
 await accounts.TransferAsync(0, 1, 100);
 
@@ -64,4 +63,29 @@ async Task PrintAccountsAsync()
     {
         Console.WriteLine($"Id: {id}, Name: {name}, Balance: {balance}");
     }
+}
+
+void SimulateTemporaryFailure()
+{
+    connection.IsAvailable = false;
+    _ = Task.Delay(1500).ContinueWith(_ => connection.IsAvailable = true);
+}
+
+ResiliencePipelineRegistry<string> CreateResilienceStrategies()
+{
+    var registry = new ResiliencePipelineRegistry<string>();
+
+    registry.TryAddBuilder(nameof(DbException), (builder, context) =>
+    builder
+    .AddRetry(new RetryStrategyOptions
+    {
+        ShouldHandle = new PredicateBuilder().Handle<DbException>(),
+        Delay = TimeSpan.FromSeconds(1),
+        MaxRetryAttempts = 3,
+        BackoffType = DelayBackoffType.Exponential
+    })
+    .ConfigureTelemetry(LoggerFactory.Create(builder => builder.AddConsole()))
+    );
+
+    return registry;
 }
