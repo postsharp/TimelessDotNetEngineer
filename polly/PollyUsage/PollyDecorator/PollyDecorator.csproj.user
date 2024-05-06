@@ -2,6 +2,9 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="ResilientDbCommand.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="ResilientDbConnection.cs">
       <SubType>Component</SubType>
     </Compile>
