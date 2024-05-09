@@ -1,90 +1,97 @@
-using Metalama.Framework.Services;
-using Metalama.Patterns.Caching.Building;
-using Polly.Caching;
-using Polly.Registry;
-using Polly;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using System.Reflection;
+using Metalama.Patterns.Caching.Building;
+using Polly;
+using Polly.Caching;
+using Polly.Caching.Memory;
+using Polly.Registry;
 
-namespace Sample1
+namespace Sample1;
+
+internal static class HttpClients
 {
-    public class Program
+    public const string CoinCap = nameof(CoinCap);
+}
+
+public class Program
+{
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+        var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddRazorPages(options => { options.Conventions.AddPageRoute("/", "/Step1"); });
+        // Add services to the container.
+        builder.Services.AddHttpClient();
+        builder.Services.AddRazorPages(options => { options.Conventions.AddPageRoute("/", "/Step1"); });
 
-            builder.Services.AddMemoryCache();
-            
-            // Adds the Metalama Caching service. Only used by the Metalama example.
-            builder.Services.AddCaching();
+        // [<snippet AddMemoryCache>]
+        builder.Services.AddMemoryCache();
+        // [<endsnippet AddMemoryCache>]
 
-            
-            // Adds the Polly service. Only used by the Polly example.
-            builder.Services.AddSingleton<IAsyncCacheProvider, Polly.Caching.Memory.MemoryCacheProvider>();
-            builder.Services.AddSingleton<IReadOnlyPolicyRegistry<string>, PolicyRegistry>(
-                serviceProvider =>
-                {
-                    var cachingPolicy = Policy.CacheAsync(
-                        serviceProvider.GetRequiredService<IAsyncCacheProvider>(),
-                        TimeSpan.FromMinutes(0.5));
 
-                    var retryPolicy = Policy.Handle<Exception>().RetryAsync();
+        // Adds the Metalama Caching service. Only used by the Metalama example.
+        // [<snippet AddMetalamaCaching>]
+        builder.Services.AddMetalamaCaching();
+        // [<endsnippet AddMetalamaCaching>]
 
-                    var policy = Policy.WrapAsync(cachingPolicy, retryPolicy);
 
-                    var registry = new PolicyRegistry { ["defaultPolicy"] = policy };
-
-                    return registry;
-                });
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
+        // Adds the Polly service. Only used by the Polly example.
+        builder.Services.AddSingleton<IAsyncCacheProvider, MemoryCacheProvider>();
+        builder.Services.AddSingleton<IReadOnlyPolicyRegistry<string>, PolicyRegistry>(
+            serviceProvider =>
             {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+                var cachingPolicy = Policy.CacheAsync(
+                    serviceProvider.GetRequiredService<IAsyncCacheProvider>(),
+                    TimeSpan.FromMinutes(0.5));
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+                var retryPolicy = Policy.Handle<Exception>().RetryAsync();
 
-            app.UseRouting();
+                var policy = Policy.WrapAsync(cachingPolicy, retryPolicy);
 
-            app.UseAuthorization();
+                var registry = new PolicyRegistry { ["defaultPolicy"] = policy };
 
-            app.Use(async (context, next) =>
-            {
-                var sw = new Stopwatch();
-                var originalResponse = context.Response.Body;
-
-                using (var responseBody = new MemoryStream())
-                {
-                    context.Response.Body = responseBody;
-
-                    sw.Start();
-                    await next.Invoke();
-                    sw.Stop();
-
-                    responseBody.Seek(0, SeekOrigin.Begin);
-                    var text = await new StreamReader(responseBody).ReadToEndAsync();
-
-                    context.Response.Body = originalResponse;
-
-                    await context.Response.WriteAsync(Regex.Replace(text, @"<render_time [a-z0-9-]* />",
-                        $@"<span>{sw.ElapsedMilliseconds} ms</span>"));
-                }
+                return registry;
             });
 
-            app.MapRazorPages();
+        var app = builder.Build();
 
-            app.Run();
+        // Configure the HTTP request pipeline.
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Error");
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
         }
+
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+
+        app.UseRouting();
+
+        app.UseAuthorization();
+
+        app.Use(async (context, next) =>
+        {
+            var sw = new Stopwatch();
+            var originalResponse = context.Response.Body;
+
+            using var responseBody = new MemoryStream();
+            context.Response.Body = responseBody;
+
+            sw.Start();
+            await next.Invoke();
+            sw.Stop();
+
+            responseBody.Seek(0, SeekOrigin.Begin);
+            var text = await new StreamReader(responseBody).ReadToEndAsync();
+
+            context.Response.Body = originalResponse;
+
+            await context.Response.WriteAsync(Regex.Replace(text, @"<render_time [a-z0-9-]* />",
+                $@"<span>{sw.ElapsedMilliseconds} ms</span>"));
+        });
+
+        app.MapRazorPages();
+
+        app.Run();
     }
 }

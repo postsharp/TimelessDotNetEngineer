@@ -1,28 +1,16 @@
+using Sample1.Data;
 
-using System.Globalization;
-using System.Text.Json;
+namespace Sample1.Pages;
 
-namespace Sample1.Pages
+public class NoCachingModel(IHttpClientFactory httpClientFactory) : BaseModel
 {
-    public class NoCachingModel : BaseModel
+    // [<snippet GetCurrencyData>]
+    public async Task<CoinCapData> GetCurrencyData(string id)
     {
-        // [<snippet GetCurrencyData>]
-        public async Task<(string Symbol, string Type, decimal Rate)> GetCurrencyData(string id)
-        {
-            using var httpClient = new HttpClient();
+        using var httpClient = httpClientFactory.CreateClient();
+        var response = await httpClient.GetFromJsonAsync<CoinCapResponse>($"https://api.coincap.io/v2/rates/{id}");
 
-            // Get the live data.
-            await using var rateResponse = await httpClient.GetStreamAsync($"https://api.coincap.io/v2/rates/{id}");
-
-            // Parse as JSON.
-            var rateJson = await JsonDocument.ParseAsync(rateResponse);
-
-            var symbol = rateJson.RootElement.GetProperty("data").GetProperty("symbol").GetString()!;
-            var type = rateJson.RootElement.GetProperty("data").GetProperty("type").GetString()!;
-            var rateUsd = decimal.Parse(rateJson.RootElement.GetProperty("data").GetProperty("rateUsd").GetString()!, CultureInfo.InvariantCulture);
-
-            return (symbol, type, rateUsd);
-        }
-        // [<endsnippet GetCurrencyData>]
+        return response!.Data;
     }
+    // [<endsnippet GetCurrencyData>]
 }

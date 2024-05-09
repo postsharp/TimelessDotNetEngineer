@@ -1,39 +1,31 @@
 using Polly;
 using Polly.Registry;
-using System.Globalization;
-using System.Text.Json;
+using Sample1.Data;
 
-namespace Sample1.Pages
+namespace Sample1.Pages;
+
+public class Step4Model : BaseModel
 {
-    public class Step4Model : BaseModel
+    private readonly IAsyncPolicy _cachePolicy;
+    private IHttpClientFactory _httpClientFactory;
+
+    public Step4Model(IReadOnlyPolicyRegistry<string> policyRegistry, IHttpClientFactory httpClientFactory)
     {
-        private readonly IAsyncPolicy _cachePolicy;
+        _httpClientFactory = httpClientFactory;
+        _cachePolicy = policyRegistry.Get<IAsyncPolicy>("defaultPolicy");
+    }
 
-        public Step4Model(IReadOnlyPolicyRegistry<string> policyRegistry)
+    public async Task<CoinCapData> GetCurrencyData(string id)
+    {
+        return await _cachePolicy.ExecuteAsync(async _ => await GetData(),
+            new Context($"{GetType().Name}.GetCurrencyData({id})"));
+
+        async Task<CoinCapData> GetData()
         {
-            _cachePolicy = policyRegistry.Get<IAsyncPolicy>("defaultPolicy");
-        }
+            using var httpClient = _httpClientFactory.CreateClient();
+            var response = await httpClient.GetFromJsonAsync<CoinCapResponse>($"https://api.coincap.io/v2/rates/{id}");
 
-        public async Task<(string Symbol, string Type, decimal Rate)> GetCurrencyData(string id)
-        {
-            return await _cachePolicy.ExecuteAsync(async _ => await GetData(id), new Context($"{this.GetType().Name}.GetCurrencyData({id})"));
-
-            async Task<(string Symbol, string Type, decimal Rate)> GetData(string id)
-            {
-                using var httpClient = new HttpClient();
-
-                // Get the live data.
-                await using var rateResponse = await httpClient.GetStreamAsync($"https://api.coincap.io/v2/rates/{id}");
-
-                // Parse as JSON.
-                var rateJson = await JsonDocument.ParseAsync(rateResponse);
-
-                var symbol = rateJson.RootElement.GetProperty("data").GetProperty("symbol").GetString()!;
-                var type = rateJson.RootElement.GetProperty("data").GetProperty("type").GetString()!;
-                var rateUsd = decimal.Parse(rateJson.RootElement.GetProperty("data").GetProperty("rateUsd").GetString()!, CultureInfo.InvariantCulture);
-
-                return (symbol, type, rateUsd);
-            }
+            return response!.Data;
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿@page "/"
-@model NoCachingModel
 @using System.Globalization
-@using Microsoft.Extensions.Caching.Memory
+@model NoCachingModel
 @{
     ViewData["Title"] = "Home page";
 }
@@ -13,7 +12,7 @@
             var data = await Model.GetCurrencyData(currency);
 
             // Output a paragraph with symbol and rate.
-            @:<p>@(data.Symbol)(@data.Type): @data.Rate.ToString("F3", CultureInfo.InvariantCulture)</p>
+            @:<p>@(data.Symbol)(@data.Type): @data.RateUsd.ToString("F3", CultureInfo.InvariantCulture)</p>
         }
     }
 </div>

@@ -1,41 +1,23 @@
 using Microsoft.Extensions.Caching.Memory;
-using System.Globalization;
-using System.Text.Json;
+using Sample1.Data;
 
-namespace Sample1.Pages
+namespace Sample1.Pages;
+
+public class WithMemoryCacheModel(IHttpClientFactory httpClientFactory, IMemoryCache memoryCache) : BaseModel
 {
-    public class WithMemoryCacheModel : BaseModel
+    public async Task<CoinCapData> GetCurrencyData(string id)
     {
-        private readonly IMemoryCache _memoryCache;
+        return
+            await memoryCache.GetOrCreateAsync(
+                $"{GetType().Name}.GetCurrencyData({id})",
+                _ => GetData());
 
-        public WithMemoryCacheModel( IMemoryCache memoryCache)
+        async Task<CoinCapData> GetData()
         {
-            _memoryCache = memoryCache;
-        }
+            using var httpClient = httpClientFactory.CreateClient();
+            var response = await httpClient.GetFromJsonAsync<CoinCapResponse>($"https://api.coincap.io/v2/rates/{id}");
 
-        public async Task<(string Symbol, string Type, decimal Rate)> GetCurrencyData(string id)
-        {
-            return
-                await _memoryCache.GetOrCreateAsync(
-                    $"{this.GetType().Name}.GetCurrencyData({id})",
-                    _ => GetData(id));
-
-            async Task<(string Symbol, string Type, decimal Rate)> GetData(string id)
-            {
-                using var httpClient = new HttpClient();
-
-                // Get the live data.
-                await using var rateResponse = await httpClient.GetStreamAsync($"https://api.coincap.io/v2/rates/{id}");
-
-                // Parse as JSON.
-                var rateJson = await JsonDocument.ParseAsync(rateResponse);
-
-                var symbol = rateJson.RootElement.GetProperty("data").GetProperty("symbol").GetString()!;
-                var type = rateJson.RootElement.GetProperty("data").GetProperty("type").GetString()!;
-                var rateUsd = decimal.Parse(rateJson.RootElement.GetProperty("data").GetProperty("rateUsd").GetString()!, CultureInfo.InvariantCulture);
-
-                return (symbol, type, rateUsd);
-            }
+            return response!.Data;
         }
     }
 }
