@@ -4,13 +4,13 @@ namespace Sample1.Pages
 {
     public class BaseModel : PageModel
     {
-        private static readonly string[] _currencies = [
+        // [<snippet currencies>]
+        public IReadOnlyList<string> Currencies { get; } = [
             "bitcoin",
             "ethereum",
             "euro",
             "british-pound-sterling",
         ];
-
-        public string[] Currencies => _currencies;
+        // [<endsnippet currencies>]
     }
 }
