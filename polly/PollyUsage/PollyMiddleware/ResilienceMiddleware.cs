@@ -2,12 +2,12 @@
 
 namespace PollyMiddleware;
 
-public class ResilientMiddleware
+public class ResilienceMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ResiliencePipeline _resiliencePipeline;
 
-    public ResilientMiddleware(RequestDelegate next, ResiliencePipelineService resiliencePipelineService)
+    public ResilienceMiddleware(RequestDelegate next, ResiliencePipelineService resiliencePipelineService)
     {
         this._next = next;
         this._resiliencePipeline = resiliencePipelineService.Pipeline;

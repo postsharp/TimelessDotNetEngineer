@@ -3,7 +3,7 @@ using PollyMiddleware;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<ResiliencePipelineService>();
 var app = builder.Build();
-app.UseMiddleware<ResilientMiddleware>();
+app.UseMiddleware<ResilienceMiddleware>();
 
 app.MapGet("/", async () =>
 {
