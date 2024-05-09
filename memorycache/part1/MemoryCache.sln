@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample1", "Sample1\Sample1.csproj", "{1039D18E-52AA-43E3-BD7D-A41F38ED27D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryCacheBenchmark", "MemoryCacheBenchmark\MemoryCacheBenchmark.csproj", "{1D13E76D-BE1A-4F03-A7B5-A2CCF86259F4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		LamaDebug|Any CPU = LamaDebug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1039D18E-52AA-43E3-BD7D-A41F38ED27D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1039D18E-52AA-43E3-BD7D-A41F38ED27D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1039D18E-52AA-43E3-BD7D-A41F38ED27D5}.LamaDebug|Any CPU.ActiveCfg = LamaDebug|Any CPU
+		{1039D18E-52AA-43E3-BD7D-A41F38ED27D5}.LamaDebug|Any CPU.Build.0 = LamaDebug|Any CPU
+		{1039D18E-52AA-43E3-BD7D-A41F38ED27D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1039D18E-52AA-43E3-BD7D-A41F38ED27D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D13E76D-BE1A-4F03-A7B5-A2CCF86259F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D13E76D-BE1A-4F03-A7B5-A2CCF86259F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D13E76D-BE1A-4F03-A7B5-A2CCF86259F4}.LamaDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D13E76D-BE1A-4F03-A7B5-A2CCF86259F4}.LamaDebug|Any CPU.Build.0 = Debug|Any CPU
+		{1D13E76D-BE1A-4F03-A7B5-A2CCF86259F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D13E76D-BE1A-4F03-A7B5-A2CCF86259F4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AC6E2DE7-F8DF-41E8-BEBF-3CCA1ABF0920}
+	EndGlobalSection
+EndGlobal
