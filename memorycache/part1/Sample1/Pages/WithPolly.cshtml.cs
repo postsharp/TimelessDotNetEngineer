@@ -6,6 +6,7 @@ namespace Sample1.Pages;
 
 public class Step4Model : BaseModel
 {
+    // [<snippet constructor>]
     private readonly IAsyncPolicy _cachePolicy;
     private IHttpClientFactory _httpClientFactory;
 
@@ -14,7 +15,9 @@ public class Step4Model : BaseModel
         _httpClientFactory = httpClientFactory;
         _cachePolicy = policyRegistry.Get<IAsyncPolicy>("defaultPolicy");
     }
+    // [<endsnippet constructor>]
 
+    // [<snippet GetCurrencyData>]
     public async Task<CoinCapData> GetCurrencyData(string id)
     {
         return await _cachePolicy.ExecuteAsync(async _ => await GetData(),
@@ -28,4 +31,6 @@ public class Step4Model : BaseModel
             return response!.Data;
         }
     }
+    // [<endsnippet GetCurrencyData>]
+    
 }

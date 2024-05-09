@@ -5,6 +5,7 @@ namespace Sample1.Pages;
 
 public partial class WithMetalamaModel(IHttpClientFactory httpClientFactory) : BaseModel
 {
+    // [<snippet GetCurrencyData>]
     [Cache(AbsoluteExpiration = 0.5)]
     public async Task<CoinCapData> GetCurrencyData(string id)
     {
@@ -13,4 +14,5 @@ public partial class WithMetalamaModel(IHttpClientFactory httpClientFactory) : B
 
         return response!.Data;
     }
+    // [<endsnippet GetCurrencyData>]
 }

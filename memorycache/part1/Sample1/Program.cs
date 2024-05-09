@@ -35,6 +35,23 @@ public class Program
 
 
         // Adds the Polly service. Only used by the Polly example.
+        #if SIMPLE_POLLY 
+        // [<snippet SimplePolly>]
+        builder.Services.AddSingleton<IAsyncCacheProvider, MemoryCacheProvider>();
+        builder.Services.AddSingleton<IReadOnlyPolicyRegistry<string>, PolicyRegistry>(
+            serviceProvider =>
+            {
+                var cachingPolicy = Policy.CacheAsync(
+                    serviceProvider.GetRequiredService<IAsyncCacheProvider>(),
+                    TimeSpan.FromMinutes(0.5));
+
+                var registry = new PolicyRegistry { ["defaultPolicy"] = cachingPolicy };
+
+                return registry;
+            });
+        // [<endsnippet SimplePolly>]
+        #else
+        // [<snippet Polly>]
         builder.Services.AddSingleton<IAsyncCacheProvider, MemoryCacheProvider>();
         builder.Services.AddSingleton<IReadOnlyPolicyRegistry<string>, PolicyRegistry>(
             serviceProvider =>
@@ -51,6 +68,9 @@ public class Program
 
                 return registry;
             });
+        // [<endsnippet Polly>]
+
+        #endif
 
         var app = builder.Build();
 

@@ -6,16 +6,17 @@ namespace Sample1.Pages;
 public class WithMemoryCacheAndExpirationModel(IMemoryCache memoryCache, IHttpClientFactory httpClientFactory)
     : BaseModel
 {
+    // [<snippet GetCurrencyData>]
     public async Task<CoinCapData> GetCurrencyData(string id)
     {
         return
-            await memoryCache.GetOrCreateAsync(
+            (await memoryCache.GetOrCreateAsync(
                 $"{GetType().Name}.{id}",
                 async entry =>
                 {
                     entry.SetAbsoluteExpiration(TimeSpan.FromSeconds(30));
                     return await GetData();
-                });
+                }))!;
 
         async Task<CoinCapData> GetData()
         {
@@ -25,4 +26,5 @@ public class WithMemoryCacheAndExpirationModel(IMemoryCache memoryCache, IHttpCl
             return response!.Data;
         }
     }
+    // [<endsnippet GetCurrencyData>]
 }
