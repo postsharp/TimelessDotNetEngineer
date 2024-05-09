@@ -6,6 +6,7 @@ namespace Sample1.Pages
 {
     public class NoCachingModel : BaseModel
     {
+        // [<snippet GetCurrencyData>]
         public async Task<(string Symbol, string Type, decimal Rate)> GetCurrencyData(string id)
         {
             using var httpClient = new HttpClient();
@@ -22,5 +23,6 @@ namespace Sample1.Pages
 
             return (symbol, type, rateUsd);
         }
+        // [<endsnippet GetCurrencyData>]
     }
 }
