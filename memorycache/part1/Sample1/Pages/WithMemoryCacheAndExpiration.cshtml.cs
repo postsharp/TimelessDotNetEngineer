@@ -21,7 +21,8 @@ public class WithMemoryCacheAndExpirationModel(IMemoryCache memoryCache, IHttpCl
         async Task<CoinCapData> GetData()
         {
             using var httpClient = httpClientFactory.CreateClient();
-            var response = await httpClient.GetFromJsonAsync<CoinCapResponse>($"https://api.coincap.io/v2/rates/{id}");
+            var response = await httpClient.GetFromJsonAsync<CoinCapResponse>(
+                $"https://api.coincap.io/v2/rates/{id}");
 
             return response!.Data;
         }

@@ -8,12 +8,7 @@ using Polly.Registry;
 
 namespace Sample1;
 
-internal static class HttpClients
-{
-    public const string CoinCap = nameof(CoinCap);
-}
-
-public class Program
+public static class Program
 {
     public static void Main(string[] args)
     {
@@ -21,7 +16,8 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddHttpClient();
-        builder.Services.AddRazorPages(options => { options.Conventions.AddPageRoute("/", "/Step1"); });
+        builder.Services.AddRazorPages(
+            options => { options.Conventions.AddPageRoute("/", "/Step1"); });
 
         // [<snippet AddMemoryCache>]
         builder.Services.AddMemoryCache();
