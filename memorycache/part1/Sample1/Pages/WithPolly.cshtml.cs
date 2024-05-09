@@ -26,7 +26,8 @@ public class Step4Model : BaseModel
         async Task<CoinCapData> GetData()
         {
             using var httpClient = _httpClientFactory.CreateClient();
-            var response = await httpClient.GetFromJsonAsync<CoinCapResponse>($"https://api.coincap.io/v2/rates/{id}");
+            var response = await httpClient.GetFromJsonAsync<CoinCapResponse>(
+                $"https://api.coincap.io/v2/rates/{id}");
 
             return response!.Data;
         }
