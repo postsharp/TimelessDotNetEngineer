@@ -24,6 +24,7 @@ public class ExceptionReportingMessenger : MessengerDecorator
         }
     }
 
+    // [<snippet ExceptionReportingMessenger>]
     public override Message Receive()
     {
         try
@@ -36,4 +37,5 @@ public class ExceptionReportingMessenger : MessengerDecorator
             throw;
         }
     }
+    // [<endsnippet ExceptionReportingMessenger>]
 }

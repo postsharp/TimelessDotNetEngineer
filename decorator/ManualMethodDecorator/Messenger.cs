@@ -14,6 +14,7 @@ public class Messenger
     private int _sendCount = 0;
     private int _receiveCount = 0;
 
+    // [<snippet ManualMethodDecoratorUsage>]
     public void Send(Message message)
     {
         void SendImpl(Message message)
@@ -33,6 +34,7 @@ public class Messenger
 
         _exceptionHandler.ReportWhenFails(() => _retryHandler.Retry(() => SendImpl(message)), "Failed to send message");
     }
+    // [<endsnippet ManualMethodDecoratorUsage>]
 
     public Message Receive()
     {

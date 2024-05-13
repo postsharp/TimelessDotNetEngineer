@@ -3,6 +3,7 @@ using Metalama.Framework.Fabrics;
 
 namespace MetalamaMethodDecorator;
 
+// [<snippet AddExceptionReportingToPublicMethodsFabric>]
 internal class AddExceptionReportingToPublicMethodsFabric : ProjectFabric
 {
     public override void AmendProject(IProjectAmender amender)
@@ -13,3 +14,4 @@ internal class AddExceptionReportingToPublicMethodsFabric : ProjectFabric
             .AddAspectIfEligible<ReportExceptionsAttribute>();
     }
 }
+// [<endsnippet AddExceptionReportingToPublicMethodsFabric>]

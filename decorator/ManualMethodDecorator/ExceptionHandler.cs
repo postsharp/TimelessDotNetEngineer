@@ -12,6 +12,7 @@ public class ExceptionHandler : IExceptionHandler
         _reportingService = reportingService;
     }
 
+    // [<snippet ManualMethodDecoratorImpl>]
     public void ReportWhenFails(Action action, string message)
     {
         try
@@ -24,6 +25,7 @@ public class ExceptionHandler : IExceptionHandler
             throw;
         }
     }
+    // [<endsnippet ManualMethodDecoratorImpl>]
 
     public T ReportWhenFails<T>(Func<T> action, string message)
     {

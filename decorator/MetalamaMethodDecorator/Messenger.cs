@@ -1,11 +1,12 @@
 ﻿namespace MetalamaMethodDecorator;
 
+// [<snippet MetalamaMethodDecorator>]
 public partial class Messenger
 {
     private int _sendCount = 0;
     private int _receiveCount = 0;
 
-    [Retry]
+    [Retry, ReportExceptions]
     public void Send(Message message)
     {
         Console.WriteLine("Sending message...");
@@ -21,7 +22,7 @@ public partial class Messenger
         }
     }
 
-    [Retry]
+    [Retry, ReportExceptions]
     public Message Receive()
     {
         Console.WriteLine("Receiving message...");
@@ -38,3 +39,4 @@ public partial class Messenger
         }
     }
 }
+// [<endsnippet MetalamaMethodDecorator>]
