@@ -1,7 +1,8 @@
-﻿using Metalama.Framework.Code;
-using Metalama.Framework.Fabrics;
+﻿namespace LoggingWithInterpolation.WithMetalama;
 
-namespace LoggingWithInterpolation.Metalama;
+// [<snippet body>]
+using Metalama.Framework.Code;
+using Metalama.Framework.Fabrics;
 
 internal class Fabric : ProjectFabric
 {
@@ -16,3 +17,4 @@ internal class Fabric : ProjectFabric
             .AddAspectIfEligible<LogAttribute>();
     }
 }
+// [<endsnippet body>]

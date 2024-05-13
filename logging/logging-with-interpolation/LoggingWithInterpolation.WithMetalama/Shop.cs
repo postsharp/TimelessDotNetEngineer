@@ -1,4 +1,4 @@
-﻿namespace LoggingWithInterpolation.Metalama;
+﻿namespace LoggingWithInterpolation.WithMetalama;
 
 public partial class Shop
 {

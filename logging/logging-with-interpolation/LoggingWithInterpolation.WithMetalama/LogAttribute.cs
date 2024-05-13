@@ -1,11 +1,12 @@
-﻿using Metalama.Extensions.DependencyInjection;
+﻿namespace LoggingWithInterpolation.WithMetalama;
+
+#pragma warning disable CS8618
+
+// [<snippet body>]
+using Metalama.Extensions.DependencyInjection;
 using Metalama.Framework.Aspects;
 using Metalama.Framework.Code.SyntaxBuilders;
 using Microsoft.Extensions.Logging;
-
-namespace LoggingWithInterpolation.Metalama;
-
-#pragma warning disable CS8618
 
 public class LogAttribute : OverrideMethodAspect
 {
@@ -52,3 +53,4 @@ public class LogAttribute : OverrideMethodAspect
         return stringBuilder;
     }
 }
+// [<endsnippet body>]

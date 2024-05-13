@@ -12,7 +12,7 @@ public static class LoggingExtensions
         => handler.Log();
 }
 
-#pragma warning disable CS8618
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor.
 
 [InterpolatedStringHandler]
 public ref struct LogInformationInterpolatedStringHandler
