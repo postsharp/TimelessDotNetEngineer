@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <!-- [<snippet nullable>] -->
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <!-- [<endsnippet nullable>] -->
+
+  <ItemGroup>
+      <PackageReference Include="Metalama.Patterns.Contracts" Version="2024.1.*" />
+  </ItemGroup>
+
+</Project>

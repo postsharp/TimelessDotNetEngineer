@@ -1,14 +1,13 @@
-﻿namespace LoggingWithInterpolation.Metalama;
+﻿namespace LoggingWithInterpolation.WithMetalama;
 
-partial class Shop
+public partial class Shop
 {
-    [Log]
     public void Sell(Product product, decimal price)
     {
     }
 }
 
-record Product(string Name)
+public record Product(string Name)
 {
     public override string ToString() => Name;
 }

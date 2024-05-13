@@ -1,4 +1,4 @@
-﻿using LoggingWithInterpolation.Metalama;
+﻿using LoggingWithInterpolation.WithMetalama;
 using Microsoft.Extensions.Logging;
 
 bool logJson = false;

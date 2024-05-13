@@ -10,22 +10,35 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggingWithInterpolation", "LoggingWithInterpolation\LoggingWithInterpolation.csproj", "{3A02356B-01D4-49C0-AABA-F3EDF0D35E32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingWithInterpolation.Metalama", "LoggingWithInterpolation.Metalama\LoggingWithInterpolation.Metalama.csproj", "{E3BCFCB0-7EBF-4424-AA8C-22C84CBEF3F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggingWithInterpolation.Steps", "LoggingWithInterpolation.Steps\LoggingWithInterpolation.Steps.csproj", "{E9584B96-1DED-4A09-B336-BA7FEB99BD60}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggingWithInterpolation.WithMetalama", "LoggingWithInterpolation.WithMetalama\LoggingWithInterpolation.WithMetalama.csproj", "{9E78D91B-0286-42D2-BFFB-FEC4B5597037}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		LamaDebug|Any CPU = LamaDebug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3A02356B-01D4-49C0-AABA-F3EDF0D35E32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3A02356B-01D4-49C0-AABA-F3EDF0D35E32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A02356B-01D4-49C0-AABA-F3EDF0D35E32}.LamaDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A02356B-01D4-49C0-AABA-F3EDF0D35E32}.LamaDebug|Any CPU.Build.0 = Debug|Any CPU
 		{3A02356B-01D4-49C0-AABA-F3EDF0D35E32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A02356B-01D4-49C0-AABA-F3EDF0D35E32}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E3BCFCB0-7EBF-4424-AA8C-22C84CBEF3F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E3BCFCB0-7EBF-4424-AA8C-22C84CBEF3F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E3BCFCB0-7EBF-4424-AA8C-22C84CBEF3F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E3BCFCB0-7EBF-4424-AA8C-22C84CBEF3F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9584B96-1DED-4A09-B336-BA7FEB99BD60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9584B96-1DED-4A09-B336-BA7FEB99BD60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9584B96-1DED-4A09-B336-BA7FEB99BD60}.LamaDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9584B96-1DED-4A09-B336-BA7FEB99BD60}.LamaDebug|Any CPU.Build.0 = Debug|Any CPU
+		{E9584B96-1DED-4A09-B336-BA7FEB99BD60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9584B96-1DED-4A09-B336-BA7FEB99BD60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E78D91B-0286-42D2-BFFB-FEC4B5597037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E78D91B-0286-42D2-BFFB-FEC4B5597037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E78D91B-0286-42D2-BFFB-FEC4B5597037}.LamaDebug|Any CPU.ActiveCfg = LamaDebug|Any CPU
+		{9E78D91B-0286-42D2-BFFB-FEC4B5597037}.LamaDebug|Any CPU.Build.0 = LamaDebug|Any CPU
+		{9E78D91B-0286-42D2-BFFB-FEC4B5597037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E78D91B-0286-42D2-BFFB-FEC4B5597037}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

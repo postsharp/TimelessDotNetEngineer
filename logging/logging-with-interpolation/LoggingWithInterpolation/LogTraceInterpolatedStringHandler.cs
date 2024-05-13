@@ -30,7 +30,8 @@ public ref struct LogTraceInterpolatedStringHandler
     }
 
     public readonly void AppendLiteral(string literal)
-        => messageBuilder.Append(literal.Replace("{", "{{", StringComparison.Ordinal).Replace("}", "}}", StringComparison.Ordinal));
+        => messageBuilder.Append(
+            literal.Replace("{", "{{", StringComparison.Ordinal).Replace("}", "}}", StringComparison.Ordinal));
 
     public void AppendFormatted<T>(T value, [CallerArgumentExpression(nameof(value))] string format = null!)
     {
