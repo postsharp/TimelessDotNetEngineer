@@ -5,7 +5,8 @@ using TypeDecorator;
 // [<snippet TypeDecoratorUsage>]
 var originalMessenger = new Messenger();
 var retryingMessenger = new RetryingMessenger(originalMessenger);
-var retryingExceptionReportingMessenger = new ExceptionReportingMessenger(retryingMessenger, new ExceptionReportingService());
+var retryingExceptionReportingMessenger =
+    new ExceptionReportingMessenger(retryingMessenger, new ExceptionReportingService());
 
 retryingExceptionReportingMessenger.Send(new Message("Hello!"));
 // [<endsnippet TypeDecoratorUsage>]

@@ -32,7 +32,9 @@ public class Messenger
             }
         }
 
-        _exceptionHandler.ReportWhenFails(() => _retryHandler.Retry(() => SendImpl(message)), "Failed to send message");
+        _exceptionHandler.ReportWhenFails(
+            () => _retryHandler.Retry(() => SendImpl(message)),
+            "Failed to send message");
     }
     // [<endsnippet ManualMethodDecoratorUsage>]
 
