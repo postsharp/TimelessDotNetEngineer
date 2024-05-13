@@ -26,6 +26,7 @@ internal class Accounts
         }
     }
 
+    // [<snippet NoBoilerplate>]
     public async Task TransferAsync(int sourceAccountId, int targetAccountId, int amount, CancellationToken cancellationToken = default)
     {
         var transaction = await _connection.BeginTransactionAsync(cancellationToken);
@@ -55,4 +56,5 @@ internal class Accounts
             throw;
         }
     }
+    // [<endsnippet NoBoilerplate>]
 }
