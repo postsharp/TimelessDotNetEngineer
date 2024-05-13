@@ -71,7 +71,9 @@ void SimulateTemporaryFailure()
 }
 
 ResiliencePipeline CreateRetryOnDbExceptionPipeline()
-    => new ResiliencePipelineBuilder()
+{
+    // [<snippet ResiliencePipelineBuilder>]
+    var resiliencePipeline = new ResiliencePipelineBuilder()
             .AddRetry(new RetryStrategyOptions
             {
                 ShouldHandle = new PredicateBuilder().Handle<DbException>(),
@@ -81,3 +83,7 @@ ResiliencePipeline CreateRetryOnDbExceptionPipeline()
             })
             .ConfigureTelemetry(LoggerFactory.Create(builder => builder.AddConsole()))
             .Build();
+    // [<endsnippet ResiliencePipelineBuilder>]
+
+    return resiliencePipeline;
+}

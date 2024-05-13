@@ -1,5 +1,6 @@
 using PollyMiddleware;
 
+// [<snippet MiddlewareUsage>]
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<ResiliencePipelineService>();
 var app = builder.Build();
@@ -15,3 +16,4 @@ app.MapGet("/", async () =>
 });
 
 app.Run();
+// [<endsnippet MiddlewareUsage>]

@@ -1,9 +1,9 @@
 ﻿using Polly;
 using Polly.Retry;
-using System.Data.Common;
 
 namespace PollyMiddleware;
 
+// [<snippet ResiliencePipelineService>]
 public class ResiliencePipelineService
 {
     public ResiliencePipeline Pipeline { get; }
@@ -22,3 +22,4 @@ public class ResiliencePipelineService
             .Build();
     }
 }
+// [<endsnippet ResiliencePipelineService>]

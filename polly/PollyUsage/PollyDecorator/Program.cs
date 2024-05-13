@@ -14,8 +14,11 @@ await CreateSchemaAsync();
 await PopulateDataAsync();
 
 var resiliencePipeline = CreateRetryOnDbExceptionPipeline();
+
+// [<snippet DecoratorUsage>]
 var resilientConnection = new ResilientDbConnection(connection, resiliencePipeline);
 var accounts = new Accounts(resilientConnection);
+// [<endsnippet DecoratorUsage>]
 
 Console.WriteLine("Before transfer:");
 await PrintAccountsAsync();

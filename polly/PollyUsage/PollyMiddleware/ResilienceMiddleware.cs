@@ -2,6 +2,7 @@
 
 namespace PollyMiddleware;
 
+// [<snippet ResilienceMiddleware>]
 public class ResilienceMiddleware
 {
     private readonly RequestDelegate _next;
@@ -20,3 +21,4 @@ public class ResilienceMiddleware
             httpContext.RequestAborted);
     }
 }
+// [<endsnippet ResilienceMiddleware>]
