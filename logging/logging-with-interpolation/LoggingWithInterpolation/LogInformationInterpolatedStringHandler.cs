@@ -6,6 +6,7 @@ namespace LoggingWithInterpolation;
 
 #pragma warning disable CS8618
 
+// [<snippet body>]
 [InterpolatedStringHandler]
 public ref struct LogInformationInterpolatedStringHandler
 {
@@ -47,3 +48,4 @@ public ref struct LogInformationInterpolatedStringHandler
         }
     }
 }
+// [<endsnippet body>]
