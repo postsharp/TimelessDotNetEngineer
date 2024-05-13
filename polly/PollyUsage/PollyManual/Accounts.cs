@@ -31,7 +31,11 @@ internal class Accounts
     }
 
     // [<snippet ExecutePipeline>]
-    public async Task TransferAsync(int sourceAccountId, int targetAccountId, int amount, CancellationToken cancellationToken = default)
+    public async Task TransferAsync(
+        int sourceAccountId,
+        int targetAccountId,
+        int amount,
+        CancellationToken cancellationToken = default)
         => await this._resiliencePipeline.ExecuteAsync(async t =>
         {
             var transaction = await this._connection.BeginTransactionAsync(t);

@@ -29,7 +29,11 @@ internal partial class Accounts
 
     // [<snippet AspectUsage>]
     [RetryOnDbException]
-    public async Task TransferAsync(int sourceAccountId, int targetAccountId, int amount, CancellationToken cancellationToken = default)
+    public async Task TransferAsync(
+        int sourceAccountId,
+        int targetAccountId,
+        int amount,
+        CancellationToken cancellationToken = default)
     {
         var transaction = await _connection.BeginTransactionAsync(cancellationToken);
         try
