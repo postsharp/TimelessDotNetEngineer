@@ -4,6 +4,7 @@ using Metalama.Framework.Fabrics;
 
 namespace PollyDependencyInjection;
 
+// [<snippet AvoidInstantiatingHttpClientFabric>]
 internal class AvoidInstantiatingHttpClientFabric : ProjectFabric
 {
     public override void AmendProject(IProjectAmender amender)
@@ -17,3 +18,4 @@ internal class AvoidInstantiatingHttpClientFabric : ProjectFabric
                 $"Use {nameof(IHttpClientFactory)} instead.");
     }
 }
+// [<endsnippet AvoidInstantiatingHttpClientFabric>]
