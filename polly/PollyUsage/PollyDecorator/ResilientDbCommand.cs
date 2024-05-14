@@ -15,33 +15,13 @@ public partial class ResilientDbCommand : DbCommand
         _resiliencePipeline = resiliencePipeline;
     }
 
-    public override int ExecuteNonQuery()
-    {
-        return _resiliencePipeline.Execute(_underlyingCommand.ExecuteNonQuery);
-    }
+    public override int ExecuteNonQuery() => _resiliencePipeline.Execute(_underlyingCommand.ExecuteNonQuery);
 
-    public override object? ExecuteScalar()
-    {
-        return _resiliencePipeline.Execute(_underlyingCommand.ExecuteScalar);
-    }
+    public override object? ExecuteScalar() => _resiliencePipeline.Execute(_underlyingCommand.ExecuteScalar);
 
-    protected override DbDataReader ExecuteDbDataReader(CommandBehavior behavior)
-    {
-        return _resiliencePipeline.Execute(() => _underlyingCommand.ExecuteReader(behavior));
-    }
+    protected override DbDataReader ExecuteDbDataReader(CommandBehavior behavior) 
+        => _resiliencePipeline.Execute(() => _underlyingCommand.ExecuteReader(behavior));
 
-    public override void Prepare()
-    {
-        _resiliencePipeline.Execute(_underlyingCommand.Prepare);
-    }
+    public override void Prepare() => _resiliencePipeline.Execute(_underlyingCommand.Prepare);
 
-    protected override DbParameter CreateDbParameter()
-    {
-        return _underlyingCommand.CreateParameter();
-    }
-
-    public override void Cancel()
-    {
-        _resiliencePipeline.Execute(_underlyingCommand.Cancel);
-    }
 }

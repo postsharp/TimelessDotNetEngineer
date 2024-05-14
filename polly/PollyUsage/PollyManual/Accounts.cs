@@ -1,6 +1,4 @@
 ﻿using System.Data.Common;
-using System.Runtime.CompilerServices;
-using Microsoft.Data.Sqlite;
 using Polly;
 
 namespace PollyManual;
@@ -16,15 +14,14 @@ internal class Accounts
         _resiliencePipeline = resiliencePipeline;
     }
 
-    public async IAsyncEnumerable<(int Id, string Name, int Balance)> ListAsync(
-        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<(int Id, string Name, int Balance)> ListAsync()
     {
         using var command = _connection.CreateCommand();
         command.CommandText = "SELECT id, name, balance FROM accounts";
         using var reader = await _resiliencePipeline.ExecuteAsync(
-            async t => await command.ExecuteReaderAsync(t), cancellationToken);
+            async t => await command.ExecuteReaderAsync(t));
         while (await _resiliencePipeline.ExecuteAsync(
-                   async t => await reader.ReadAsync(cancellationToken)))
+                   async ct => await reader.ReadAsync(ct)))
         {
             yield return (reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2));
         }
@@ -42,19 +39,19 @@ internal class Accounts
                 var transaction = await _connection.BeginTransactionAsync(t);
                 try
                 {
-                    using (var command = _connection.CreateCommand())
+                    await using (var command = _connection.CreateCommand())
                     {
                         command.CommandText = "UPDATE accounts SET balance = balance - $amount WHERE id = $id";
-                        command.Parameters.Add(new SqliteParameter("$id", sourceAccountId));
-                        command.Parameters.Add(new SqliteParameter("$amount", amount));
+                        command.AddParameter( "$id", sourceAccountId);
+                        command.AddParameter("$amount", amount);
                         await command.ExecuteNonQueryAsync(t);
                     }
 
-                    using (var command = _connection.CreateCommand())
+                    await using (var command = _connection.CreateCommand())
                     {
                         command.CommandText = "UPDATE accounts SET balance = balance + $amount WHERE id = $id";
-                        command.Parameters.Add(new SqliteParameter("$id", targetAccountId));
-                        command.Parameters.Add(new SqliteParameter("$amount", amount));
+                        command.AddParameter( "$id", targetAccountId);
+                        command.AddParameter("$amount", amount);
                         await command.ExecuteNonQueryAsync(t);
                     }
 
