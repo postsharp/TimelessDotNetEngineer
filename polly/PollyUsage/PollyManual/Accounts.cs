@@ -4,9 +4,11 @@ using Polly;
 
 namespace PollyManual;
 
+// [<snippet Constructor>]
 internal class Accounts( 
     DbConnection connection, 
     [FromKeyedServices("db-pipeline")] ResiliencePipeline resiliencePipeline )
+// [<endsnippet Constructor>]
 {
     public async IAsyncEnumerable<(int Id, string Name, int Balance)> ListAsync()
     {
