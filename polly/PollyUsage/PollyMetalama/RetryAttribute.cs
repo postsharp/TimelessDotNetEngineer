@@ -24,7 +24,5 @@ public partial class RetryAttribute : OverrideMethodAspect
         {
             return meta.Proceed();
         }
-   
     }
-
 }

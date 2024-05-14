@@ -11,7 +11,7 @@ internal partial class Accounts(DbConnection connection)
 
     [Retry]
     public async Task<IReadOnlyList<Account>> ListAsync(
-        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var list = new List<Account>();
         await using var command = _connection.CreateCommand();
