@@ -5,9 +5,9 @@ using Polly;
 namespace PollyManual;
 
 // [<snippet Constructor>]
-internal class Accounts( 
-    DbConnection connection, 
-    [FromKeyedServices("db-pipeline")] ResiliencePipeline resiliencePipeline )
+internal class Accounts(
+    DbConnection connection,
+    [FromKeyedServices("db-pipeline")] ResiliencePipeline resiliencePipeline)
 // [<endsnippet Constructor>]
 {
     public async IAsyncEnumerable<(int Id, string Name, int Balance)> ListAsync()
@@ -38,7 +38,7 @@ internal class Accounts(
                     await using (var command = connection.CreateCommand())
                     {
                         command.CommandText = "UPDATE accounts SET balance = balance - $amount WHERE id = $id";
-                        command.AddParameter( "$id", sourceAccountId);
+                        command.AddParameter("$id", sourceAccountId);
                         command.AddParameter("$amount", amount);
                         await command.ExecuteNonQueryAsync(t);
                     }
@@ -46,7 +46,7 @@ internal class Accounts(
                     await using (var command = connection.CreateCommand())
                     {
                         command.CommandText = "UPDATE accounts SET balance = balance + $amount WHERE id = $id";
-                        command.AddParameter( "$id", targetAccountId);
+                        command.AddParameter("$id", targetAccountId);
                         command.AddParameter("$amount", amount);
                         await command.ExecuteNonQueryAsync(t);
                     }

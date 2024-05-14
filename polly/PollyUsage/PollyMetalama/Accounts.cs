@@ -1,5 +1,4 @@
 ﻿using System.Data.Common;
-using System.Runtime.CompilerServices;
 using Microsoft.Data.Sqlite;
 using PollyMetalama;
 

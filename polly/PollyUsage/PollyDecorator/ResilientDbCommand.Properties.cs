@@ -48,8 +48,14 @@ public partial class ResilientDbCommand
         get => _underlyingCommand.Transaction;
         set => _underlyingCommand.Transaction = value;
     }
-    
-    protected override DbParameter CreateDbParameter() => _underlyingCommand.CreateParameter();
 
-    public override void Cancel() => _resiliencePipeline.Execute(_underlyingCommand.Cancel);
+    protected override DbParameter CreateDbParameter()
+    {
+        return _underlyingCommand.CreateParameter();
+    }
+
+    public override void Cancel()
+    {
+        _resiliencePipeline.Execute(_underlyingCommand.Cancel);
+    }
 }

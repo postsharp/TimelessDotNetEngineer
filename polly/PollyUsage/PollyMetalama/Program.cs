@@ -76,7 +76,7 @@ async Task PopulateDataAsync()
 
 async Task PrintAccountsAsync()
 {
-     foreach (var (id, name, balance) in await accounts.ListAsync())
+    foreach (var (id, name, balance) in await accounts.ListAsync())
     {
         Console.WriteLine($"Id: {id}, Name: {name}, Balance: {balance}");
     }

@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.Data.Sqlite;
 using PollyMetalama;
 
-internal partial class Accounts(DbConnection connection)
+internal class Accounts(DbConnection connection)
 {
     private readonly DbConnection _connection = connection;
 

@@ -7,7 +7,6 @@ using Polly.Retry;
 using PollyManual;
 using UnreliableDb;
 
-
 await using var connection = new UnreliableDbConnection(new SqliteConnection("Data Source=:memory:"));
 
 connection.Open();
@@ -90,4 +89,3 @@ void SimulateTemporaryFailure()
     connection.IsAvailable = false;
     _ = Task.Delay(1500).ContinueWith(_ => connection.IsAvailable = true);
 }
-

@@ -5,10 +5,12 @@ using Metalama.Framework.Diagnostics;
 
 namespace PollyMetalama;
 
-public  class DbTransactionAttribute : OverrideMethodAspect
+public class DbTransactionAttribute : OverrideMethodAspect
 {
-    private static DiagnosticDefinition<INamedType> _missingField = new DiagnosticDefinition<INamedType>("DBT001",
-        Severity.Error, "The type '{0}' must have a field 'connection' of type DbConnection because of the [DbTransaction] aspect.");
+    private static readonly DiagnosticDefinition<INamedType> _missingField = new("DBT001",
+        Severity.Error,
+        "The type '{0}' must have a field 'connection' of type DbConnection because of the [DbTransaction] aspect.");
+
     public override void BuildAspect(IAspectBuilder<IMethod> builder)
     {
         base.BuildAspect(builder);
@@ -18,7 +20,6 @@ public  class DbTransactionAttribute : OverrideMethodAspect
         {
             builder.Diagnostics.Report(_missingField.WithArguments(builder.Target.DeclaringType));
         }
-
     }
 
     public override dynamic? OverrideMethod()
@@ -31,12 +32,11 @@ public  class DbTransactionAttribute : OverrideMethodAspect
             transaction.CommitAsync();
             return result;
         }
-        catch 
+        catch
         {
             transaction.RollbackAsync();
             throw;
         }
-    
     }
 
     public override async Task<dynamic?> OverrideAsyncMethod()
@@ -54,6 +54,5 @@ public  class DbTransactionAttribute : OverrideMethodAspect
             await transaction.RollbackAsync();
             throw;
         }
-        
     }
 }
