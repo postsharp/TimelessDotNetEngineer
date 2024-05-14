@@ -30,4 +30,3 @@ app.MapGet("/", async () =>
 });
 
 app.Run();
-// [<endsnippet MiddlewareUsage>]
