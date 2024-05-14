@@ -2,21 +2,14 @@
 
 public class MessengerDecorator : AbstractDecorator, IMessenger
 {
+    private readonly IMessenger _underlying;
+
     public MessengerDecorator(IMessenger underlying, Func<Func<object?>, object?> decorator) : base(decorator)
     {
-        Underlying = underlying;
+        _underlying = underlying;
     }
 
-    protected IMessenger Underlying { get; }
+    public void Send(Message message) => Invoke(() => _underlying.Send(message));
 
-
-    public void Send(Message message)
-    {
-        Invoke(() => Underlying.Send(message));
-    }
-
-    public Message Receive()
-    {
-        return Invoke(() => Underlying.Receive());
-    }
+    public Message Receive() => Invoke(() => _underlying.Receive());
 }
