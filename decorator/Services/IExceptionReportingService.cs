@@ -1,6 +1,4 @@
-﻿namespace Services;
-
-public interface IExceptionReportingService
+﻿public interface IExceptionReportingService
 {
     void ReportException(string v, Exception e);
 }

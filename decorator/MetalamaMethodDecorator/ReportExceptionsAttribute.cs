@@ -1,8 +1,5 @@
 ﻿using Metalama.Extensions.DependencyInjection;
 using Metalama.Framework.Aspects;
-using Services;
-
-namespace MetalamaMethodDecorator;
 
 public class ReportExceptionsAttribute : OverrideMethodAspect
 {

@@ -1,6 +1,4 @@
-﻿namespace TypeDecorator;
-
-public abstract class AbstractDecorator
+﻿public abstract class AbstractDecorator
 {
     private readonly Func<Func<object?>, object?> _policy;
 

@@ -1,6 +1,4 @@
-﻿namespace ManualMethodDecorator;
-
-public class Messenger
+﻿public class Messenger
 {
     private readonly IExceptionHandler _exceptionHandler;
     private readonly IRetryHandler _retryHandler;

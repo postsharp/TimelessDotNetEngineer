@@ -1,6 +1,5 @@
-﻿namespace MetalamaMethodDecorator;
+﻿// [<snippet MetalamaMethodDecorator>]
 
-// [<snippet MetalamaMethodDecorator>]
 public partial class Messenger
 {
     private int _receiveCount;

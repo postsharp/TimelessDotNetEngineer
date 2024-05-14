@@ -1,7 +1,4 @@
-﻿using NoDecorator;
-using Services;
-
-var reportingService = new ExceptionReportingService();
+﻿var reportingService = new ExceptionReportingService();
 var messenger = new Messenger(reportingService);
 messenger.Send(new Message("Hello!"));
 var response = messenger.Receive();

@@ -1,6 +1,4 @@
-﻿namespace ManualMethodDecorator;
-
-public interface IRetryHandler
+﻿public interface IRetryHandler
 {
     void Retry(Action action, int? attempts = default, int? delay = default);
 

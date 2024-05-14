@@ -1,6 +1,4 @@
-﻿namespace TypeDecorator;
-
-public class MessengerDecorator : AbstractDecorator, IMessenger
+﻿public class MessengerDecorator : AbstractDecorator, IMessenger
 {
     private readonly IMessenger _underlying;
 
@@ -9,7 +7,13 @@ public class MessengerDecorator : AbstractDecorator, IMessenger
         _underlying = underlying;
     }
 
-    public void Send(Message message) => Invoke(() => _underlying.Send(message));
+    public void Send(Message message)
+    {
+        Invoke(() => _underlying.Send(message));
+    }
 
-    public Message Receive() => Invoke(() => _underlying.Receive());
+    public Message Receive()
+    {
+        return Invoke(() => _underlying.Receive());
+    }
 }

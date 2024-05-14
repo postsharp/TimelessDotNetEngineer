@@ -1,6 +1,5 @@
-﻿namespace TypeDecorator;
+﻿// [<snippet IMessenger>]
 
-// [<snippet IMessenger>]
 public interface IMessenger
 {
     void Send(Message message);

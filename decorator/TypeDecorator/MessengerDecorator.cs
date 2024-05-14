@@ -1,6 +1,4 @@
-﻿namespace TypeDecorator;
-
-public abstract class MessengerDecorator : IMessenger
+﻿public abstract class MessengerDecorator : IMessenger
 {
     protected MessengerDecorator(IMessenger underlying)
     {

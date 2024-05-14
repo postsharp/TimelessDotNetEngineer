@@ -1,7 +1,6 @@
 ﻿using Metalama.Framework.Code;
 using Metalama.Framework.Fabrics;
 
-namespace MetalamaMethodDecorator;
 
 // [<snippet AddExceptionReportingToPublicMethodsFabric>]
 internal class AddExceptionReportingToPublicMethodsFabric : ProjectFabric

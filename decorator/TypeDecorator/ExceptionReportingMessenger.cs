@@ -1,8 +1,4 @@
-﻿using Services;
-
-namespace TypeDecorator;
-
-public class ExceptionReportingMessenger : MessengerDecorator
+﻿public class ExceptionReportingMessenger : MessengerDecorator
 {
     private readonly IExceptionReportingService _reportingService;
 

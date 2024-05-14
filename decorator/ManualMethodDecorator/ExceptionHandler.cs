@@ -1,8 +1,4 @@
-﻿using Services;
-
-namespace ManualMethodDecorator;
-
-public class ExceptionHandler : IExceptionHandler
+﻿public class ExceptionHandler : IExceptionHandler
 {
     private readonly IExceptionReportingService _reportingService;
 

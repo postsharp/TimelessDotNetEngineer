@@ -1,6 +1,4 @@
-﻿namespace ManualMethodDecorator;
-
-public interface IExceptionHandler
+﻿public interface IExceptionHandler
 {
     void ReportWhenFails(Action action, string message);
 

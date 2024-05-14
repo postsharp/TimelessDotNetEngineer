@@ -1,3 +1,1 @@
-﻿namespace ManualMethodDecorator;
-
-public record Message(string Text);
+﻿public record Message(string Text);

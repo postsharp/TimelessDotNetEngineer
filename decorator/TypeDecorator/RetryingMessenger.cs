@@ -1,6 +1,4 @@
-﻿namespace TypeDecorator;
-
-public class RetryingMessenger : MessengerDecorator
+﻿public class RetryingMessenger : MessengerDecorator
 {
     private readonly int _retryAttempts;
     private readonly int _retryDelay;

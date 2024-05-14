@@ -1,8 +1,4 @@
-﻿using Services;
-
-namespace TypeDecorator;
-
-public static class Policies
+﻿public static class Policies
 {
     public static object? Retry(Func<object?> func, int retryAttempts = 3, int retryDelay = 1000)
     {
@@ -18,7 +14,7 @@ public static class Policies
 
                 Console.WriteLine(
                     "Failed to receive message. " +
-                    "Retrying in {delay / 1000} seconds... ({i + 1}/{retryAttempts})");
+                    $"Retrying in {delay / 1000} seconds... ({i + 1}/{retryAttempts})");
                 Thread.Sleep((int)delay);
             }
         }

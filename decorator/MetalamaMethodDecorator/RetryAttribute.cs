@@ -1,8 +1,6 @@
 ﻿using Metalama.Framework.Aspects;
 using Metalama.Framework.Code;
 
-namespace MetalamaMethodDecorator;
-
 internal class RetryAttribute : OverrideMethodAspect
 {
     public int Attempts { get; set; } = 3;

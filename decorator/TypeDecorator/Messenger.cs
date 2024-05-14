@@ -1,6 +1,4 @@
-﻿namespace TypeDecorator;
-
-public class Messenger : IMessenger
+﻿public class Messenger : IMessenger
 {
     private int _receiveCount;
     private int _sendCount;

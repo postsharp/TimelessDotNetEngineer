@@ -1,6 +1,4 @@
-﻿namespace ManualMethodDecorator;
-
-public class RetryHandler : IRetryHandler
+﻿public class RetryHandler : IRetryHandler
 {
     protected const int _defaultAttempts = 3;
     protected const int _defaultDelay = 1000;

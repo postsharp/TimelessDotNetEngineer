@@ -1,6 +1,4 @@
-﻿namespace Services;
-
-public class ExceptionReportingService : IExceptionReportingService
+﻿public class ExceptionReportingService : IExceptionReportingService
 {
     public void ReportException(string v, Exception e)
     {

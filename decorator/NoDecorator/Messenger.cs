@@ -1,8 +1,4 @@
-﻿using Services;
-
-namespace NoDecorator;
-
-public class Messenger
+﻿public class Messenger
 {
     private const int _retryAttempts = 3;
     private const int _retryDelay = 1000;
