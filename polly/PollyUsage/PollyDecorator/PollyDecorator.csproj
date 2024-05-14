@@ -18,4 +18,10 @@
 		<ProjectReference Include="..\UnreliableDb\UnreliableDb.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="ResilientDbCommand.Properties.cs">
+	    <SubType>Component</SubType>
+	  </Compile>
+	</ItemGroup>
+
 </Project>
