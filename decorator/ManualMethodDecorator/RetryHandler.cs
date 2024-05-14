@@ -10,7 +10,7 @@ public class RetryHandler : IRetryHandler
         attempts ??= _defaultAttempts;
         delay ??= _defaultDelay;
 
-        for (int i = 0; ; i++)
+        for (var i = 0;; i++)
         {
             try
             {
@@ -21,7 +21,8 @@ public class RetryHandler : IRetryHandler
             {
                 var backoffDelay = delay * Math.Pow(2, i);
 
-                Console.WriteLine($"Failed to receive message. Retrying in {backoffDelay / 1000} seconds... ({i + 1}/{attempts})");
+                Console.WriteLine(
+                    $"Failed to receive message. Retrying in {backoffDelay / 1000} seconds... ({i + 1}/{attempts})");
                 Thread.Sleep((int)backoffDelay);
             }
         }
@@ -32,7 +33,7 @@ public class RetryHandler : IRetryHandler
         attempts ??= _defaultAttempts;
         delay ??= _defaultDelay;
 
-        for (int i = 0; ; i++)
+        for (var i = 0;; i++)
         {
             try
             {
@@ -42,7 +43,8 @@ public class RetryHandler : IRetryHandler
             {
                 var backoffDelay = delay * Math.Pow(2, i);
 
-                Console.WriteLine($"Failed to receive message. Retrying in {backoffDelay / 1000} seconds... ({i + 1}/{attempts})");
+                Console.WriteLine(
+                    $"Failed to receive message. Retrying in {backoffDelay / 1000} seconds... ({i + 1}/{attempts})");
                 Thread.Sleep((int)backoffDelay);
             }
         }

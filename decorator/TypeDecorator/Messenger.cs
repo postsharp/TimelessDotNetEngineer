@@ -2,21 +2,21 @@
 
 public class Messenger : IMessenger
 {
-    private int _sendCount = 0;
-    private int _receiveCount = 0;
+    private int _receiveCount;
+    private int _sendCount;
 
     public void Send(Message message)
     {
         Console.WriteLine("Sending message...");
 
         // Simulate unreliable message sending
-        if (++this._sendCount % 3 == 0)
+        if (++_sendCount % 3 == 0)
         {
             Console.WriteLine("Message sent successfully.");
         }
         else
         {
-            throw new InvalidOperationException("Failed to send message.");
+            throw new IOException("Failed to send message.");
         }
     }
 
@@ -25,14 +25,12 @@ public class Messenger : IMessenger
         Console.WriteLine("Receiving message...");
 
         // Simulate unreliable message receiving
-        if (++this._receiveCount % 3 == 0)
+        if (++_receiveCount % 3 == 0)
         {
             Console.WriteLine("Message received successfully.");
-            return new("Hi!");
+            return new Message("Hi!");
         }
-        else
-        {
-            throw new InvalidOperationException("Failed to receive message.");
-        }
+
+        throw new IOException("Failed to receive message.");
     }
 }

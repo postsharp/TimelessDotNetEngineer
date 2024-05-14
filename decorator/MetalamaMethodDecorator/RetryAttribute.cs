@@ -12,17 +12,18 @@ internal class RetryAttribute : OverrideMethodAspect
     // Template for non-async methods.
     public override dynamic? OverrideMethod()
     {
-        for (var i = 0; ; i++)
+        for (var i = 0;; i++)
         {
             try
             {
                 return meta.Proceed();
             }
-            catch (Exception e) when (i < this.Attempts)
+            catch (Exception e) when (i < Attempts)
             {
-                var delay = this.Delay * Math.Pow(2, i + 1);
+                var delay = Delay * Math.Pow(2, i + 1);
 
-                Console.WriteLine($"Method {meta.Target.Method.DeclaringType.Name}.{meta.Target.Method} has failed on {e.GetType().Name}. Retrying in {delay / 1000} seconds... ({i + 1}/{this.Attempts})");
+                Console.WriteLine(
+                    $"Method {meta.Target.Method.DeclaringType.Name}.{meta.Target.Method} has failed on {e.GetType().Name}. Retrying in {delay / 1000} seconds... ({i + 1}/{Attempts})");
 
                 Thread.Sleep((int)delay);
             }
@@ -35,17 +36,18 @@ internal class RetryAttribute : OverrideMethodAspect
         var cancellationTokenParameter
             = meta.Target.Parameters.LastOrDefault(p => p.Type.Is(typeof(CancellationToken)));
 
-        for (var i = 0; ; i++)
+        for (var i = 0;; i++)
         {
             try
             {
                 return await meta.ProceedAsync();
             }
-            catch (Exception e) when (i < this.Attempts)
+            catch (Exception e) when (i < Attempts)
             {
-                var delay = this.Delay * Math.Pow(2, i + 1);
+                var delay = Delay * Math.Pow(2, i + 1);
 
-                Console.WriteLine($"Method {meta.Target.Method.DeclaringType.Name}.{meta.Target.Method} has failed on {e.GetType().Name}. Retrying in {delay / 1000} seconds... ({i + 1}/{this.Attempts})");
+                Console.WriteLine(
+                    $"Method {meta.Target.Method.DeclaringType.Name}.{meta.Target.Method} has failed on {e.GetType().Name}. Retrying in {delay / 1000} seconds... ({i + 1}/{Attempts})");
 
                 if (cancellationTokenParameter != null)
                 {

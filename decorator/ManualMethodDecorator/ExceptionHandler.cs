@@ -1,5 +1,4 @@
-﻿
-using Services;
+﻿using Services;
 
 namespace ManualMethodDecorator;
 
@@ -21,7 +20,7 @@ public class ExceptionHandler : IExceptionHandler
         }
         catch (Exception e)
         {
-            this._reportingService.ReportException(message, e);
+            _reportingService.ReportException(message, e);
             throw;
         }
     }
@@ -35,7 +34,7 @@ public class ExceptionHandler : IExceptionHandler
         }
         catch (Exception e)
         {
-            this._reportingService.ReportException(message, e);
+            _reportingService.ReportException(message, e);
             throw;
         }
     }

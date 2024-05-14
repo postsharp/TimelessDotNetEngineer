@@ -2,17 +2,17 @@
 
 public class Messenger
 {
-    private readonly IRetryHandler _retryHandler;
     private readonly IExceptionHandler _exceptionHandler;
+    private readonly IRetryHandler _retryHandler;
+    private int _receiveCount;
+
+    private int _sendCount;
 
     public Messenger(IRetryHandler retryHandler, IExceptionHandler exceptionHandler)
     {
         _retryHandler = retryHandler;
         _exceptionHandler = exceptionHandler;
     }
-
-    private int _sendCount = 0;
-    private int _receiveCount = 0;
 
     // [<snippet ManualMethodDecoratorUsage>]
     public void Send(Message message)
@@ -28,7 +28,7 @@ public class Messenger
             }
             else
             {
-                throw new InvalidOperationException("Failed to send message.");
+                throw new IOException("Failed to send message.");
             }
         }
 
@@ -48,14 +48,13 @@ public class Messenger
             if (++_receiveCount % 3 == 0)
             {
                 Console.WriteLine("Message received successfully.");
-                return new("Hi!");
+                return new Message("Hi!");
             }
-            else
-            {
-                throw new InvalidOperationException("Failed to receive message.");
-            }
+
+            throw new IOException("Failed to receive message.");
         }
 
-        return _exceptionHandler.ReportWhenFails(() => _retryHandler.Retry(() => ReceiveImpl()), "Failed to receive message");
+        return _exceptionHandler.ReportWhenFails(() => _retryHandler.Retry(() => ReceiveImpl()),
+            "Failed to receive message");
     }
 }

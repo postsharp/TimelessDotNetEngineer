@@ -6,7 +6,8 @@ public class ExceptionReportingMessenger : MessengerDecorator
 {
     private readonly IExceptionReportingService _reportingService;
 
-    public ExceptionReportingMessenger(IMessenger underlying, IExceptionReportingService reportingService) : base(underlying)
+    public ExceptionReportingMessenger(IMessenger underlying, IExceptionReportingService reportingService) :
+        base(underlying)
     {
         _reportingService = reportingService;
     }
@@ -15,11 +16,11 @@ public class ExceptionReportingMessenger : MessengerDecorator
     {
         try
         {
-            this.Underlying.Send(message);
+            Underlying.Send(message);
         }
         catch (Exception e)
         {
-            this._reportingService.ReportException("Failed to send message", e);
+            _reportingService.ReportException("Failed to send message", e);
             throw;
         }
     }
@@ -29,11 +30,11 @@ public class ExceptionReportingMessenger : MessengerDecorator
     {
         try
         {
-            return this.Underlying.Receive();
+            return Underlying.Receive();
         }
         catch (Exception e)
         {
-            this._reportingService.ReportException("Failed to receive message", e);
+            _reportingService.ReportException("Failed to receive message", e);
             throw;
         }
     }
