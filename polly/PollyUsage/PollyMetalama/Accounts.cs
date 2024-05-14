@@ -1,7 +1,7 @@
-﻿using Microsoft.Data.Sqlite;
-using PollyMetalama;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Runtime.CompilerServices;
+using Microsoft.Data.Sqlite;
+using PollyMetalama;
 
 namespace PollyDecorator;
 
@@ -23,7 +23,7 @@ internal partial class Accounts
         using var reader = await command.ExecuteReaderAsync(cancellationToken);
         while (await reader.ReadAsync(cancellationToken))
         {
-            yield return new(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2));
+            yield return new Account(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2));
         }
     }
 

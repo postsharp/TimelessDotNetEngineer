@@ -1,12 +1,12 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using System.Data.Common;
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
 using PollyDecorator;
-using System.Data.Common;
 using UnreliableDb;
 
-using var connection = new UnreliableDbConnection(new SqliteConnection($"Data Source=:memory:"));
+using var connection = new UnreliableDbConnection(new SqliteConnection("Data Source=:memory:"));
 
 connection.Open();
 
@@ -75,13 +75,15 @@ void SimulateTemporaryFailure()
 }
 
 ResiliencePipeline CreateRetryOnDbExceptionPipeline()
-    => new ResiliencePipelineBuilder()
-            .AddRetry(new RetryStrategyOptions
-            {
-                ShouldHandle = new PredicateBuilder().Handle<DbException>(),
-                Delay = TimeSpan.FromSeconds(1),
-                MaxRetryAttempts = 3,
-                BackoffType = DelayBackoffType.Exponential
-            })
-            .ConfigureTelemetry(LoggerFactory.Create(builder => builder.AddConsole()))
-            .Build();
+{
+    return new ResiliencePipelineBuilder()
+        .AddRetry(new RetryStrategyOptions
+        {
+            ShouldHandle = new PredicateBuilder().Handle<DbException>(),
+            Delay = TimeSpan.FromSeconds(1),
+            MaxRetryAttempts = 3,
+            BackoffType = DelayBackoffType.Exponential
+        })
+        .ConfigureTelemetry(LoggerFactory.Create(builder => builder.AddConsole()))
+        .Build();
+}

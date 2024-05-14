@@ -10,14 +10,14 @@ public class ResilienceMiddleware
 
     public ResilienceMiddleware(RequestDelegate next, ResiliencePipelineService resiliencePipelineService)
     {
-        this._next = next;
-        this._resiliencePipeline = resiliencePipelineService.Pipeline;
+        _next = next;
+        _resiliencePipeline = resiliencePipelineService.Pipeline;
     }
 
     public async Task InvokeAsync(HttpContext httpContext)
     {
-        await this._resiliencePipeline.ExecuteAsync(
-            async _ => await this._next(httpContext),
+        await _resiliencePipeline.ExecuteAsync(
+            async _ => await _next(httpContext),
             httpContext.RequestAborted);
     }
 }

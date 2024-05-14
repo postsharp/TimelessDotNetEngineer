@@ -1,12 +1,12 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using System.Data.Common;
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
 using PollyManual;
-using System.Data.Common;
 using UnreliableDb;
 
-using var connection = new UnreliableDbConnection( new SqliteConnection($"Data Source=:memory:"));
+using var connection = new UnreliableDbConnection(new SqliteConnection("Data Source=:memory:"));
 
 connection.Open();
 
@@ -46,7 +46,7 @@ async Task PopulateDataAsync()
     {
         (0, "Alice", 1000), (1, "Bob", 0)
     };
-    
+
     foreach (var user in accounts)
     {
         insertUserCommand.Parameters["$id"].Value = user.id;
@@ -74,15 +74,15 @@ ResiliencePipeline CreateRetryOnDbExceptionPipeline()
 {
     // [<snippet ResiliencePipelineBuilder>]
     var resiliencePipeline = new ResiliencePipelineBuilder()
-            .AddRetry(new RetryStrategyOptions
-            {
-                ShouldHandle = new PredicateBuilder().Handle<DbException>(),
-                Delay = TimeSpan.FromSeconds(1),
-                MaxRetryAttempts = 3,
-                BackoffType = DelayBackoffType.Exponential
-            })
-            .ConfigureTelemetry(LoggerFactory.Create(builder => builder.AddConsole()))
-            .Build();
+        .AddRetry(new RetryStrategyOptions
+        {
+            ShouldHandle = new PredicateBuilder().Handle<DbException>(),
+            Delay = TimeSpan.FromSeconds(1),
+            MaxRetryAttempts = 3,
+            BackoffType = DelayBackoffType.Exponential
+        })
+        .ConfigureTelemetry(LoggerFactory.Create(builder => builder.AddConsole()))
+        .Build();
     // [<endsnippet ResiliencePipelineBuilder>]
 
     return resiliencePipeline;

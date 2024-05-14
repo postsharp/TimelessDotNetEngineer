@@ -6,11 +6,9 @@ namespace PollyMiddleware;
 // [<snippet ResiliencePipelineService>]
 public class ResiliencePipelineService
 {
-    public ResiliencePipeline Pipeline { get; }
-
     public ResiliencePipelineService(ILoggerFactory loggerFactory)
     {
-        this.Pipeline = new ResiliencePipelineBuilder()
+        Pipeline = new ResiliencePipelineBuilder()
             .AddRetry(new RetryStrategyOptions
             {
                 ShouldHandle = new PredicateBuilder().Handle<HttpRequestException>(),
@@ -21,5 +19,7 @@ public class ResiliencePipelineService
             .ConfigureTelemetry(loggerFactory)
             .Build();
     }
+
+    public ResiliencePipeline Pipeline { get; }
 }
 // [<endsnippet ResiliencePipelineService>]

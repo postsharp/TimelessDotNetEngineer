@@ -1,7 +1,6 @@
-﻿using Microsoft.Data.Sqlite;
-using Polly;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Runtime.CompilerServices;
+using Microsoft.Data.Sqlite;
 
 namespace PollyDecorator;
 

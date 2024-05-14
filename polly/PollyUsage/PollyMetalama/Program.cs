@@ -3,7 +3,7 @@ using PollyDecorator;
 using PollyMetalama;
 using UnreliableDb;
 
-using var connection = new UnreliableDbConnection(new SqliteConnection($"Data Source=:memory:"));
+using var connection = new UnreliableDbConnection(new SqliteConnection("Data Source=:memory:"));
 
 connection.Open();
 
