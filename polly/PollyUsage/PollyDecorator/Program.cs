@@ -35,14 +35,14 @@ await PrintAccountsAsync();
 
 async Task CreateSchemaAsync()
 {
-    using var createTableCommand = connection.CreateCommand();
+    await using var createTableCommand = connection.CreateCommand();
     createTableCommand.CommandText = "CREATE TABLE accounts (id INT, name TEXT, balance INT)";
     await createTableCommand.ExecuteNonQueryAsync();
 }
 
 async Task PopulateDataAsync()
 {
-    using var insertUserCommand = connection.CreateCommand();
+    await using var insertUserCommand = connection.CreateCommand();
     insertUserCommand.CommandText = "INSERT INTO accounts (id, name, balance) VALUES ($id, $name, $balance)";
     insertUserCommand.Parameters.Add(new SqliteParameter("$id", SqliteType.Integer));
     insertUserCommand.Parameters.Add(new SqliteParameter("$name", SqliteType.Text));

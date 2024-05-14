@@ -3,8 +3,6 @@ using System.Runtime.CompilerServices;
 using Microsoft.Data.Sqlite;
 using PollyMetalama;
 
-namespace PollyDecorator;
-
 internal partial class Accounts(DbConnection connection)
 {
     private readonly DbConnection _connection = connection;
@@ -25,7 +23,6 @@ internal partial class Accounts(DbConnection connection)
         return list;
     }
 
-    // [<snippet AspectUsage>]
     [Retry]
     [DbTransaction]
     public async Task TransferAsync(
@@ -50,5 +47,4 @@ internal partial class Accounts(DbConnection connection)
             await command.ExecuteNonQueryAsync(cancellationToken);
         }
     }
-    // [<endsnippet AspectUsage>]
 }

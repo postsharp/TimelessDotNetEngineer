@@ -1,16 +1,38 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using System.Data.Common;
+using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Polly;
+using Polly.Retry;
 using PollyDecorator;
-using PollyMetalama;
 using UnreliableDb;
 
-using var connection = new UnreliableDbConnection(new SqliteConnection("Data Source=:memory:"));
+await using var connection = new UnreliableDbConnection(new SqliteConnection("Data Source=:memory:"));
 
 connection.Open();
 
 await CreateSchemaAsync();
 await PopulateDataAsync();
 
-var accounts = new Accounts(connection, new ResiliencePipelineFactory());
+var services = new ServiceCollection();
+services.AddSingleton<DbConnection>(connection);
+services.AddResiliencePipeline("default", pipelineBuilder =>
+{
+    pipelineBuilder.AddRetry(new RetryStrategyOptions
+        {
+            ShouldHandle = new PredicateBuilder().Handle<DbException>(),
+            Delay = TimeSpan.FromSeconds(1),
+            MaxRetryAttempts = 3,
+            BackoffType = DelayBackoffType.Exponential
+        })
+        .ConfigureTelemetry(LoggerFactory.Create(loggingBuilder => loggingBuilder.AddConsole()));
+});
+
+
+services.AddSingleton<Accounts>();
+var serviceProvider = services.BuildServiceProvider();
+
+var accounts = serviceProvider.GetRequiredService<Accounts>();
 
 Console.WriteLine("Before transfer:");
 await PrintAccountsAsync();
@@ -25,14 +47,14 @@ await PrintAccountsAsync();
 
 async Task CreateSchemaAsync()
 {
-    using var createTableCommand = connection.CreateCommand();
+    await using var createTableCommand = connection.CreateCommand();
     createTableCommand.CommandText = "CREATE TABLE accounts (id INT, name TEXT, balance INT)";
     await createTableCommand.ExecuteNonQueryAsync();
 }
 
 async Task PopulateDataAsync()
 {
-    using var insertUserCommand = connection.CreateCommand();
+    await using var insertUserCommand = connection.CreateCommand();
     insertUserCommand.CommandText = "INSERT INTO accounts (id, name, balance) VALUES ($id, $name, $balance)";
     insertUserCommand.Parameters.Add(new SqliteParameter("$id", SqliteType.Integer));
     insertUserCommand.Parameters.Add(new SqliteParameter("$name", SqliteType.Text));
@@ -54,7 +76,7 @@ async Task PopulateDataAsync()
 
 async Task PrintAccountsAsync()
 {
-    await foreach (var (id, name, balance) in accounts.ListAsync())
+     foreach (var (id, name, balance) in await accounts.ListAsync())
     {
         Console.WriteLine($"Id: {id}, Name: {name}, Balance: {balance}");
     }
