@@ -1,10 +1,13 @@
 ﻿using System.Data.Common;
 using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
 using PollyManual;
 using UnreliableDb;
+
+
 
 using var connection = new UnreliableDbConnection(new SqliteConnection("Data Source=:memory:"));
 
@@ -13,8 +16,27 @@ connection.Open();
 await CreateSchemaAsync();
 await PopulateDataAsync();
 
-var resiliencePipeline = CreateRetryOnDbExceptionPipeline();
-var accounts = new Accounts(connection, resiliencePipeline);
+var services = new ServiceCollection();
+services.AddSingleton<DbConnection>(connection);
+// [<snippet ResiliencePipelineBuilder>]
+services.AddResiliencePipeline("db-pipeline", pipelineBuilder =>
+{
+    pipelineBuilder.AddRetry(new RetryStrategyOptions
+        {
+            ShouldHandle = new PredicateBuilder().Handle<DbException>(),
+            Delay = TimeSpan.FromSeconds(1),
+            MaxRetryAttempts = 3,
+            BackoffType = DelayBackoffType.Exponential
+        })
+        .ConfigureTelemetry(LoggerFactory.Create(loggingBuilder => loggingBuilder.AddConsole()));
+});
+// [<endsnippet ResiliencePipelineBuilder>]
+
+services.AddSingleton<Accounts>();
+var serviceProvider = services.BuildServiceProvider();
+
+var accounts = serviceProvider.GetRequiredService<Accounts>();
+
 
 Console.WriteLine("Before transfer:");
 await PrintAccountsAsync();
@@ -70,20 +92,3 @@ void SimulateTemporaryFailure()
     _ = Task.Delay(1500).ContinueWith(_ => connection.IsAvailable = true);
 }
 
-ResiliencePipeline CreateRetryOnDbExceptionPipeline()
-{
-    // [<snippet ResiliencePipelineBuilder>]
-    var resiliencePipeline = new ResiliencePipelineBuilder()
-        .AddRetry(new RetryStrategyOptions
-        {
-            ShouldHandle = new PredicateBuilder().Handle<DbException>(),
-            Delay = TimeSpan.FromSeconds(1),
-            MaxRetryAttempts = 3,
-            BackoffType = DelayBackoffType.Exponential
-        })
-        .ConfigureTelemetry(LoggerFactory.Create(builder => builder.AddConsole()))
-        .Build();
-    // [<endsnippet ResiliencePipelineBuilder>]
-
-    return resiliencePipeline;
-}

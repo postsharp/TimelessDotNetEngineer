@@ -1,26 +1,20 @@
 ﻿using System.Data.Common;
+using Microsoft.Extensions.DependencyInjection;
 using Polly;
 
 namespace PollyManual;
 
-internal class Accounts
+internal class Accounts( 
+    DbConnection connection, 
+    [FromKeyedServices("db-pipeline")] ResiliencePipeline resiliencePipeline )
 {
-    private readonly DbConnection _connection;
-    private readonly ResiliencePipeline _resiliencePipeline;
-
-    public Accounts(DbConnection connection, ResiliencePipeline resiliencePipeline)
-    {
-        _connection = connection;
-        _resiliencePipeline = resiliencePipeline;
-    }
-
     public async IAsyncEnumerable<(int Id, string Name, int Balance)> ListAsync()
     {
-        using var command = _connection.CreateCommand();
+        await using var command = connection.CreateCommand();
         command.CommandText = "SELECT id, name, balance FROM accounts";
-        using var reader = await _resiliencePipeline.ExecuteAsync(
+        await using var reader = await resiliencePipeline.ExecuteAsync(
             async t => await command.ExecuteReaderAsync(t));
-        while (await _resiliencePipeline.ExecuteAsync(
+        while (await resiliencePipeline.ExecuteAsync(
                    async ct => await reader.ReadAsync(ct)))
         {
             yield return (reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2));
@@ -34,12 +28,12 @@ internal class Accounts
         int amount,
         CancellationToken cancellationToken = default)
     {
-        await _resiliencePipeline.ExecuteAsync(async t =>
+        await resiliencePipeline.ExecuteAsync(async t =>
             {
-                var transaction = await _connection.BeginTransactionAsync(t);
+                var transaction = await connection.BeginTransactionAsync(t);
                 try
                 {
-                    await using (var command = _connection.CreateCommand())
+                    await using (var command = connection.CreateCommand())
                     {
                         command.CommandText = "UPDATE accounts SET balance = balance - $amount WHERE id = $id";
                         command.AddParameter( "$id", sourceAccountId);
@@ -47,7 +41,7 @@ internal class Accounts
                         await command.ExecuteNonQueryAsync(t);
                     }
 
-                    await using (var command = _connection.CreateCommand())
+                    await using (var command = connection.CreateCommand())
                     {
                         command.CommandText = "UPDATE accounts SET balance = balance + $amount WHERE id = $id";
                         command.AddParameter( "$id", targetAccountId);
