@@ -17,7 +17,8 @@ public static class Policies
                 var delay = retryDelay * Math.Pow(2, i);
 
                 Console.WriteLine(
-                    $"Failed to receive message. Retrying in {delay / 1000} seconds... ({i + 1}/{retryAttempts})");
+                    "Failed to receive message. " +
+                    "Retrying in {delay / 1000} seconds... ({i + 1}/{retryAttempts})");
                 Thread.Sleep((int)delay);
             }
         }
