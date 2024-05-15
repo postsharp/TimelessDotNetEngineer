@@ -1,4 +1,4 @@
-name: Build
+name: Build & Test
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    - name: Use the master build script
+    - name: Test using the master build script
       shell: pwsh
-      run: .\Build.ps1 build
+      run: .\Build.ps1 test
 
