@@ -4,3 +4,5 @@ obj/
 
 *.g.props
 *.csproj.user
+*.Import.props
+artifacts/
