@@ -12,7 +12,9 @@
 
     <PropertyGroup>
         <PostSharpEngineeringVersion>2023.2.88</PostSharpEngineeringVersion>
-        <MetalamaPatternsVersion></MetalamaPatternsVersion>
+        <MetalamaVersion>2024.1.18</MetalamaVersion>
+        <MetalamaExtensionsVersion>2024.1.18</MetalamaExtensionsVersion>
+        <MetalamaPatternsVersion>2024.1.18</MetalamaPatternsVersion>
     </PropertyGroup>
 
     <!-- Set the deafult versions of auto-updated dependencies -->
