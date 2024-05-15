@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "FailingHttpService": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:52393;http://localhost:52394"
+    }
+  }
+}
