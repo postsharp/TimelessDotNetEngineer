@@ -1,6 +1,7 @@
 ﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
 
 using Microsoft.Extensions.Logging;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
 

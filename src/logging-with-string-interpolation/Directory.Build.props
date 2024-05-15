@@ -1,0 +1,10 @@
+<Project>
+
+    <!-- Imports Directory.Build.props of the upper directory. Use this code in any non-root Directory.Build.* even if the file does not exit. -->
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" Condition="Exists('$([MSBuild]::GetPathOfFileAbove(`Directory.Build.props`, `$(MSBuildThisFileDirectory)../`))')"/>
+
+
+    <PropertyGroup>
+        <NoWarn>CA1305;CA1822</NoWarn>
+    </PropertyGroup>
+</Project>
