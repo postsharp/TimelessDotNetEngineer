@@ -11,7 +11,7 @@ var product = new Product( MetalamaDependencies.TimelessDotNetEngineer )
 {
     Solutions =
     [
-        new ManyDotNetSolutions(  "src" )
+        new ManyDotNetSolutions(  "src" ) { IsTestOnly = false, BuildMethod = BuildMethod.Build }
     ],
     ParametrizedDependencies =
     [
