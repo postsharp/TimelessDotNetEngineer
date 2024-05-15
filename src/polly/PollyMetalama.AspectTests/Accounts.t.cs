@@ -30,18 +30,13 @@ internal class Accounts
   [DbTransaction]
   public async Task TransferAsync(int sourceAccountId, int targetAccountId, int amount, CancellationToken cancellationToken = default)
   {
-    var transaction = await _connection.BeginTransactionAsync();
-    try
+    var pipeline = _resiliencePipelineProvider.GetPipeline("default");
+    await pipeline.ExecuteAsync(Invoke);
+    return;
+    async ValueTask<object?> Invoke(CancellationToken cancellationToken_1 = default)
     {
-      await this.TransferAsync_Retry(sourceAccountId, targetAccountId, amount, cancellationToken);
-      object result = null;
-      await transaction.CommitAsync();
-      return;
-    }
-    catch
-    {
-      await transaction.RollbackAsync();
-      throw;
+      await this.TransferAsync_DbTransaction(sourceAccountId, targetAccountId, amount, cancellationToken);
+      return default;
     }
   }
   private async Task TransferAsync_Source(int sourceAccountId, int targetAccountId, int amount, CancellationToken cancellationToken = default)
@@ -61,15 +56,20 @@ internal class Accounts
       await command.ExecuteNonQueryAsync(cancellationToken);
     }
   }
-  private async Task TransferAsync_Retry(int sourceAccountId, int targetAccountId, int amount, CancellationToken cancellationToken)
+  private async Task TransferAsync_DbTransaction(int sourceAccountId, int targetAccountId, int amount, CancellationToken cancellationToken)
   {
-    var pipeline = _resiliencePipelineProvider.GetPipeline("default");
-    await pipeline.ExecuteAsync(Invoke);
-    return;
-    async ValueTask<object?> Invoke(CancellationToken cancellationToken_1 = default)
+    var transaction = await _connection.BeginTransactionAsync();
+    try
     {
       await this.TransferAsync_Source(sourceAccountId, targetAccountId, amount, cancellationToken);
-      return default;
+      object result = null;
+      await transaction.CommitAsync();
+      return;
+    }
+    catch
+    {
+      await transaction.RollbackAsync();
+      throw;
     }
   }
   private ResiliencePipelineProvider<string> _resiliencePipelineProvider;
