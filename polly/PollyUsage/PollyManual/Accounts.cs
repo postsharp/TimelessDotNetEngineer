@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 
-namespace PollyManual;
 
 // [<snippet Constructor>]
 internal class Accounts(

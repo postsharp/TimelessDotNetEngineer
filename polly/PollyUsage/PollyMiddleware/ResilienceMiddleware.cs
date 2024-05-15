@@ -1,17 +1,16 @@
-﻿using Polly;
-using Polly.Registry;
+﻿using Polly.Registry;
 
-namespace PollyMiddleware;
 
+// Noted that keyed service does not seem available for middleware.
 public class ResilienceMiddleware(RequestDelegate next, ResiliencePipelineProvider<string> pipelineProvider)
 {
     public async Task InvokeAsync(HttpContext httpContext)
     {
         var pipeline = pipelineProvider.GetPipeline("middleware");
-            
+
         var bufferingContext = new BufferingHttpContext(httpContext);
         await bufferingContext.InitializeAsync(httpContext.RequestAborted);
-        
+
         await pipeline.ExecuteAsync(
             async _ =>
             {

@@ -1,8 +1,6 @@
 ﻿using System.Data;
 using System.Data.Common;
 
-namespace PollyDecorator;
-
 public partial class ResilientDbCommand
 {
     public override string CommandText

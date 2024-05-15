@@ -2,8 +2,6 @@
 using System.Data.Common;
 using Polly;
 
-namespace PollyDecorator;
-
 public class ResilientDbConnection : DbConnection
 {
     private readonly ResiliencePipeline _resiliencePipeline;

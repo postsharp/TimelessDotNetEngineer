@@ -2,8 +2,6 @@
 using System.Runtime.CompilerServices;
 using Microsoft.Data.Sqlite;
 
-namespace PollyDecorator;
-
 internal class Accounts
 {
     private readonly DbConnection _connection;

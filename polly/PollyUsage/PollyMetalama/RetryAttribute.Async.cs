@@ -1,7 +1,5 @@
 ﻿using Metalama.Framework.Aspects;
 
-namespace PollyMetalama;
-
 public partial class RetryAttribute
 {
     public override async Task<dynamic?> OverrideAsyncMethod()

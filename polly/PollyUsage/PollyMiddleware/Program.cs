@@ -1,6 +1,5 @@
 using Polly;
 using Polly.Retry;
-using PollyMiddleware;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddResiliencePipeline("middleware", pipelineBuilder =>
@@ -24,11 +23,11 @@ var attempts = 0;
 app.MapGet("/", () =>
 {
     attempts++;
-    if ((attempts % 3) != 0)
+    if (attempts % 3 != 0)
     {
         throw new IOException();
     }
-    
+
     return Task.FromResult(Results.Ok());
 });
 

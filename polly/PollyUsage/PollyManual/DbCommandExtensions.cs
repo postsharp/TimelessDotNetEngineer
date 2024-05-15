@@ -1,7 +1,5 @@
 using System.Data.Common;
 
-namespace PollyManual;
-
 internal static class DbCommandExtensions
 {
     public static DbParameter CreateParameter(this DbCommand command, string name, object? value)

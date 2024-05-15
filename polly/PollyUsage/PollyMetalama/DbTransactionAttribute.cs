@@ -3,8 +3,6 @@ using Metalama.Framework.Aspects;
 using Metalama.Framework.Code;
 using Metalama.Framework.Diagnostics;
 
-namespace PollyMetalama;
-
 public class DbTransactionAttribute : OverrideMethodAspect
 {
     private static readonly DiagnosticDefinition<INamedType> _missingField = new("DBT001",

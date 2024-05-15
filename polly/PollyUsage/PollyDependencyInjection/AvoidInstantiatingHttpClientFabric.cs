@@ -2,7 +2,6 @@
 using Metalama.Extensions.Architecture.Predicates;
 using Metalama.Framework.Fabrics;
 
-namespace PollyDependencyInjection;
 
 // [<snippet AvoidInstantiatingHttpClientFabric>]
 internal class AvoidInstantiatingHttpClientFabric : ProjectFabric

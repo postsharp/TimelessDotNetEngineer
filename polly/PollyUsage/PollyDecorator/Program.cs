@@ -3,8 +3,6 @@ using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
-using PollyDecorator;
-using UnreliableDb;
 
 
 // [<snippet DecoratorUsage>]

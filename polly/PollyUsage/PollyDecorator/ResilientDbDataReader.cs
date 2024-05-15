@@ -3,8 +3,6 @@ using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using Polly;
 
-namespace PollyDecorator;
-
 public class ResilientDbDataReader : DbDataReader
 {
     private readonly ResiliencePipeline _resiliencePipeline;

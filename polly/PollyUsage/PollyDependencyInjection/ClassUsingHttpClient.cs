@@ -1,6 +1,4 @@
-﻿namespace PollyDependencyInjection;
-
-internal class ClassUsingHttpClient
+﻿internal class ClassUsingHttpClient
 {
     public async Task<string> GetAsync(string url)
     {

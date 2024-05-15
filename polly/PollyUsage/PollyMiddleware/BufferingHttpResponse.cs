@@ -1,16 +1,12 @@
-using System.Runtime.CompilerServices;
-
-namespace PollyMiddleware;
-
 internal class BufferingHttpResponse : HttpResponse
 {
-    private readonly HttpResponse _underlying;
     private readonly BufferingResponseCookies _cookies = new();
     private readonly MemoryStream _memoryStream = new();
+    private readonly HttpResponse _underlying;
     private bool _hasStarted;
+    private IHeaderDictionary _headers = new HeaderDictionary();
     private string? _redirectLocation;
     private bool _redirectPermanent;
-    private IHeaderDictionary _headers = new HeaderDictionary();
 
     public BufferingHttpResponse(HttpContext httpContext, HttpResponse underlying)
     {
@@ -25,9 +21,10 @@ internal class BufferingHttpResponse : HttpResponse
 
     public override Stream Body
     {
-        get => this._memoryStream;
+        get => _memoryStream;
         set => throw new NotSupportedException();
     }
+
     public override long? ContentLength { get; set; }
     public override string? ContentType { get; set; }
     public override IResponseCookies Cookies => _cookies;
@@ -36,55 +33,53 @@ internal class BufferingHttpResponse : HttpResponse
 
     public override void OnStarting(Func<object, Task> callback, object state)
     {
-        this._hasStarted = true;
+        _hasStarted = true;
     }
 
     public override void OnCompleted(Func<object, Task> callback, object state)
     {
-        
     }
 
     public override void Redirect(string location, bool permanent)
     {
-        this._redirectLocation = location;
-        this._redirectPermanent = permanent;
+        _redirectLocation = location;
+        _redirectPermanent = permanent;
     }
 
     public void Reset()
     {
-        this._cookies.Reset();
-        this._memoryStream.Seek(0, SeekOrigin.Begin);
-        this.ContentLength = this._underlying.ContentLength;
-        this.ContentType = this._underlying.ContentType;
-        this.StatusCode = this._underlying.StatusCode;
-        this._headers = new HeaderDictionary();
+        _cookies.Reset();
+        _memoryStream.Seek(0, SeekOrigin.Begin);
+        ContentLength = _underlying.ContentLength;
+        ContentType = _underlying.ContentType;
+        StatusCode = _underlying.StatusCode;
+        _headers = new HeaderDictionary();
     }
 
     public async Task AcceptAsync()
     {
-        if (this.ContentLength != null)
+        if (ContentLength != null)
         {
-            this._underlying.ContentLength = this.ContentLength;
-        }
-        
-        if (this.ContentType != null)
-        {
-            this._underlying.ContentType = this.ContentType;
+            _underlying.ContentLength = ContentLength;
         }
 
-        this._cookies.Accept(this._underlying.Cookies);
-
-        foreach (var header in this.Headers)
+        if (ContentType != null)
         {
-            this._underlying.Headers.Add(header);
+            _underlying.ContentType = ContentType;
         }
-        
-        await this._memoryStream.CopyToAsync(this._underlying.Body);
 
-        if (this._redirectLocation != null)
+        _cookies.Accept(_underlying.Cookies);
+
+        foreach (var header in Headers)
         {
-            this._underlying.Redirect(this._redirectLocation, this._redirectPermanent);
+            _underlying.Headers.Add(header);
         }
-        
+
+        await _memoryStream.CopyToAsync(_underlying.Body);
+
+        if (_redirectLocation != null)
+        {
+            _underlying.Redirect(_redirectLocation, _redirectPermanent);
+        }
     }
 }

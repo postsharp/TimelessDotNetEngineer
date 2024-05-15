@@ -4,8 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
-using PollyManual;
-using UnreliableDb;
 
 await using var connection = new UnreliableDbConnection(new SqliteConnection("Data Source=:memory:"));
 

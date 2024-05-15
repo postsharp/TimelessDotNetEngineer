@@ -2,8 +2,6 @@
 using Metalama.Framework.Aspects;
 using Polly.Registry;
 
-namespace PollyMetalama;
-
 public partial class RetryAttribute : OverrideMethodAspect
 {
     private readonly string _pipelineName;
