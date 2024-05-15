@@ -11,7 +11,7 @@
 
 
     <PropertyGroup>
-        <PostSharpEngineeringVersion>2023.2.88</PostSharpEngineeringVersion>
+        <PostSharpEngineeringVersion>2023.2.89</PostSharpEngineeringVersion>
         <MetalamaVersion>2024.1.18</MetalamaVersion>
         <MetalamaExtensionsVersion>2024.1.18</MetalamaExtensionsVersion>
         <MetalamaPatternsVersion>2024.1.18</MetalamaPatternsVersion>
