@@ -13,6 +13,7 @@ file_header_template = Copyright (c) SharpCrafters s.r.o. See the LICENSE.md fil
 indent_size = 4
 indent_style = space
 tab_width = 4
+max_line_length = 120
 
 # New line preferences
 end_of_line = crlf
