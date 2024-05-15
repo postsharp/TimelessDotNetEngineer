@@ -1,0 +1,17 @@
+<Project>
+
+    <PropertyGroup>
+        <RepoDirectory>$(MSBuildThisFileDirectory)</RepoDirectory>
+        <RepoKind>GitHub</RepoKind>
+    </PropertyGroup>
+
+    <Import Project="eng\Versions.props"/>
+    <Import Sdk="PostSharp.Engineering.Sdk" Project="BuildOptions.props"/>
+
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <IsPackable>False</IsPackable>
+    </PropertyGroup>
+
+</Project>
