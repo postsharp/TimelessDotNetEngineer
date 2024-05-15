@@ -2,19 +2,12 @@
 using System.Runtime.CompilerServices;
 using Microsoft.Data.Sqlite;
 
-internal class Accounts
+internal class Accounts(DbConnection connection)
 {
-    private readonly DbConnection _connection;
-
-    public Accounts(DbConnection connection)
-    {
-        _connection = connection;
-    }
-
     public async IAsyncEnumerable<(int Id, string Name, int Balance)> ListAsync(
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        await using var command = _connection.CreateCommand();
+        await using var command = connection.CreateCommand();
         command.CommandText = "SELECT id, name, balance FROM accounts";
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         while (await reader.ReadAsync(cancellationToken))
@@ -30,10 +23,10 @@ internal class Accounts
         int amount,
         CancellationToken cancellationToken = default)
     {
-        var transaction = await _connection.BeginTransactionAsync(cancellationToken);
+        var transaction = await connection.BeginTransactionAsync(cancellationToken);
         try
         {
-            await using (var command = _connection.CreateCommand())
+            await using (var command = connection.CreateCommand())
             {
                 command.CommandText = "UPDATE accounts SET balance = balance - $amount WHERE id = $id";
                 command.Parameters.Add(new SqliteParameter("$id", sourceAccountId));
@@ -41,7 +34,7 @@ internal class Accounts
                 await command.ExecuteNonQueryAsync(cancellationToken);
             }
 
-            await using (var command = _connection.CreateCommand())
+            await using (var command = connection.CreateCommand())
             {
                 command.CommandText = "UPDATE accounts SET balance = balance + $amount WHERE id = $id";
                 command.Parameters.Add(new SqliteParameter("$id", targetAccountId));

@@ -1,20 +1,23 @@
 ﻿using System.Data.Common;
 using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
 
+var services = new ServiceCollection();
 
 // [<snippet DecoratorUsage>]
 await using var connection = new UnreliableDbConnection(new SqliteConnection("Data Source=:memory:"));
 
 var resiliencePipeline = CreateRetryOnDbExceptionPipeline();
 var resilientConnection = new ResilientDbConnection(connection, resiliencePipeline);
-resilientConnection.Open();
-
-var accounts = new Accounts(resilientConnection);
+services.AddSingleton<DbConnection>(resilientConnection);
 // [<endsnippet DecoratorUsage>]
 
+services.AddSingleton<Accounts>();
+
+var accounts = services.BuildServiceProvider().GetRequiredService<Accounts>();
 
 await CreateSchemaAsync();
 await PopulateDataAsync();
