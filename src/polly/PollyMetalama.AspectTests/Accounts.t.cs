@@ -7,7 +7,7 @@ internal class Accounts
   [Retry]
   public async Task<IReadOnlyList<Account>> ListAsync(CancellationToken cancellationToken = default)
   {
-    var pipeline = _resiliencePipelineProvider.GetPipeline("default");
+    var pipeline = this._resiliencePipelineProvider.GetPipeline("default");
     return (IReadOnlyList<Account>)await pipeline.ExecuteAsync(Invoke);
     async ValueTask<object?> Invoke(CancellationToken cancellationToken_1 = default)
     {
@@ -17,7 +17,7 @@ internal class Accounts
   private async Task<IReadOnlyList<Account>> ListAsync_Source(CancellationToken cancellationToken = default)
   {
     var list = new List<Account>();
-    await using var command = _connection.CreateCommand();
+    await using var command = this._connection.CreateCommand();
     command.CommandText = "SELECT id, name, balance FROM accounts";
     await using var reader = await command.ExecuteReaderAsync(cancellationToken);
     while (await reader.ReadAsync(cancellationToken))
@@ -30,7 +30,7 @@ internal class Accounts
   [DbTransaction]
   public async Task TransferAsync(int sourceAccountId, int targetAccountId, int amount, CancellationToken cancellationToken = default)
   {
-    var pipeline = _resiliencePipelineProvider.GetPipeline("default");
+    var pipeline = this._resiliencePipelineProvider.GetPipeline("default");
     await pipeline.ExecuteAsync(Invoke);
     return;
     async ValueTask<object?> Invoke(CancellationToken cancellationToken_1 = default)
@@ -41,18 +41,18 @@ internal class Accounts
   }
   private async Task TransferAsync_Source(int sourceAccountId, int targetAccountId, int amount, CancellationToken cancellationToken = default)
   {
-    await using (var command = _connection.CreateCommand())
+    await using (var command = this._connection.CreateCommand())
     {
       command.CommandText = "UPDATE accounts SET balance = balance - $amount WHERE id = $id";
-      command.Parameters.Add(new SqliteParameter("$id", sourceAccountId));
-      command.Parameters.Add(new SqliteParameter("$amount", amount));
+      command.AddParameter("$id", sourceAccountId);
+      command.AddParameter("$amount", amount);
       await command.ExecuteNonQueryAsync(cancellationToken);
     }
-    await using (var command = _connection.CreateCommand())
+    await using (var command = this._connection.CreateCommand())
     {
       command.CommandText = "UPDATE accounts SET balance = balance + $amount WHERE id = $id";
-      command.Parameters.Add(new SqliteParameter("$id", targetAccountId));
-      command.Parameters.Add(new SqliteParameter("$amount", amount));
+      command.AddParameter("$id", targetAccountId);
+      command.AddParameter("$amount", amount);
       await command.ExecuteNonQueryAsync(cancellationToken);
     }
   }
