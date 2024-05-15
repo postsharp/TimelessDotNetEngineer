@@ -4,34 +4,16 @@ using System.Data;
 using System.Data.Common;
 using Polly;
 
-public partial class ResilientDbCommand : DbCommand
+public partial class ResilientDbCommand( DbCommand underlyingCommand, ResiliencePipeline resiliencePipeline ) : DbCommand
 {
-    private readonly ResiliencePipeline _resiliencePipeline;
-    private readonly DbCommand _underlyingCommand;
+    public override int ExecuteNonQuery() => resiliencePipeline.Execute( underlyingCommand.ExecuteNonQuery );
 
-    public ResilientDbCommand( DbCommand underlyingCommand, ResiliencePipeline resiliencePipeline )
-    {
-        this._underlyingCommand = underlyingCommand;
-        this._resiliencePipeline = resiliencePipeline;
-    }
-
-    public override int ExecuteNonQuery()
-    {
-        return this._resiliencePipeline.Execute( this._underlyingCommand.ExecuteNonQuery );
-    }
-
-    public override object? ExecuteScalar()
-    {
-        return this._resiliencePipeline.Execute( this._underlyingCommand.ExecuteScalar );
-    }
+    public override object? ExecuteScalar() => resiliencePipeline.Execute( underlyingCommand.ExecuteScalar );
 
     protected override DbDataReader ExecuteDbDataReader( CommandBehavior behavior )
-    {
-        return this._resiliencePipeline.Execute( () => this._underlyingCommand.ExecuteReader( behavior ) );
-    }
+        => resiliencePipeline.Execute( () => underlyingCommand.ExecuteReader( behavior ) );
 
-    public override void Prepare()
-    {
-        this._resiliencePipeline.Execute( this._underlyingCommand.Prepare );
-    }
+    public override void Prepare() => resiliencePipeline.Execute( underlyingCommand.Prepare );
+    
+    public override void Cancel() => resiliencePipeline.Execute( underlyingCommand.Cancel );
 }

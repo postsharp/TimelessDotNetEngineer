@@ -62,9 +62,9 @@ async Task PopulateDataAsync()
 {
     await using var insertUserCommand = connection.CreateCommand();
     insertUserCommand.CommandText = "INSERT INTO accounts (id, name, balance) VALUES ($id, $name, $balance)";
-    insertUserCommand.Parameters.Add( new SqliteParameter( "$id", SqliteType.Integer ) );
-    insertUserCommand.Parameters.Add( new SqliteParameter( "$name", SqliteType.Text ) );
-    insertUserCommand.Parameters.Add( new SqliteParameter( "$balance", SqliteType.Integer ) );
+    insertUserCommand.AddParameter( "$id", SqliteType.Integer );
+    insertUserCommand.AddParameter( "$name", SqliteType.Text );
+    insertUserCommand.AddParameter( "$balance", SqliteType.Integer );
 
     var accounts = new (int id, string name, int balance)[] { (0, "Alice", 1000), (1, "Bob", 0) };
 

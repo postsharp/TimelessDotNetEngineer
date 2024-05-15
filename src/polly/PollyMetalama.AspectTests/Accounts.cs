@@ -34,16 +34,16 @@ internal class Accounts( DbConnection connection )
         await using ( var command = this._connection.CreateCommand() )
         {
             command.CommandText = "UPDATE accounts SET balance = balance - $amount WHERE id = $id";
-            command.Parameters.Add( new SqliteParameter( "$id", sourceAccountId ) );
-            command.Parameters.Add( new SqliteParameter( "$amount", amount ) );
+            command.AddParameter( "$id", sourceAccountId );
+            command.AddParameter( "$amount", amount );
             await command.ExecuteNonQueryAsync( cancellationToken );
         }
 
         await using ( var command = this._connection.CreateCommand() )
         {
             command.CommandText = "UPDATE accounts SET balance = balance + $amount WHERE id = $id";
-            command.Parameters.Add( new SqliteParameter( "$id", targetAccountId ) );
-            command.Parameters.Add( new SqliteParameter( "$amount", amount ) );
+            command.AddParameter( "$id", targetAccountId );
+            command.AddParameter( "$amount", amount );
             await command.ExecuteNonQueryAsync( cancellationToken );
         }
     }
