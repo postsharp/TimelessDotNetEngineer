@@ -1,10 +1,10 @@
-internal class BufferingHttpRequest : HttpRequest
+internal class RestartableHttpRequest : HttpRequest
 {
     private readonly MemoryStream _requestStream = new();
     private readonly HttpRequest _underlying;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    public BufferingHttpRequest(HttpContext httpContext, HttpRequest underlying)
+    public RestartableHttpRequest(HttpContext httpContext, HttpRequest underlying)
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
         _underlying = underlying;

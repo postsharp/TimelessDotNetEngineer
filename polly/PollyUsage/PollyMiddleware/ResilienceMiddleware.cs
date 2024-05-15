@@ -8,7 +8,7 @@ public class ResilienceMiddleware(RequestDelegate next, ResiliencePipelineProvid
     {
         var pipeline = pipelineProvider.GetPipeline("middleware");
 
-        var bufferingContext = new BufferingHttpContext(httpContext);
+        var bufferingContext = new RestartableHttpContext(httpContext);
         await bufferingContext.InitializeAsync(httpContext.RequestAborted);
 
         await pipeline.ExecuteAsync(

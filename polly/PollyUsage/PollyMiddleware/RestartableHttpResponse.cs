@@ -1,4 +1,4 @@
-internal class BufferingHttpResponse : HttpResponse
+internal class RestartableHttpResponse : HttpResponse
 {
     private readonly BufferingResponseCookies _cookies = new();
     private readonly MemoryStream _memoryStream = new();
@@ -8,7 +8,7 @@ internal class BufferingHttpResponse : HttpResponse
     private string? _redirectLocation;
     private bool _redirectPermanent;
 
-    public BufferingHttpResponse(HttpContext httpContext, HttpResponse underlying)
+    public RestartableHttpResponse(HttpContext httpContext, HttpResponse underlying)
     {
         _underlying = underlying;
         HttpContext = httpContext;

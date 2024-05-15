@@ -1,19 +1,19 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http.Features;
 
-internal class BufferingHttpContext : HttpContext
+internal class RestartableHttpContext : HttpContext
 {
-    private readonly BufferingHttpRequest _request;
-    private readonly BufferingHttpResponse _response;
+    private readonly RestartableHttpRequest _request;
+    private readonly RestartableHttpResponse _response;
     private readonly HttpContext _underlying;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    public BufferingHttpContext(HttpContext underlying)
+    public RestartableHttpContext(HttpContext underlying)
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
         _underlying = underlying;
-        _response = new BufferingHttpResponse(this, underlying.Response);
-        _request = new BufferingHttpRequest(this, underlying.Request);
+        _response = new RestartableHttpResponse(this, underlying.Response);
+        _request = new RestartableHttpRequest(this, underlying.Request);
         Reset();
     }
 
