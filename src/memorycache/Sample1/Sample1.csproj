@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Metalama.Patterns.Caching.Aspects" Version="2024.1.18"/>
+        <PackageReference Include="Metalama.Patterns.Caching.Aspects" Version="$(MetalamaPatternsVersion)"/>
         <PackageReference Include="Polly" Version="7.2.4"/>
         <PackageReference Include="Polly.Caching.Memory" Version="3.0.2"/>
         <PackageReference Include="System.Interactive.Async" Version="6.0.1"/>

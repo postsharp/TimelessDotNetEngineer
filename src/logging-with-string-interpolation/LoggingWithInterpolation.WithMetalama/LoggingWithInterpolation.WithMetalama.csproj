@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Metalama.Extensions.DependencyInjection" Version="2024.1.*" />
+        <PackageReference Include="Metalama.Extensions.DependencyInjection" Version="$(MetalamaExtensionsVersion)" />
     </ItemGroup>
 
     <ItemGroup>
