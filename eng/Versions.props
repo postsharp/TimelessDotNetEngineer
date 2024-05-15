@@ -5,13 +5,14 @@
     <Import Project="MainVersion.props" />
 
     <PropertyGroup>
-        <MetalamaVersion>$(MainVersion)$(PackageVersionSuffix)</MetalamaVersion>
-        <MetalamaAssemblyVersion>$(MainVersion)</MetalamaAssemblyVersion>
+        <TimelessDotNetEngineerVersion>$(MainVersion)$(PackageVersionSuffix)</TimelessDotNetEngineerVersion>
+        <TimelessDotNetEngineerAssemblyVersion>$(MainVersion)</TimelessDotNetEngineerAssemblyVersion>
     </PropertyGroup>
 
 
     <PropertyGroup>
-        <MetalamaVersion></MetalamaVersion>
+        <PostSharpEngineeringVersion>2023.2.88</PostSharpEngineeringVersion>
+        <MetalamaPatternsVersion></MetalamaPatternsVersion>
     </PropertyGroup>
 
     <!-- Set the deafult versions of auto-updated dependencies -->
@@ -21,8 +22,8 @@
     <Import Project="Versions.g.props" Condition="Exists('Versions.g.props')" />
 
     <PropertyGroup>
-        <AssemblyVersion>$(MetalamaAssemblyVersion)</AssemblyVersion>
-        <Version>$(MetalamaVersion)</Version>
+        <AssemblyVersion>$(TimelessDotNetEngineerAssemblyVersion)</AssemblyVersion>
+        <Version>$(TimelessDotNetEngineerVersion)</Version>
     </PropertyGroup>
 
 
