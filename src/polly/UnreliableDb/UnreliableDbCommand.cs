@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
+using System.Data;
 using System.Data.Common;
 
 public class UnreliableDbCommand : DbCommand
@@ -6,59 +8,59 @@ public class UnreliableDbCommand : DbCommand
     private readonly UnreliableDbConnection _parent;
     private readonly DbCommand _underlyingCommand;
 
-    public UnreliableDbCommand(DbCommand underlyingCommand, UnreliableDbConnection parent)
+    public UnreliableDbCommand( DbCommand underlyingCommand, UnreliableDbConnection parent )
     {
-        _underlyingCommand = underlyingCommand;
-        _parent = parent;
+        this._underlyingCommand = underlyingCommand;
+        this._parent = parent;
     }
 
     public override string CommandText
     {
-        get => _underlyingCommand.CommandText;
-        set => _underlyingCommand.CommandText = value;
+        get => this._underlyingCommand.CommandText;
+        set => this._underlyingCommand.CommandText = value;
     }
 
     public override int CommandTimeout
     {
-        get => _underlyingCommand.CommandTimeout;
-        set => _underlyingCommand.CommandTimeout = value;
+        get => this._underlyingCommand.CommandTimeout;
+        set => this._underlyingCommand.CommandTimeout = value;
     }
 
     public override CommandType CommandType
     {
-        get => _underlyingCommand.CommandType;
-        set => _underlyingCommand.CommandType = value;
+        get => this._underlyingCommand.CommandType;
+        set => this._underlyingCommand.CommandType = value;
     }
 
     public override bool DesignTimeVisible
     {
-        get => _underlyingCommand.DesignTimeVisible;
-        set => _underlyingCommand.DesignTimeVisible = value;
+        get => this._underlyingCommand.DesignTimeVisible;
+        set => this._underlyingCommand.DesignTimeVisible = value;
     }
 
     public override UpdateRowSource UpdatedRowSource
     {
-        get => _underlyingCommand.UpdatedRowSource;
-        set => _underlyingCommand.UpdatedRowSource = value;
+        get => this._underlyingCommand.UpdatedRowSource;
+        set => this._underlyingCommand.UpdatedRowSource = value;
     }
 
     protected override DbConnection? DbConnection
     {
-        get => _underlyingCommand.Connection;
-        set => _underlyingCommand.Connection = value;
+        get => this._underlyingCommand.Connection;
+        set => this._underlyingCommand.Connection = value;
     }
 
-    protected override DbParameterCollection DbParameterCollection => _underlyingCommand.Parameters;
+    protected override DbParameterCollection DbParameterCollection => this._underlyingCommand.Parameters;
 
     protected override DbTransaction? DbTransaction
     {
-        get => _underlyingCommand.Transaction;
-        set => _underlyingCommand.Transaction = value;
+        get => this._underlyingCommand.Transaction;
+        set => this._underlyingCommand.Transaction = value;
     }
 
     private void EnsureIsAvailable()
     {
-        if (!_parent.IsAvailable)
+        if ( !this._parent.IsAvailable )
         {
             throw new DbNotAvailableException();
         }
@@ -66,34 +68,37 @@ public class UnreliableDbCommand : DbCommand
 
     public override int ExecuteNonQuery()
     {
-        EnsureIsAvailable();
-        return _underlyingCommand.ExecuteNonQuery();
+        this.EnsureIsAvailable();
+
+        return this._underlyingCommand.ExecuteNonQuery();
     }
 
     public override object? ExecuteScalar()
     {
-        EnsureIsAvailable();
-        return _underlyingCommand.ExecuteScalar();
+        this.EnsureIsAvailable();
+
+        return this._underlyingCommand.ExecuteScalar();
     }
 
-    protected override DbDataReader ExecuteDbDataReader(CommandBehavior behavior)
+    protected override DbDataReader ExecuteDbDataReader( CommandBehavior behavior )
     {
-        EnsureIsAvailable();
-        return _underlyingCommand.ExecuteReader(behavior);
+        this.EnsureIsAvailable();
+
+        return this._underlyingCommand.ExecuteReader( behavior );
     }
 
     public override void Prepare()
     {
-        _underlyingCommand.Prepare();
+        this._underlyingCommand.Prepare();
     }
 
     protected override DbParameter CreateDbParameter()
     {
-        return _underlyingCommand.CreateParameter();
+        return this._underlyingCommand.CreateParameter();
     }
 
     public override void Cancel()
     {
-        _underlyingCommand.Cancel();
+        this._underlyingCommand.Cancel();
     }
 }

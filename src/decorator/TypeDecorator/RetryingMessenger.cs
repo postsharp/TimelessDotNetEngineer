@@ -1,49 +1,50 @@
-﻿public class RetryingMessenger : MessengerDecorator
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
+public class RetryingMessenger : MessengerDecorator
 {
     private readonly int _retryAttempts;
     private readonly int _retryDelay;
 
-    public RetryingMessenger(IMessenger underlying, int retryAttempts = 3, int retryDelay = 1000) : base(underlying)
+    public RetryingMessenger( IMessenger underlying, int retryAttempts = 3, int retryDelay = 1000 ) : base( underlying )
     {
-        _retryAttempts = retryAttempts;
-        _retryDelay = retryDelay;
+        this._retryAttempts = retryAttempts;
+        this._retryDelay = retryDelay;
     }
 
-    public override void Send(Message message)
+    public override void Send( Message message )
     {
-        for (var i = 0;; i++)
+        for ( var i = 0;; i++ )
         {
             try
             {
-                Underlying.Send(message);
+                this.Underlying.Send( message );
+
                 return;
             }
-            catch (Exception) when (i < _retryAttempts)
+            catch ( Exception ) when ( i < this._retryAttempts )
             {
-                var delay = _retryDelay * Math.Pow(2, i);
+                var delay = this._retryDelay * Math.Pow( 2, i );
 
-                Console.WriteLine(
-                    $"Failed to receive message. Retrying in {delay / 1000} seconds... ({i + 1}/{_retryAttempts})");
-                Thread.Sleep((int)delay);
+                Console.WriteLine( $"Failed to receive message. Retrying in {delay / 1000} seconds... ({i + 1}/{this._retryAttempts})" );
+                Thread.Sleep( (int) delay );
             }
         }
     }
 
     public override Message Receive()
     {
-        for (var i = 0;; i++)
+        for ( var i = 0;; i++ )
         {
             try
             {
-                return Underlying.Receive();
+                return this.Underlying.Receive();
             }
-            catch (Exception) when (i < _retryAttempts)
+            catch ( Exception ) when ( i < this._retryAttempts )
             {
-                var delay = _retryDelay * Math.Pow(2, i);
+                var delay = this._retryDelay * Math.Pow( 2, i );
 
-                Console.WriteLine(
-                    $"Failed to receive message. Retrying in {delay / 1000} seconds... ({i + 1}/{_retryAttempts})");
-                Thread.Sleep((int)delay);
+                Console.WriteLine( $"Failed to receive message. Retrying in {delay / 1000} seconds... ({i + 1}/{this._retryAttempts})" );
+                Thread.Sleep( (int) delay );
             }
         }
     }

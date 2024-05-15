@@ -1,3 +1,5 @@
+// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Metalama.Patterns.Caching.Building;
@@ -10,28 +12,27 @@ namespace Sample1;
 
 public static class Program
 {
-    public static void Main(string[] args)
+    public static void Main( string[] args )
     {
-        var builder = WebApplication.CreateBuilder(args);
+        var builder = WebApplication.CreateBuilder( args );
 
         // Add services to the container.
         builder.Services.AddHttpClient();
-        builder.Services.AddRazorPages(
-            options => { options.Conventions.AddPageRoute("/", "/Step1"); });
+        builder.Services.AddRazorPages( options => { options.Conventions.AddPageRoute( "/", "/Step1" ); } );
 
         // [<snippet AddMemoryCache>]
         builder.Services.AddMemoryCache();
-        // [<endsnippet AddMemoryCache>]
 
+        // [<endsnippet AddMemoryCache>]
 
         // Adds the Metalama Caching service. Only used by the Metalama example.
         // [<snippet AddMetalamaCaching>]
         builder.Services.AddMetalamaCaching();
+
         // [<endsnippet AddMetalamaCaching>]
 
-
         // Adds the Polly service. Only used by the Polly example.
-        #if SIMPLE_POLLY 
+#if SIMPLE_POLLY
         // [<snippet SimplePolly>]
         builder.Services.AddSingleton<IAsyncCacheProvider, MemoryCacheProvider>();
         builder.Services.AddSingleton<IReadOnlyPolicyRegistry<string>, PolicyRegistry>(
@@ -46,34 +47,38 @@ public static class Program
                 return registry;
             });
         // [<endsnippet SimplePolly>]
-        #else
+#else
+
         // [<snippet Polly>]
         builder.Services.AddSingleton<IAsyncCacheProvider, MemoryCacheProvider>();
+
         builder.Services.AddSingleton<IReadOnlyPolicyRegistry<string>, PolicyRegistry>(
             serviceProvider =>
             {
                 var cachingPolicy = Policy.CacheAsync(
                     serviceProvider.GetRequiredService<IAsyncCacheProvider>(),
-                    TimeSpan.FromMinutes(0.5));
+                    TimeSpan.FromMinutes( 0.5 ) );
 
                 var retryPolicy = Policy.Handle<Exception>().RetryAsync();
 
-                var policy = Policy.WrapAsync(cachingPolicy, retryPolicy);
+                var policy = Policy.WrapAsync( cachingPolicy, retryPolicy );
 
                 var registry = new PolicyRegistry { ["defaultPolicy"] = policy };
 
                 return registry;
-            });
+            } );
+
         // [<endsnippet Polly>]
 
-        #endif
+#endif
 
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
-        if (!app.Environment.IsDevelopment())
+        if ( !app.Environment.IsDevelopment() )
         {
-            app.UseExceptionHandler("/Error");
+            app.UseExceptionHandler( "/Error" );
+
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
@@ -85,26 +90,30 @@ public static class Program
 
         app.UseAuthorization();
 
-        app.Use(async (context, next) =>
-        {
-            var sw = new Stopwatch();
-            var originalResponse = context.Response.Body;
+        app.Use(
+            async ( context, next ) =>
+            {
+                var sw = new Stopwatch();
+                var originalResponse = context.Response.Body;
 
-            using var responseBody = new MemoryStream();
-            context.Response.Body = responseBody;
+                using var responseBody = new MemoryStream();
+                context.Response.Body = responseBody;
 
-            sw.Start();
-            await next.Invoke();
-            sw.Stop();
+                sw.Start();
+                await next.Invoke();
+                sw.Stop();
 
-            responseBody.Seek(0, SeekOrigin.Begin);
-            var text = await new StreamReader(responseBody).ReadToEndAsync();
+                responseBody.Seek( 0, SeekOrigin.Begin );
+                var text = await new StreamReader( responseBody ).ReadToEndAsync();
 
-            context.Response.Body = originalResponse;
+                context.Response.Body = originalResponse;
 
-            await context.Response.WriteAsync(Regex.Replace(text, @"<render_time [a-z0-9-]* />",
-                $@"<span>{sw.ElapsedMilliseconds} ms</span>"));
-        });
+                await context.Response.WriteAsync(
+                    Regex.Replace(
+                        text,
+                        @"<render_time [a-z0-9-]* />",
+                        $@"<span>{sw.ElapsedMilliseconds} ms</span>" ) );
+            } );
 
         app.MapRazorPages();
 

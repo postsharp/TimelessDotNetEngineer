@@ -1,4 +1,6 @@
-﻿using System.Data.Common;
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
+using System.Data.Common;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -8,11 +10,12 @@ using Polly.Retry;
 var services = new ServiceCollection();
 
 // [<snippet DecoratorUsage>]
-await using var connection = new UnreliableDbConnection(new SqliteConnection("Data Source=:memory:"));
+await using var connection = new UnreliableDbConnection( new SqliteConnection( "Data Source=:memory:" ) );
 
 var resiliencePipeline = CreateRetryOnDbExceptionPipeline();
-var resilientConnection = new ResilientDbConnection(connection, resiliencePipeline);
-services.AddSingleton<DbConnection>(resilientConnection);
+var resilientConnection = new ResilientDbConnection( connection, resiliencePipeline );
+services.AddSingleton<DbConnection>( resilientConnection );
+
 // [<endsnippet DecoratorUsage>]
 
 services.AddSingleton<Accounts>();
@@ -22,16 +25,15 @@ var accounts = services.BuildServiceProvider().GetRequiredService<Accounts>();
 await CreateSchemaAsync();
 await PopulateDataAsync();
 
-
-Console.WriteLine("Before transfer:");
+Console.WriteLine( "Before transfer:" );
 await PrintAccountsAsync();
 
 SimulateTemporaryFailure();
 
-await accounts.TransferAsync(0, 1, 100);
+await accounts.TransferAsync( 0, 1, 100 );
 
 Console.WriteLine();
-Console.WriteLine("After transfer:");
+Console.WriteLine( "After transfer:" );
 await PrintAccountsAsync();
 
 async Task CreateSchemaAsync()
@@ -45,16 +47,13 @@ async Task PopulateDataAsync()
 {
     await using var insertUserCommand = connection.CreateCommand();
     insertUserCommand.CommandText = "INSERT INTO accounts (id, name, balance) VALUES ($id, $name, $balance)";
-    insertUserCommand.Parameters.Add(new SqliteParameter("$id", SqliteType.Integer));
-    insertUserCommand.Parameters.Add(new SqliteParameter("$name", SqliteType.Text));
-    insertUserCommand.Parameters.Add(new SqliteParameter("$balance", SqliteType.Integer));
+    insertUserCommand.Parameters.Add( new SqliteParameter( "$id", SqliteType.Integer ) );
+    insertUserCommand.Parameters.Add( new SqliteParameter( "$name", SqliteType.Text ) );
+    insertUserCommand.Parameters.Add( new SqliteParameter( "$balance", SqliteType.Integer ) );
 
-    var accounts = new (int id, string name, int balance)[]
-    {
-        (0, "Alice", 1000), (1, "Bob", 0)
-    };
+    var accounts = new (int id, string name, int balance)[] { (0, "Alice", 1000), (1, "Bob", 0) };
 
-    foreach (var user in accounts)
+    foreach ( var user in accounts )
     {
         insertUserCommand.Parameters["$id"].Value = user.id;
         insertUserCommand.Parameters["$name"].Value = user.name;
@@ -65,28 +64,29 @@ async Task PopulateDataAsync()
 
 async Task PrintAccountsAsync()
 {
-    await foreach (var (id, name, balance) in accounts.ListAsync())
+    await foreach ( var (id, name, balance) in accounts.ListAsync() )
     {
-        Console.WriteLine($"Id: {id}, Name: {name}, Balance: {balance}");
+        Console.WriteLine( $"Id: {id}, Name: {name}, Balance: {balance}" );
     }
 }
 
 void SimulateTemporaryFailure()
 {
     connection.IsAvailable = false;
-    _ = Task.Delay(1500).ContinueWith(_ => connection.IsAvailable = true);
+    _ = Task.Delay( 1500 ).ContinueWith( _ => connection.IsAvailable = true );
 }
 
 ResiliencePipeline CreateRetryOnDbExceptionPipeline()
 {
     return new ResiliencePipelineBuilder()
-        .AddRetry(new RetryStrategyOptions
-        {
-            ShouldHandle = new PredicateBuilder().Handle<DbException>(),
-            Delay = TimeSpan.FromSeconds(1),
-            MaxRetryAttempts = 3,
-            BackoffType = DelayBackoffType.Exponential
-        })
-        .ConfigureTelemetry(LoggerFactory.Create(builder => builder.AddConsole()))
+        .AddRetry(
+            new RetryStrategyOptions
+            {
+                ShouldHandle = new PredicateBuilder().Handle<DbException>(),
+                Delay = TimeSpan.FromSeconds( 1 ),
+                MaxRetryAttempts = 3,
+                BackoffType = DelayBackoffType.Exponential
+            } )
+        .ConfigureTelemetry( LoggerFactory.Create( builder => builder.AddConsole() ) )
         .Build();
 }

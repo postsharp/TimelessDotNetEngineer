@@ -1,4 +1,6 @@
-﻿public class Messenger
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
+public class Messenger
 {
     private const int _retryAttempts = 3;
     private const int _retryDelay = 1000;
@@ -8,41 +10,42 @@
 
     private int _sendCount;
 
-    public Messenger(IExceptionReportingService reportingService)
+    public Messenger( IExceptionReportingService reportingService )
     {
-        _reportingService = reportingService;
+        this._reportingService = reportingService;
     }
 
-    public void Send(Message message)
+    public void Send( Message message )
     {
-        for (var i = 0;; i++)
+        for ( var i = 0;; i++ )
         {
             try
             {
-                Console.WriteLine("Sending message...");
+                Console.WriteLine( "Sending message..." );
 
                 // Simulate unreliable message sending
-                if (++_sendCount % 3 == 0)
+                if ( ++this._sendCount % 3 == 0 )
                 {
-                    Console.WriteLine("Message sent successfully.");
+                    Console.WriteLine( "Message sent successfully." );
+
                     return;
                 }
 
-                throw new IOException("Failed to send message.");
+                throw new IOException( "Failed to send message." );
             }
-            catch (Exception e)
+            catch ( Exception e )
             {
-                if (i < _retryAttempts)
+                if ( i < _retryAttempts )
                 {
-                    var delay = _retryDelay * Math.Pow(2, i);
+                    var delay = _retryDelay * Math.Pow( 2, i );
 
-                    Console.WriteLine(
-                        $"Failed to send message. Retrying in {delay / 1000} seconds... ({i + 1}/{_retryAttempts})");
-                    Thread.Sleep((int)delay);
+                    Console.WriteLine( $"Failed to send message. Retrying in {delay / 1000} seconds... ({i + 1}/{_retryAttempts})" );
+                    Thread.Sleep( (int) delay );
                 }
                 else
                 {
-                    _reportingService.ReportException("Failed to send message", e);
+                    this._reportingService.ReportException( "Failed to send message", e );
+
                     throw;
                 }
             }
@@ -51,34 +54,35 @@
 
     public Message Receive()
     {
-        for (var i = 0;; i++)
+        for ( var i = 0;; i++ )
         {
             try
             {
-                Console.WriteLine("Receiving message...");
+                Console.WriteLine( "Receiving message..." );
 
                 // Simulate unreliable message receiving
-                if (++_receiveCount % 3 == 0)
+                if ( ++this._receiveCount % 3 == 0 )
                 {
-                    Console.WriteLine("Message received successfully.");
-                    return new Message("Hi!");
+                    Console.WriteLine( "Message received successfully." );
+
+                    return new Message( "Hi!" );
                 }
 
-                throw new IOException("Failed to receive message.");
+                throw new IOException( "Failed to receive message." );
             }
-            catch (Exception e)
+            catch ( Exception e )
             {
-                if (i < _retryAttempts)
+                if ( i < _retryAttempts )
                 {
-                    var delay = _retryDelay * Math.Pow(2, i);
+                    var delay = _retryDelay * Math.Pow( 2, i );
 
-                    Console.WriteLine(
-                        $"Failed to receive message. Retrying in {delay / 1000} seconds... ({i + 1}/{_retryAttempts})");
-                    Thread.Sleep((int)delay);
+                    Console.WriteLine( $"Failed to receive message. Retrying in {delay / 1000} seconds... ({i + 1}/{_retryAttempts})" );
+                    Thread.Sleep( (int) delay );
                 }
                 else
                 {
-                    _reportingService.ReportException("Failed to receive message", e);
+                    this._reportingService.ReportException( "Failed to receive message", e );
+
                     throw;
                 }
             }

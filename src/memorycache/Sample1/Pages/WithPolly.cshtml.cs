@@ -1,3 +1,5 @@
+// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
 using Polly;
 using Polly.Registry;
 using Sample1.Data;
@@ -10,28 +12,29 @@ public class Step4Model : BaseModel
     private readonly IAsyncPolicy _cachePolicy;
     private IHttpClientFactory _httpClientFactory;
 
-    public Step4Model(IReadOnlyPolicyRegistry<string> policyRegistry, IHttpClientFactory httpClientFactory)
+    public Step4Model( IReadOnlyPolicyRegistry<string> policyRegistry, IHttpClientFactory httpClientFactory )
     {
-        _httpClientFactory = httpClientFactory;
-        _cachePolicy = policyRegistry.Get<IAsyncPolicy>("defaultPolicy");
+        this._httpClientFactory = httpClientFactory;
+        this._cachePolicy = policyRegistry.Get<IAsyncPolicy>( "defaultPolicy" );
     }
+
     // [<endsnippet constructor>]
 
     // [<snippet GetCurrencyData>]
-    public async Task<CoinCapData> GetCurrencyData(string id)
+    public async Task<CoinCapData> GetCurrencyData( string id )
     {
-        return await _cachePolicy.ExecuteAsync(async _ => await GetData(),
-            new Context($"{GetType().Name}.GetCurrencyData({id})"));
+        return await this._cachePolicy.ExecuteAsync(
+            async _ => await GetData(),
+            new Context( $"{this.GetType().Name}.GetCurrencyData({id})" ) );
 
         async Task<CoinCapData> GetData()
         {
-            using var httpClient = _httpClientFactory.CreateClient();
-            var response = await httpClient.GetFromJsonAsync<CoinCapResponse>(
-                $"https://api.coincap.io/v2/rates/{id}");
+            using var httpClient = this._httpClientFactory.CreateClient();
+            var response = await httpClient.GetFromJsonAsync<CoinCapResponse>( $"https://api.coincap.io/v2/rates/{id}" );
 
             return response!.Data;
         }
     }
+
     // [<endsnippet GetCurrencyData>]
-    
 }

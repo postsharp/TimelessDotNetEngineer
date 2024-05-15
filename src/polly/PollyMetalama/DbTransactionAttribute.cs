@@ -1,55 +1,63 @@
-﻿using System.Data.Common;
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
+using System.Data.Common;
 using Metalama.Framework.Aspects;
 using Metalama.Framework.Code;
 using Metalama.Framework.Diagnostics;
 
 public class DbTransactionAttribute : OverrideMethodAspect
 {
-    private static readonly DiagnosticDefinition<INamedType> _missingField = new("DBT001",
+    private static readonly DiagnosticDefinition<INamedType> _missingField = new(
+        "DBT001",
         Severity.Error,
-        "The type '{0}' must have a field 'connection' of type DbConnection because of the [DbTransaction] aspect.");
+        "The type '{0}' must have a field 'connection' of type DbConnection because of the [DbTransaction] aspect." );
 
-    public override void BuildAspect(IAspectBuilder<IMethod> builder)
+    public override void BuildAspect( IAspectBuilder<IMethod> builder )
     {
-        base.BuildAspect(builder);
+        base.BuildAspect( builder );
 
-        var connectionField = builder.Target.DeclaringType.AllFields.OfName("_connection").SingleOrDefault();
-        if (connectionField == null || !connectionField.Type.Is(typeof(DbConnection)))
+        var connectionField = builder.Target.DeclaringType.AllFields.OfName( "_connection" ).SingleOrDefault();
+
+        if ( connectionField == null || !connectionField.Type.Is( typeof(DbConnection) ) )
         {
-            builder.Diagnostics.Report(_missingField.WithArguments(builder.Target.DeclaringType));
+            builder.Diagnostics.Report( _missingField.WithArguments( builder.Target.DeclaringType ) );
         }
     }
 
     public override dynamic? OverrideMethod()
     {
-        var transaction = ((DbConnection)meta.This._connection).BeginTransaction();
+        var transaction = ((DbConnection) meta.This._connection).BeginTransaction();
 
         try
         {
             var result = meta.Proceed();
             transaction.CommitAsync();
+
             return result;
         }
         catch
         {
             transaction.RollbackAsync();
+
             throw;
         }
     }
 
     public override async Task<dynamic?> OverrideAsyncMethod()
     {
-        var transaction = await ((DbConnection)meta.This._connection).BeginTransactionAsync();
+        var transaction = await ((DbConnection) meta.This._connection).BeginTransactionAsync();
 
         try
         {
             var result = await meta.ProceedAsync();
             await transaction.CommitAsync();
+
             return result;
         }
         catch
         {
             await transaction.RollbackAsync();
+
             throw;
         }
     }

@@ -1,24 +1,25 @@
-﻿using System.Data.Common;
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
+using System.Data.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
-
 
 // [<snippet Constructor>]
 internal class Accounts(
     DbConnection connection,
-    [FromKeyedServices("db-pipeline")] ResiliencePipeline resiliencePipeline)
+    [FromKeyedServices( "db-pipeline" )] ResiliencePipeline resiliencePipeline )
+
 // [<endsnippet Constructor>]
 {
     public async IAsyncEnumerable<(int Id, string Name, int Balance)> ListAsync()
     {
         await using var command = connection.CreateCommand();
         command.CommandText = "SELECT id, name, balance FROM accounts";
-        await using var reader = await resiliencePipeline.ExecuteAsync(
-            async t => await command.ExecuteReaderAsync(t));
-        while (await resiliencePipeline.ExecuteAsync(
-                   async ct => await reader.ReadAsync(ct)))
+        await using var reader = await resiliencePipeline.ExecuteAsync( async t => await command.ExecuteReaderAsync( t ) );
+
+        while ( await resiliencePipeline.ExecuteAsync( async ct => await reader.ReadAsync( ct ) ) )
         {
-            yield return (reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2));
+            yield return (reader.GetInt32( 0 ), reader.GetString( 1 ), reader.GetInt32( 2 ));
         }
     }
 
@@ -27,38 +28,42 @@ internal class Accounts(
         int sourceAccountId,
         int targetAccountId,
         int amount,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default )
     {
-        await resiliencePipeline.ExecuteAsync(async t =>
+        await resiliencePipeline.ExecuteAsync(
+            async t =>
             {
-                var transaction = await connection.BeginTransactionAsync(t);
+                var transaction = await connection.BeginTransactionAsync( t );
+
                 try
                 {
-                    await using (var command = connection.CreateCommand())
+                    await using ( var command = connection.CreateCommand() )
                     {
                         command.CommandText = "UPDATE accounts SET balance = balance - $amount WHERE id = $id";
-                        command.AddParameter("$id", sourceAccountId);
-                        command.AddParameter("$amount", amount);
-                        await command.ExecuteNonQueryAsync(t);
+                        command.AddParameter( "$id", sourceAccountId );
+                        command.AddParameter( "$amount", amount );
+                        await command.ExecuteNonQueryAsync( t );
                     }
 
-                    await using (var command = connection.CreateCommand())
+                    await using ( var command = connection.CreateCommand() )
                     {
                         command.CommandText = "UPDATE accounts SET balance = balance + $amount WHERE id = $id";
-                        command.AddParameter("$id", targetAccountId);
-                        command.AddParameter("$amount", amount);
-                        await command.ExecuteNonQueryAsync(t);
+                        command.AddParameter( "$id", targetAccountId );
+                        command.AddParameter( "$amount", amount );
+                        await command.ExecuteNonQueryAsync( t );
                     }
 
-                    await transaction.CommitAsync(t);
+                    await transaction.CommitAsync( t );
                 }
                 catch
                 {
-                    await transaction.RollbackAsync(t);
+                    await transaction.RollbackAsync( t );
+
                     throw;
                 }
             },
-            cancellationToken);
+            cancellationToken );
     }
+
     // [<endsnippet ExecutePipeline>]
 }

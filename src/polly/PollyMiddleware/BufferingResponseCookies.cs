@@ -1,37 +1,39 @@
+// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
 internal class BufferingResponseCookies : IResponseCookies
 {
     private readonly List<Action<IResponseCookies>> _operations = new();
 
-    public void Append(string key, string value)
+    public void Append( string key, string value )
     {
-        _operations.Add(cookies => cookies.Append(key, value));
+        this._operations.Add( cookies => cookies.Append( key, value ) );
     }
 
-    public void Append(string key, string value, CookieOptions options)
+    public void Append( string key, string value, CookieOptions options )
     {
-        _operations.Add(cookies => cookies.Append(key, value, options));
+        this._operations.Add( cookies => cookies.Append( key, value, options ) );
     }
 
-    public void Delete(string key)
+    public void Delete( string key )
     {
-        _operations.Add(cookies => cookies.Delete(key));
+        this._operations.Add( cookies => cookies.Delete( key ) );
     }
 
-    public void Delete(string key, CookieOptions options)
+    public void Delete( string key, CookieOptions options )
     {
-        _operations.Add(cookies => cookies.Delete(key, options));
+        this._operations.Add( cookies => cookies.Delete( key, options ) );
     }
 
     public void Reset()
     {
-        _operations.Clear();
+        this._operations.Clear();
     }
 
-    public void Accept(IResponseCookies cookies)
+    public void Accept( IResponseCookies cookies )
     {
-        foreach (var operation in _operations)
+        foreach ( var operation in this._operations )
         {
-            operation(cookies);
+            operation( cookies );
         }
     }
 }

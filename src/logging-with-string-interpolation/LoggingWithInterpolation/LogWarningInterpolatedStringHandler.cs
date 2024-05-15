@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
+using Microsoft.Extensions.Logging;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -16,35 +18,35 @@ public ref struct LogWarningInterpolatedStringHandler
 
     private int argumentsIndex;
 
-    public LogWarningInterpolatedStringHandler(
-        int literalLength, int formattedCount, ILogger logger, out bool isEnabled)
+    public LogWarningInterpolatedStringHandler( int literalLength, int formattedCount, ILogger logger, out bool isEnabled )
     {
-        isEnabled = logger.IsEnabled(LogLevel.Warning);
-        if (isEnabled)
+        isEnabled = logger.IsEnabled( LogLevel.Warning );
+
+        if ( isEnabled )
         {
-            messageBuilder = new StringBuilder(literalLength + (formattedCount * 10));
-            arguments = new object?[formattedCount];
+            this.messageBuilder = new StringBuilder( literalLength + (formattedCount * 10) );
+            this.arguments = new object?[formattedCount];
             this.logger = logger;
         }
+
         this.isEnabled = isEnabled;
     }
 
-    public readonly void AppendLiteral(string literal)
-        => messageBuilder.Append(
-            literal.Replace("{", "{{", StringComparison.Ordinal).Replace("}", "}}", StringComparison.Ordinal));
+    public readonly void AppendLiteral( string literal )
+        => this.messageBuilder.Append( literal.Replace( "{", "{{", StringComparison.Ordinal ).Replace( "}", "}}", StringComparison.Ordinal ) );
 
-    public void AppendFormatted<T>(T value, [CallerArgumentExpression(nameof(value))] string format = null!)
+    public void AppendFormatted<T>( T value, [CallerArgumentExpression( nameof(value) )] string format = null! )
     {
-        messageBuilder.Append($"{{{format}}}");
-        arguments[argumentsIndex] = value;
-        argumentsIndex++;
+        this.messageBuilder.Append( $"{{{format}}}" );
+        this.arguments[this.argumentsIndex] = value;
+        this.argumentsIndex++;
     }
 
     public readonly void Log()
     {
-        if (isEnabled)
+        if ( this.isEnabled )
         {
-            logger.Log(LogLevel.Warning, messageBuilder.ToString(), arguments);
+            this.logger.Log( LogLevel.Warning, this.messageBuilder.ToString(), this.arguments );
         }
     }
 }

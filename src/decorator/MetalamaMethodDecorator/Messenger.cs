@@ -1,4 +1,6 @@
-﻿// [<snippet MetalamaMethodDecorator>]
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
+// [<snippet MetalamaMethodDecorator>]
 
 public partial class Messenger
 {
@@ -7,18 +9,18 @@ public partial class Messenger
 
     [Retry]
     [ReportExceptions]
-    public void Send(Message message)
+    public void Send( Message message )
     {
-        Console.WriteLine("Sending message...");
+        Console.WriteLine( "Sending message..." );
 
         // Simulate unreliable message sending
-        if (++_sendCount % 3 == 0)
+        if ( ++this._sendCount % 3 == 0 )
         {
-            Console.WriteLine("Message sent successfully.");
+            Console.WriteLine( "Message sent successfully." );
         }
         else
         {
-            throw new IOException("Failed to send message.");
+            throw new IOException( "Failed to send message." );
         }
     }
 
@@ -26,16 +28,18 @@ public partial class Messenger
     [ReportExceptions]
     public Message Receive()
     {
-        Console.WriteLine("Receiving message...");
+        Console.WriteLine( "Receiving message..." );
 
         // Simulate unreliable message receiving
-        if (++_receiveCount % 3 == 0)
+        if ( ++this._receiveCount % 3 == 0 )
         {
-            Console.WriteLine("Message received successfully.");
-            return new Message("Hi!");
+            Console.WriteLine( "Message received successfully." );
+
+            return new Message( "Hi!" );
         }
 
-        throw new IOException("Failed to receive message.");
+        throw new IOException( "Failed to receive message." );
     }
 }
+
 // [<endsnippet MetalamaMethodDecorator>]

@@ -1,18 +1,20 @@
-﻿using Microsoft.Extensions.Logging;
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
+using Microsoft.Extensions.Logging;
 
 namespace LoggingWithInterpolation;
 
-class Shop(ILogger<Shop> logger)
+internal class Shop( ILogger<Shop> logger )
 {
     private readonly ILogger<Shop> _logger = logger;
 
-    public void Sell(Product product, decimal price)
+    public void Sell( Product product, decimal price )
     {
-        _logger.LogInformation($"Product {product} sold for {price:productPrice}.");
+        this._logger.LogInformation( $"Product {product} sold for {price:productPrice}." );
     }
 }
 
-record Product(string Name)
+internal record Product( string Name )
 {
-    public override string ToString() => Name;
+    public override string ToString() => this.Name;
 }

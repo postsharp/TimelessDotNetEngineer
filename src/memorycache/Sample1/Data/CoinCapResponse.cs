@@ -1,5 +1,7 @@
-﻿namespace Sample1.Data;
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
 
-public record CoinCapResponse(CoinCapData Data, long Timestamp);
+namespace Sample1.Data;
 
-public record CoinCapData(string Id, string Symbol, string CurrencySymbol, string Type, decimal RateUsd);
+public record CoinCapResponse( CoinCapData Data, long Timestamp );
+
+public record CoinCapData( string Id, string Symbol, string CurrencySymbol, string Type, decimal RateUsd );

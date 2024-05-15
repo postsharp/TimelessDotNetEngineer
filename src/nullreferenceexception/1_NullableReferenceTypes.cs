@@ -1,15 +1,18 @@
-﻿namespace NullReferenceException.NullableReferenceTypes;
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
+namespace NullReferenceException.NullableReferenceTypes;
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
 
 internal class IncorrectComputePrice
 {
     // [<snippet incorrect-compute-price>]
-    public decimal ComputePrice(Product product, decimal quantity, Discount? discount)
+    public decimal ComputePrice( Product product, decimal quantity, Discount? discount )
     {
         // C# reports a warning on `discount.Percent` because `discount` can be null.
         return product.Price * quantity * (1 - discount.Percent / 100m);
     }
+
     // [<endsnippet incorrect-compute-price>]
 }
 
@@ -18,19 +21,20 @@ internal class IncorrectComputePrice
 internal class CorrectComputePrice
 {
     // [<snippet correct-compute-price>]
-    public decimal ComputePrice(Product product, decimal quantity, Discount? discount)
+    public decimal ComputePrice( Product product, decimal quantity, Discount? discount )
     {
         return product.Price * quantity * (1 - (discount?.Percent ?? 0) / 100m);
     }
+
     // [<endsnippet correct-compute-price>]
 }
 
-class Product
+internal class Product
 {
     public decimal Price { get; set; }
 }
 
-class Discount
+internal class Discount
 {
     public decimal Percent { get; set; }
 }

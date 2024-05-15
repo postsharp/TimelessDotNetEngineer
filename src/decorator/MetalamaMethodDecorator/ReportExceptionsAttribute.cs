@@ -1,9 +1,12 @@
-﻿using Metalama.Extensions.DependencyInjection;
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
+using Metalama.Extensions.DependencyInjection;
 using Metalama.Framework.Aspects;
 
 public class ReportExceptionsAttribute : OverrideMethodAspect
 {
-    [IntroduceDependency] private readonly IExceptionReportingService? _reportingService;
+    [IntroduceDependency]
+    private readonly IExceptionReportingService? _reportingService;
 
     public override dynamic? OverrideMethod()
     {
@@ -11,18 +14,16 @@ public class ReportExceptionsAttribute : OverrideMethodAspect
         {
             return meta.Proceed();
         }
-        catch (Exception e)
+        catch ( Exception e )
         {
-            if (_reportingService == null)
+            if ( this._reportingService == null )
             {
                 throw new AggregateException(
                     e,
-                    new IOException(
-                        $"Failed to report exception. The {nameof(_reportingService)} is missing."));
+                    new IOException( $"Failed to report exception. The {nameof(this._reportingService)} is missing." ) );
             }
 
-            _reportingService.ReportException(
-                $"Method '{meta.Target.Method.DeclaringType.Name}.{meta.Target.Method}' failed.", e);
+            this._reportingService.ReportException( $"Method '{meta.Target.Method.DeclaringType.Name}.{meta.Target.Method}' failed.", e );
 
             throw;
         }
@@ -34,18 +35,16 @@ public class ReportExceptionsAttribute : OverrideMethodAspect
         {
             return await meta.Proceed();
         }
-        catch (Exception e)
+        catch ( Exception e )
         {
-            if (_reportingService == null)
+            if ( this._reportingService == null )
             {
                 throw new AggregateException(
                     e,
-                    new IOException(
-                        $"Failed to report exception. The {nameof(_reportingService)} is missing."));
+                    new IOException( $"Failed to report exception. The {nameof(this._reportingService)} is missing." ) );
             }
 
-            _reportingService.ReportException(
-                $"Method '{meta.Target.Method.DeclaringType.Name}.{meta.Target.Method}' failed.", e);
+            this._reportingService.ReportException( $"Method '{meta.Target.Method.DeclaringType.Name}.{meta.Target.Method}' failed.", e );
 
             throw;
         }

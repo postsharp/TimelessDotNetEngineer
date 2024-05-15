@@ -1,22 +1,25 @@
-﻿public class ExceptionReportingMessenger : MessengerDecorator
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
+public class ExceptionReportingMessenger : MessengerDecorator
 {
     private readonly IExceptionReportingService _reportingService;
 
-    public ExceptionReportingMessenger(IMessenger underlying, IExceptionReportingService reportingService) :
-        base(underlying)
+    public ExceptionReportingMessenger( IMessenger underlying, IExceptionReportingService reportingService ) :
+        base( underlying )
     {
-        _reportingService = reportingService;
+        this._reportingService = reportingService;
     }
 
-    public override void Send(Message message)
+    public override void Send( Message message )
     {
         try
         {
-            Underlying.Send(message);
+            this.Underlying.Send( message );
         }
-        catch (Exception e)
+        catch ( Exception e )
         {
-            _reportingService.ReportException("Failed to send message", e);
+            this._reportingService.ReportException( "Failed to send message", e );
+
             throw;
         }
     }
@@ -26,13 +29,15 @@
     {
         try
         {
-            return Underlying.Receive();
+            return this.Underlying.Receive();
         }
-        catch (Exception e)
+        catch ( Exception e )
         {
-            _reportingService.ReportException("Failed to receive message", e);
+            this._reportingService.ReportException( "Failed to receive message", e );
+
             throw;
         }
     }
+
     // [<endsnippet ExceptionReportingMessenger>]
 }

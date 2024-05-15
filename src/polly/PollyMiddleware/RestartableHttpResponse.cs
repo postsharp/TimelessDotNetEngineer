@@ -1,3 +1,5 @@
+// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
 internal class RestartableHttpResponse : HttpResponse
 {
     private readonly BufferingResponseCookies _cookies = new();
@@ -8,78 +10,79 @@ internal class RestartableHttpResponse : HttpResponse
     private string? _redirectLocation;
     private bool _redirectPermanent;
 
-    public RestartableHttpResponse(HttpContext httpContext, HttpResponse underlying)
+    public RestartableHttpResponse( HttpContext httpContext, HttpResponse underlying )
     {
-        _underlying = underlying;
-        HttpContext = httpContext;
+        this._underlying = underlying;
+        this.HttpContext = httpContext;
     }
 
     public override HttpContext HttpContext { get; }
+
     public override int StatusCode { get; set; }
 
-    public override IHeaderDictionary Headers => _headers;
+    public override IHeaderDictionary Headers => this._headers;
 
     public override Stream Body
     {
-        get => _memoryStream;
+        get => this._memoryStream;
         set => throw new NotSupportedException();
     }
 
     public override long? ContentLength { get; set; }
+
     public override string? ContentType { get; set; }
-    public override IResponseCookies Cookies => _cookies;
 
-    public override bool HasStarted => _hasStarted;
+    public override IResponseCookies Cookies => this._cookies;
 
-    public override void OnStarting(Func<object, Task> callback, object state)
+    public override bool HasStarted => this._hasStarted;
+
+    public override void OnStarting( Func<object, Task> callback, object state )
     {
-        _hasStarted = true;
+        this._hasStarted = true;
     }
 
-    public override void OnCompleted(Func<object, Task> callback, object state)
-    {
-    }
+    public override void OnCompleted( Func<object, Task> callback, object state ) { }
 
-    public override void Redirect(string location, bool permanent)
+    public override void Redirect( string location, bool permanent )
     {
-        _redirectLocation = location;
-        _redirectPermanent = permanent;
+        this._redirectLocation = location;
+        this._redirectPermanent = permanent;
     }
 
     public void Reset()
     {
-        _cookies.Reset();
-        _memoryStream.Seek(0, SeekOrigin.Begin);
-        ContentLength = _underlying.ContentLength;
-        ContentType = _underlying.ContentType;
-        StatusCode = _underlying.StatusCode;
-        _headers = new HeaderDictionary();
+        this._cookies.Reset();
+        this._memoryStream.Seek( 0, SeekOrigin.Begin );
+        this.ContentLength = this._underlying.ContentLength;
+        this.ContentType = this._underlying.ContentType;
+        this.StatusCode = this._underlying.StatusCode;
+        this._headers = new HeaderDictionary();
     }
 
     public async Task AcceptAsync()
     {
-        if (ContentLength != null)
+        if ( this.ContentLength != null )
         {
-            _underlying.ContentLength = ContentLength;
+            this._underlying.ContentLength = this.ContentLength;
         }
 
-        if (ContentType != null)
+        if ( this.ContentType != null )
         {
-            _underlying.ContentType = ContentType;
+            this._underlying.ContentType = this.ContentType;
         }
 
-        _cookies.Accept(_underlying.Cookies);
+        this._cookies.Accept( this._underlying.Cookies );
 
-        foreach (var header in Headers)
+        foreach ( var header in this.Headers )
         {
-            _underlying.Headers.Add(header);
+            this._underlying.Headers.Add( header );
         }
 
-        await _memoryStream.CopyToAsync(_underlying.Body);
+        await this._memoryStream.CopyToAsync( this._underlying.Body );
 
-        if (_redirectLocation != null)
+        if ( this._redirectLocation != null )
         {
-            _underlying.Redirect(_redirectLocation, _redirectPermanent);
+            this._underlying.Redirect( this._redirectLocation, this._redirectPermanent );
         }
     }
 }

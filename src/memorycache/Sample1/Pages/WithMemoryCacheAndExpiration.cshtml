@@ -9,10 +9,10 @@
     @{
         foreach (var currency in Model.Currencies)
         {
-            var data = await Model.GetCurrencyData(currency);
+            var data = await Model.GetCurrencyData( currency );
 
             // Output a paragraph with symbol and rate.
-            @:<p>@(data.Symbol)(@data.Type): @data.RateUsd.ToString("F3", CultureInfo.InvariantCulture)</p>
+            @:<p>@( data.Symbol )(@data.Type): @data.RateUsd.ToString( "F3", CultureInfo.InvariantCulture )</p>
         }
     }
 </div>

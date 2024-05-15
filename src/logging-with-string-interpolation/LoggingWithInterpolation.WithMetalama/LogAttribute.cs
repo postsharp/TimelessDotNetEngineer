@@ -1,4 +1,6 @@
-﻿namespace LoggingWithInterpolation.WithMetalama;
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
+namespace LoggingWithInterpolation.WithMetalama;
 
 #pragma warning disable CS8618
 
@@ -18,7 +20,7 @@ public class LogAttribute : OverrideMethodAspect
         // LogInformation can't be called as an extension method here,
         // because Metalama uses the dynamic type to represent run-time values
         // and dynamic is not compatible with extension methods.
-        LoggingExtensions.LogInformation(_logger, BuildInterpolatedString().ToValue());
+        LoggingExtensions.LogInformation( this._logger, BuildInterpolatedString().ToValue() );
 
         return meta.Proceed();
     }
@@ -29,28 +31,29 @@ public class LogAttribute : OverrideMethodAspect
         var stringBuilder = new InterpolatedStringBuilder();
 
         // Include the type and method name.
-        stringBuilder.AddText($"{meta.Target.Type}.{meta.Target.Method.Name}(");
+        stringBuilder.AddText( $"{meta.Target.Type}.{meta.Target.Method.Name}(" );
 
-        bool first = true;
+        var first = true;
 
         // Include each parameter.
-        foreach (var parameter in meta.Target.Parameters)
+        foreach ( var parameter in meta.Target.Parameters )
         {
-            if (!first)
+            if ( !first )
             {
-                stringBuilder.AddText(", ");
+                stringBuilder.AddText( ", " );
             }
 
-            stringBuilder.AddText($"{parameter.Name}: ");
+            stringBuilder.AddText( $"{parameter.Name}: " );
 
-            stringBuilder.AddExpression(parameter.Value);
+            stringBuilder.AddExpression( parameter.Value );
 
             first = false;
         }
 
-        stringBuilder.AddText(") started.");
+        stringBuilder.AddText( ") started." );
 
         return stringBuilder;
     }
 }
+
 // [<endsnippet body>]
