@@ -3,21 +3,23 @@ using Polly.Registry;
 
 namespace PollyMiddleware;
 
-public class ResilienceMiddleware
+public class ResilienceMiddleware(RequestDelegate next, ResiliencePipelineProvider<string> pipelineProvider)
 {
-    private readonly RequestDelegate _next;
-    private readonly ResiliencePipeline _resiliencePipeline;
-
-    public ResilienceMiddleware(RequestDelegate next, ResiliencePipelineProvider<string> pipelineProvider)
-    {
-        _next = next;
-        _resiliencePipeline = pipelineProvider.GetPipeline("middleware");
-    }
-
     public async Task InvokeAsync(HttpContext httpContext)
     {
-        await _resiliencePipeline.ExecuteAsync(
-            async _ => await _next(httpContext),
+        var pipeline = pipelineProvider.GetPipeline("middleware");
+            
+        var bufferingContext = new BufferingHttpContext(httpContext);
+        await bufferingContext.InitializeAsync(httpContext.RequestAborted);
+        
+        await pipeline.ExecuteAsync(
+            async _ =>
+            {
+                bufferingContext.Reset();
+                await next(bufferingContext);
+            },
             httpContext.RequestAborted);
+
+        await bufferingContext.AcceptAsync();
     }
 }

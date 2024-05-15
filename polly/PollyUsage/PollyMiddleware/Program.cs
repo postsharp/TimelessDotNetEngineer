@@ -7,7 +7,7 @@ builder.Services.AddResiliencePipeline("middleware", pipelineBuilder =>
 {
     pipelineBuilder.AddRetry(new RetryStrategyOptions
         {
-            ShouldHandle = new PredicateBuilder().Handle<HttpRequestException>(),
+            ShouldHandle = new PredicateBuilder().Handle<IOException>(),
             Delay = TimeSpan.FromSeconds(1),
             MaxRetryAttempts = 3,
             BackoffType = DelayBackoffType.Exponential
@@ -20,13 +20,16 @@ var app = builder.Build();
 app.UseMiddleware<ResilienceMiddleware>();
 // [<endsnippet MiddlewareUsage>]
 
-app.MapGet("/", async () =>
+var attempts = 0;
+app.MapGet("/", () =>
 {
-    using var client = new HttpClient();
-    var response = await client.GetAsync("http://localhost:52394/FailEveryOtherTime");
-    response.EnsureSuccessStatusCode();
-    var responseContent = await response.Content.ReadAsStringAsync();
-    return Results.Ok($"The service returned {response.StatusCode}: {responseContent}");
+    attempts++;
+    if ((attempts % 3) != 0)
+    {
+        throw new IOException();
+    }
+    
+    return Task.FromResult(Results.Ok());
 });
 
 app.Run();
