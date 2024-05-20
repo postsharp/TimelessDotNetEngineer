@@ -11,7 +11,6 @@ internal class IfStatement
         {
             throw new ArgumentNullException( nameof(customer) );
         }
-
         // [<endsnippet if-statement>]
 
         return customer

@@ -7,8 +7,8 @@ namespace NullReferenceException.WithMetalama;
 internal class Attribute
 {
     // [<snippet attribute>]
-    public Order? GetLastOrder( [NotNull] Customer customer ) => customer.Orders.OrderByDescending( o => o.Date ).FirstOrDefault();
-
+    public Order? GetLastOrder( [NotNull] Customer customer )
+        => customer.Orders.OrderByDescending( o => o.Date ).FirstOrDefault();
     // [<endsnippet attribute>]
 }
 

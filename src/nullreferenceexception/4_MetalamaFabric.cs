@@ -8,7 +8,7 @@ using Metalama.Patterns.Contracts;
 
 internal class Fabric : ProjectFabric
 {
-    public override void AmendProject( IProjectAmender amender ) => amender.Outbound.VerifyNotNullableDeclarations();
+    public override void AmendProject( IProjectAmender amender )
+        => amender.Outbound.VerifyNotNullableDeclarations();
 }
-
 // [<endsnippet body>]

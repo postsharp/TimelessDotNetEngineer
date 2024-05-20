@@ -8,7 +8,8 @@ internal class Contracts
 {
     // [<snippet methods>]
     // This method requires a Customer but does not promise to return an Order.
-    public Order? GetLastOrder( Customer customer ) => customer.Orders.OrderByDescending( o => o.Date ).FirstOrDefault();
+    public Order? GetLastOrder( Customer customer ) 
+        => customer.Orders.OrderByDescending( o => o.Date ).FirstOrDefault();
 
     public void RepeatLastOrder( Customer customer )
     {
