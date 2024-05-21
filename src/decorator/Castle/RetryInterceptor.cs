@@ -2,17 +2,8 @@
 
 using Castle.DynamicProxy;
 
-internal class RetryInterceptor : IInterceptor
+internal class RetryInterceptor( int retryAttempts = 3, double retryDelay = 1000 ) : IInterceptor
 {
-    private readonly int _retryAttempts;
-    private readonly double _retryDelay;
-
-    public RetryInterceptor( int retryAttempts = 3, double retryDelay = 1000 )
-    {
-        this._retryAttempts = retryAttempts;
-        this._retryDelay = retryDelay;
-    }
-
     public void Intercept( IInvocation invocation )
     {
         for ( var i = 0;; i++ )
@@ -21,13 +12,13 @@ internal class RetryInterceptor : IInterceptor
             {
                 invocation.Proceed();
             }
-            catch ( Exception ) when ( i < this._retryAttempts )
+            catch ( Exception ) when ( i < retryAttempts )
             {
-                var delay = this._retryDelay * Math.Pow( 2, i );
+                var delay = retryDelay * Math.Pow( 2, i );
 
                 Console.WriteLine(
                     "Failed to receive message. " +
-                    $"Retrying in {delay / 1000} seconds... ({i + 1}/{this._retryAttempts})" );
+                    $"Retrying in {delay / 1000} seconds... ({i + 1}/{retryAttempts})" );
 
                 Thread.Sleep( (int) delay );
             }
