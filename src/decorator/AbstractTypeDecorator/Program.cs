@@ -9,14 +9,14 @@ var originalMessenger = new Messenger();
 
 var retryingMessenger = new MessengerDecorator(
     originalMessenger,
-    func => Policies.Retry( func ) );
+    new RetryPolicy() );
 
 var exceptionReportingService = new ExceptionReportingService();
 
 var retryingExceptionReportingMessenger =
     new MessengerDecorator(
         retryingMessenger,
-        func => Policies.ReportException( func, exceptionReportingService ) );
+        new ReportExceptionPolicy( exceptionReportingService ) );
 
 retryingExceptionReportingMessenger.Send( new Message( "Hello!" ) );
 
@@ -31,18 +31,14 @@ var services = new ServiceCollection()
     .Decorate<IMessenger>(
         ( inner, _ ) => new MessengerDecorator(
             inner,
-            func => Policies.Retry( func ) ) )
+            new RetryPolicy() ) )
     .Decorate<IMessenger>(
         ( inner, serviceProvider ) => new MessengerDecorator(
             inner,
-            func => Policies.ReportException(
-                func,
-                serviceProvider.GetRequiredService<IExceptionReportingService>() ) ) )
+            new ReportExceptionPolicy( serviceProvider.GetRequiredService<IExceptionReportingService>() ) ) )
     .BuildServiceProvider();
 
-var messenger = services.GetRequiredService<IMessenger>();
-messenger.Send( new Message( "Hello!" ) );
-var response = messenger.Receive();
-Console.WriteLine( $"Received message: {response.Text}" );
+var client = services.GetRequiredService<Client>();
+client.Greet();
 
 // [<endsnippet TypeDecoratorScrutor>]

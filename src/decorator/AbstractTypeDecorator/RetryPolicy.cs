@@ -1,8 +1,8 @@
 ﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
 
-public static class Policies
+public class RetryPolicy( int retryAttempts = 3, int retryDelay = 1000 ) : IPolicy
 {
-    public static object? Retry( Func<object?> func, int retryAttempts = 3, int retryDelay = 1000 )
+    public T Invoke<T>( Func<T> func )
     {
         for ( var i = 0;; i++ )
         {
@@ -20,20 +20,6 @@ public static class Policies
 
                 Thread.Sleep( (int) delay );
             }
-        }
-    }
-
-    public static object? ReportException( Func<object?> func, IExceptionReportingService reportingService )
-    {
-        try
-        {
-            return func();
-        }
-        catch ( Exception e )
-        {
-            reportingService.ReportException( "Failed to send message", e );
-
-            throw;
         }
     }
 }
