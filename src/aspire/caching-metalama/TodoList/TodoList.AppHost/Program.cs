@@ -2,4 +2,6 @@
 
 var builder = DistributedApplication.CreateBuilder( args );
 
+builder.AddProject<Projects.TodoList_Web>("todolist-web");
+
 builder.Build().Run();
