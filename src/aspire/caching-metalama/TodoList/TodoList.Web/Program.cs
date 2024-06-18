@@ -1,3 +1,4 @@
+using TodoList.Web;
 using TodoList.Web.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,8 @@ builder.AddServiceDefaults();
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddHttpClient<TodoApiClient>( client => client.BaseAddress = new( "https+http://todolist-api" ) );
 
 var app = builder.Build();
 

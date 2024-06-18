@@ -2,8 +2,21 @@
 
 var builder = DistributedApplication.CreateBuilder( args );
 
-builder.AddProject<Projects.TodoList_Web>("todolist-web");
+var db = builder
+    .AddSqlServer( "dbengine" )
+    .AddDatabase( "database" );
 
-builder.AddProject<Projects.TodoList_Api>("todolist-api");
+var cache = builder
+    .AddRedis( "cache" );
+
+var api = builder
+    .AddProject<Projects.TodoList_Api>( "todolist-api" )
+    .WithReference( db )
+    .WithReference( cache );
+
+builder.AddProject<Projects.TodoList_Web>("todolist-web" )
+    .WithExternalHttpEndpoints()
+    .WithReference( api );
+
 
 builder.Build().Run();

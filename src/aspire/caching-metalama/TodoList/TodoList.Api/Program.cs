@@ -1,38 +1,70 @@
+using System.Globalization;
+using TodoList.ApiService.Extensions;
+using TodoList.ApiService.Model;
+using TodoList.ApiService.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
+// Add service defaults & Aspire components.
 builder.AddServiceDefaults();
 
+// Add Metalama Caching with Redis.
+builder.AddDistributedMetalamaCaching( "cache", "apiservice" );
+
 // Add services to the container.
+builder.AddSqlServerDbContext<ApplicationDbContext>( "database" );
+builder.Services.AddScoped<TodoService>();
 
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
-
 app.UseHttpsRedirection();
 
-var summaries = new[]
+// Ensure the schema is created.
+using ( var scope = app.Services.CreateScope() )
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await db.Database.EnsureCreatedAsync();
+}
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet( "/todo", ( TodoService todos, CancellationToken cancellationToken )
+    => todos.GetTodosAsync( cancellationToken ) );
+
+app.MapGet( "/todo/{id}", ( TodoService todos, string id, CancellationToken cancellationToken )
+    => todos.GetTodoAsync( int.Parse( id, CultureInfo.InvariantCulture ), cancellationToken ) );
+
+app.MapPost( "/todo", async ( TodoService todos, Todo todo, CancellationToken cancellationToken ) =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-});
+    var newTodo = await todos.AddTodoAsync( todo, cancellationToken );
+    return Results.Created( $"/todo/{newTodo.Id}", newTodo );
+} );
+
+app.MapPut( "/todo/{id}", async ( TodoService todos, string id, Todo todo, CancellationToken cancellationToken ) =>
+{
+    if ( await todos.UpdateTodoAsync( int.Parse( id, CultureInfo.InvariantCulture ), todo, cancellationToken ) )
+    {
+        return Results.NoContent();
+
+    }
+    else
+    {
+        return Results.NotFound();
+    }
+} );
+
+app.MapDelete( "/todo/{id}", async ( TodoService todos, string id, CancellationToken cancellationToken ) =>
+{
+    if ( await todos.DeleteTodoAsync( int.Parse( id, CultureInfo.InvariantCulture ), cancellationToken ) )
+    {
+        return Results.NoContent();
+
+    }
+    else
+    {
+        return Results.NotFound();
+    }
+} );
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

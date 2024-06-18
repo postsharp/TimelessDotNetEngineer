@@ -1,7 +1,119 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+@inject TodoApiClient TodoApi
 
-<h1>Hello, world!</h1>
+<PageTitle>Things to do</PageTitle>
 
-Welcome to your new app.
+<div class="container">
+    <div class="row justify-content-center mt-4">
+        <div class="col-10">
+
+            <h1>Things to do</h1>
+
+            @if (todos == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                <div style="display: flex; flex-direction: column">
+                    @foreach (var todo in todos)
+                    {
+                        <div style="display: flex; margin-bottom: 10px;">
+                            <div style="display: flex; align-items: center;margin-bottom: 10px;">
+                                <div class="@ItemClass(todo)" style="width: 280px;">@todo.Title</div>
+                            </div>
+                            @if (todo.IsCompleted)
+                            {
+                                <div style="width: 120px">
+                                    <button class="btn btn-warning" onclick="@(() => Uncomplete(todo))">Uncomplete</button>
+                                </div>
+                            }
+                            @if (!todo.IsCompleted)
+                            {
+                                <div style="width: 120px">
+                                    <button class="btn btn-success" onclick="@(() => Complete(todo))">Complete</button>
+                                </div>
+                            }
+                            <div>
+                                <button class="btn btn-danger" onclick="@(() => Delete(todo))">Delete</button>
+                            </div>
+                        </div>
+                    }
+                    <div style="display: flex; margin-bottom: 10px;">
+                        <div style="display: flex; align-items: center;margin-bottom: 10px;">
+                            <input class="form-control" style="width: 270px; margin-right: 10px" placeholder="Something to do" @bind="newTodoTitle" />
+                        </div>
+                        <div style="width: 120px">
+                            <button @onclick="AddTodo" class="btn btn-primary">Add</button>
+                        </div>
+                        <div>
+                            <input type="reset" class="btn btn-secondary" value="Clear" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+@code {
+    private Todo[]? todos;
+    private string? newTodoTitle;
+
+    protected override async Task OnInitializedAsync()
+    {
+        todos = await TodoApi.GetTodosAsync();
+    }
+
+    public string ItemClass(Todo todo)
+    {
+        return todo.IsCompleted ? "item-completed" : "";
+    }
+
+    public async Task ItemsChangedAsync()
+    {
+        todos = await TodoApi.GetTodosAsync();
+        StateHasChanged();
+    }
+
+    public async void Delete(Todo todo)
+    {
+        await TodoApi.DeleteTodoAsync(todo.Id);
+        await this.ItemsChangedAsync();
+    }
+
+    public async void Complete(Todo todo)
+    {
+        todo.IsCompleted = true;
+        await TodoApi.UpdateTodoAsync(todo);
+        await this.ItemsChangedAsync();
+    }
+
+    public async void Uncomplete(Todo todo)
+    {
+        todo.IsCompleted = false;
+        await TodoApi.UpdateTodoAsync(todo);
+        await this.ItemsChangedAsync();
+    }
+
+    private async Task AddTodo()
+    {
+        if (string.IsNullOrWhiteSpace(newTodoTitle))
+        {
+            return;
+        }
+
+        var newTodo = new Todo
+            {
+                Title = newTodoTitle,
+            };
+
+        await TodoApi.CreateTodoAsync(newTodo);
+
+        newTodoTitle = string.Empty;
+        await this.ItemsChangedAsync();
+    }
+}
