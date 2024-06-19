@@ -1,0 +1,111 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+@inject TodoApiClient TodoApi
+
+<PageTitle>Things to do</PageTitle>
+
+<div class="container">
+    <div class="row justify-content-center mt-4">
+        <div class="col-10">
+            <h1>Things to do</h1>
+
+            @if (todos == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                @foreach (var todo in todos)
+                {
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <div class="@ItemClass(todo)">@todo.Title</div>
+                        </div>
+                        <div class="col-2">
+                            @if (todo.IsCompleted)
+                            {
+                                <button class="btn btn-warning w-100" onclick="@(() => Uncomplete(todo))">Uncomplete</button>
+                            }
+                            @if (!todo.IsCompleted)
+                            {
+                                <button class="btn btn-success w-100" onclick="@(() => Complete(todo))">Complete</button>
+                            }
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-danger w-100" onclick="@(() => Delete(todo))">Delete</button>
+                        </div>
+                    </div>
+                }
+                <div class="row mb-2">
+                    <div class="col-4">
+                        <input class="form-control w-100" placeholder="Something to do" @bind="newTodoTitle" />
+                    </div>
+                    <div class="col-2">
+                        <button @onclick="AddTodo" class="btn btn-primary w-100">Add</button>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+@code {
+    private Todo[]? todos;
+    private string? newTodoTitle;
+
+    protected override async Task OnInitializedAsync()
+    {
+        todos = await TodoApi.GetTodosAsync();
+    }
+
+    public string ItemClass(Todo todo)
+    {
+        return todo.IsCompleted ? "item-completed" : "";
+    }
+
+    public async Task ItemsChangedAsync()
+    {
+        todos = await TodoApi.GetTodosAsync();
+        StateHasChanged();
+    }
+
+    public async void Delete(Todo todo)
+    {
+        await TodoApi.DeleteTodoAsync(todo.Id);
+        await this.ItemsChangedAsync();
+    }
+
+    public async void Complete(Todo todo)
+    {
+        todo.IsCompleted = true;
+        await TodoApi.UpdateTodoAsync(todo);
+        await this.ItemsChangedAsync();
+    }
+
+    public async void Uncomplete(Todo todo)
+    {
+        todo.IsCompleted = false;
+        await TodoApi.UpdateTodoAsync(todo);
+        await this.ItemsChangedAsync();
+    }
+
+    private async Task AddTodo()
+    {
+        if (string.IsNullOrWhiteSpace(newTodoTitle))
+        {
+            return;
+        }
+
+        var newTodo = new Todo
+            {
+                Title = newTodoTitle,
+            };
+
+        await TodoApi.CreateTodoAsync(newTodo);
+
+        newTodoTitle = string.Empty;
+        await this.ItemsChangedAsync();
+    }
+}
