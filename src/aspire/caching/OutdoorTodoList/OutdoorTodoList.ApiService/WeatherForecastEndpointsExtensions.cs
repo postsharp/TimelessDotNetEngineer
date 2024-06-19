@@ -1,12 +1,12 @@
 ﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
 
-internal static class WeatherForecastEndpoints
+internal static class WeatherForecastEndpointsExtensions
 {
     public static WebApplication MapWeatherForecastEndpoints( this WebApplication app )
     {
         var summaries = new[]
         {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+            "🌨️", "☀️", "🌩️", "⛈️", "🌧️", "☁️", "🌦️", "🌥️", "⛅", "🌤️"
         };
 
         app.MapGet( "/weatherforecast", () =>

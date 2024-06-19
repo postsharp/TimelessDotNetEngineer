@@ -1,0 +1,50 @@
+﻿@using System.Globalization
+@using Microsoft.Extensions.Caching.Distributed
+@using System.Text.Json
+@inject WeatherApiClient WeatherApi
+@inject IDistributedCache Cache;
+
+<div class="container">
+    <div class="row justify-content-center mt-4">
+
+        @if (forecasts == null)
+        {
+            <p><em>Loading weather...</em></p>
+        }
+        else
+        {
+            @foreach (var forecast in forecasts)
+            {
+                <div class="col-2 text-center">
+                    <div style="font-size: 200%">@forecast.Summary</div>
+                    <div>@forecast.TemperatureC °C / @forecast.TemperatureF °F</div>
+                    <div><b>@forecast.Date.ToString("ddd", CultureInfo.InvariantCulture)</b></div>
+                </div>
+            }
+        }
+
+    </div>
+</div>
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var cachedForecast = await Cache.GetStringAsync(nameof(WeatherForecast));
+
+        if (cachedForecast == null)
+        {
+            forecasts = await WeatherApi.GetWeatherAsync();
+
+            await Cache.SetStringAsync(nameof(WeatherForecast), JsonSerializer.Serialize(forecasts), new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(5)
+                });
+        }
+        else
+        {
+            forecasts = JsonSerializer.Deserialize<Web.WeatherForecast[]>(cachedForecast);
+        }
+    }
+}

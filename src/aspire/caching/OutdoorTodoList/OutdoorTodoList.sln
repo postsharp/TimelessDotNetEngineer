@@ -2,13 +2,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35004.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutdoorTodoList.AppHost", "OutdoorTodoList.AppHost\OutdoorTodoList.AppHost.csproj", "{77B64648-425E-4C31-8C25-5DB6437EA23E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OutdoorTodoList.AppHost", "OutdoorTodoList.AppHost\OutdoorTodoList.AppHost.csproj", "{77B64648-425E-4C31-8C25-5DB6437EA23E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OutdoorTodoList.ServiceDefaults", "OutdoorTodoList.ServiceDefaults\OutdoorTodoList.ServiceDefaults.csproj", "{B176B508-DF87-4FF3-A49E-25DC1CBB7A9B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OutdoorTodoList.ApiService", "OutdoorTodoList.ApiService\OutdoorTodoList.ApiService.csproj", "{BE97F8BA-BC88-4767-AAA6-56F93E882F63}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OutdoorTodoList.Web", "OutdoorTodoList.Web\OutdoorTodoList.Web.csproj", "{3F2D51F9-F444-46F4-9FC4-1F1B92B2459A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutdoorTodoList.DataAccess", "OutdoorTodoList.DataAccess\OutdoorTodoList.DataAccess.csproj", "{7661F01E-4A0E-4065-8ED7-4DD821CBC834}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{3F2D51F9-F444-46F4-9FC4-1F1B92B2459A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F2D51F9-F444-46F4-9FC4-1F1B92B2459A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F2D51F9-F444-46F4-9FC4-1F1B92B2459A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7661F01E-4A0E-4065-8ED7-4DD821CBC834}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7661F01E-4A0E-4065-8ED7-4DD821CBC834}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7661F01E-4A0E-4065-8ED7-4DD821CBC834}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7661F01E-4A0E-4065-8ED7-4DD821CBC834}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

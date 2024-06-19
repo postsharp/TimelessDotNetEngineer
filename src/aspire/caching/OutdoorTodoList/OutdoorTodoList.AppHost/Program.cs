@@ -2,9 +2,16 @@
 
 var builder = DistributedApplication.CreateBuilder( args );
 
+var db = builder
+    .AddSqlServer( "dbengine" )
+    .AddDatabase( "database" );
+
 var cache = builder.AddRedis( "cache" );
 
-var apiService = builder.AddProject<Projects.OutdoorTodoList_ApiService>( "apiservice" );
+var apiService = builder
+    .AddProject<Projects.OutdoorTodoList_ApiService>( "apiservice" )
+    .WithReference( db )
+    .WithReference( cache );
 
 builder.AddProject<Projects.OutdoorTodoList_Web>( "webfrontend" )
     .WithExternalHttpEndpoints()
