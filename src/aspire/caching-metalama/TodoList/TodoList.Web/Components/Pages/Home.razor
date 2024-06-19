@@ -8,7 +8,6 @@
 <div class="container">
     <div class="row justify-content-center mt-4">
         <div class="col-10">
-
             <h1>Things to do</h1>
 
             @if (todos == null)
@@ -17,40 +16,33 @@
             }
             else
             {
-                <div style="display: flex; flex-direction: column">
-                    @foreach (var todo in todos)
-                    {
-                        <div style="display: flex; margin-bottom: 10px;">
-                            <div style="display: flex; align-items: center;margin-bottom: 10px;">
-                                <div class="@ItemClass(todo)" style="width: 280px;">@todo.Title</div>
-                            </div>
+                @foreach (var todo in todos)
+                {
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <div class="@ItemClass(todo)">@todo.Title</div>
+                        </div>
+                        <div class="col-2">
                             @if (todo.IsCompleted)
                             {
-                                <div style="width: 120px">
-                                    <button class="btn btn-warning" onclick="@(() => Uncomplete(todo))">Uncomplete</button>
-                                </div>
+                                <button class="btn btn-warning w-100" onclick="@(() => Uncomplete(todo))">Uncomplete</button>
                             }
                             @if (!todo.IsCompleted)
                             {
-                                <div style="width: 120px">
-                                    <button class="btn btn-success" onclick="@(() => Complete(todo))">Complete</button>
-                                </div>
+                                <button class="btn btn-success w-100" onclick="@(() => Complete(todo))">Complete</button>
                             }
-                            <div>
-                                <button class="btn btn-danger" onclick="@(() => Delete(todo))">Delete</button>
-                            </div>
                         </div>
-                    }
-                    <div style="display: flex; margin-bottom: 10px;">
-                        <div style="display: flex; align-items: center;margin-bottom: 10px;">
-                            <input class="form-control" style="width: 270px; margin-right: 10px" placeholder="Something to do" @bind="newTodoTitle" />
+                        <div class="col-2">
+                            <button class="btn btn-danger w-100" onclick="@(() => Delete(todo))">Delete</button>
                         </div>
-                        <div style="width: 120px">
-                            <button @onclick="AddTodo" class="btn btn-primary">Add</button>
-                        </div>
-                        <div>
-                            <input type="reset" class="btn btn-secondary" value="Clear" />
-                        </div>
+                    </div>
+                }
+                <div class="row mb-2">
+                    <div class="col-4">
+                        <input class="form-control w-100" placeholder="Something to do" @bind="newTodoTitle" />
+                    </div>
+                    <div class="col-2">
+                        <button @onclick="AddTodo" class="btn btn-primary w-100">Add</button>
                     </div>
                 </div>
             }
