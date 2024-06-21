@@ -1,6 +1,5 @@
-﻿@page "/weather"
+﻿@page "/weather-cached"
 @attribute [StreamRendering(true)]
-@attribute [OutputCache(Duration = 5)]
 
 @inject WeatherApiClient WeatherApi
 
@@ -8,7 +7,7 @@
 
 <h1>Weather</h1>
 
-<p>This component demonstrates showing data loaded from a backend API service and cached using output cache by Blazor.</p>
+<p>This component demonstrates showing data loaded from a backend API service and cached using output cache by the API service.</p>
 
 @if (forecasts == null)
 {
@@ -44,6 +43,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await WeatherApi.GetWeatherAsync();
+        forecasts = await WeatherApi.GetCachedWeatherAsync();
     }
 }

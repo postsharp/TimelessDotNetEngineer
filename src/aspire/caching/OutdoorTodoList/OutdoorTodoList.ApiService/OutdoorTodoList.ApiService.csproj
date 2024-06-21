@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.1" />
 	<PackageReference Include="Aspire.StackExchange.Redis" Version="8.0.1" />
+	<PackageReference Include="Aspire.StackExchange.Redis.OutputCaching" Version="8.0.1" />
     <PackageReference Include="Azure.Identity" Version="1.11.4" />
 	<PackageReference Include="Metalama.Patterns.Caching.Aspects" Version="2024.2.9-preview" />
 	<PackageReference Include="Metalama.Patterns.Caching.Backends.Redis" Version="2024.2.9-preview" />

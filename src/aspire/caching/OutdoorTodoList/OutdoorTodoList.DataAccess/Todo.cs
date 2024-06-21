@@ -1,7 +1,7 @@
 ﻿using Metalama.Patterns.Caching.Aspects;
 using System.ComponentModel.DataAnnotations;
 
-public class Todo
+public partial class Todo
 {
     [CacheKey]
     public int Id { get; set; }
@@ -9,5 +9,5 @@ public class Todo
     public bool IsCompleted { get; set; }
 
     [Required]
-    public string Title { get; set; }
+    public string Title { get; set; } = null!;
 }

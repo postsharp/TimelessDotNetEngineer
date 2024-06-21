@@ -16,4 +16,10 @@
     <PackageReference Include="Aspire.StackExchange.Redis.OutputCaching" Version="8.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Components\Pages\WeatherCached.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
+
 </Project>
