@@ -1,8 +1,11 @@
 ﻿@using System.Globalization
 @using Microsoft.Extensions.Caching.Distributed
 @using System.Text.Json
+
+@* [<snippet DistributedCacheInjection>] *@
 @inject WeatherApiClient WeatherApi
 @inject IDistributedCache Cache;
+@* [<endsnippet DistributedCacheInjection>] *@
 
 <div class="container">
     <div class="row justify-content-center mt-4">
@@ -26,6 +29,7 @@
     </div>
 </div>
 
+@* [<snippet DistributedCacheUsage>] *@
 @code {
     private WeatherForecast[]? forecasts;
 
@@ -48,3 +52,4 @@
         }
     }
 }
+@* [<endsnippet DistributedCacheUsage>] *@

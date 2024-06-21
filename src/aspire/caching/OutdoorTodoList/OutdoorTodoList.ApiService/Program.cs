@@ -1,3 +1,4 @@
+using OutdoorTodoList.ApiService.Interceptors;
 using OutdoorTodoList.ApiService.Model;
 using OutdoorTodoList.ApiService.Services;
 
@@ -10,7 +11,14 @@ builder.AddDistributedMetalamaCaching( "cache", "todolist-api" );
 
 // Add services to the container.
 builder.Services.AddProblemDetails();
-builder.AddSqlServerDbContext<ApplicationDbContext>( "database" );
+
+var sqlSlowDown = new SqlSlowDownInterceptor();
+
+builder.AddSqlServerDbContext<ApplicationDbContext>(
+    "database",
+    // Slow down the database to show the effect of caching.
+    configureDbContextOptions: options => options.AddInterceptors( sqlSlowDown ) );
+
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddScoped<TodoService>();
 
@@ -21,6 +29,7 @@ using ( var scope = app.Services.CreateScope() )
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await db.Database.EnsureCreatedAsync();
+    sqlSlowDown.Enabled = true;
 }
 
 // Configure the HTTP request pipeline.

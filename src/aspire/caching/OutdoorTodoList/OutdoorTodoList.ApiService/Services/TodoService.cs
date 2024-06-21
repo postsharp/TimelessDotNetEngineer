@@ -7,6 +7,7 @@ namespace OutdoorTodoList.ApiService.Services;
 
 public partial class TodoService( ApplicationDbContext db )
 {
+    // [<snippet Caching>]
     [Cache]
     public async Task<IEnumerable<Todo>> GetTodosAsync( [NotCacheKey] CancellationToken cancellationToken = default )
         => await db.Todos.ToListAsync();
@@ -14,6 +15,7 @@ public partial class TodoService( ApplicationDbContext db )
     [Cache]
     public async Task<Todo?> GetTodoAsync( int id, [NotCacheKey] CancellationToken cancellationToken = default )
         => await db.Todos.FindAsync( id );
+    // [<endsnippet Caching>]
 
     [InvalidateCache( nameof( this.GetTodosAsync ) )]
     public async Task<Todo> AddTodoAsync( Todo todo, CancellationToken cancellationToken = default )

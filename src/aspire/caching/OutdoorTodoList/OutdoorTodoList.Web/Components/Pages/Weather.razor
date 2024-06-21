@@ -1,6 +1,9 @@
 ﻿@page "/weather"
 @attribute [StreamRendering(true)]
+
+@* [<snippet OutputCachingRazorPageApp>] *@
 @attribute [OutputCache(Duration = 5)]
+@* [<endsnippet OutputCachingRazorPageApp>] *@
 
 @inject WeatherApiClient WeatherApi
 

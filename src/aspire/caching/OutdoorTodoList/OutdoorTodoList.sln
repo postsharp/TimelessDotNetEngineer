@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OutdoorTodoList.ApiService"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OutdoorTodoList.Web", "OutdoorTodoList.Web\OutdoorTodoList.Web.csproj", "{3F2D51F9-F444-46F4-9FC4-1F1B92B2459A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutdoorTodoList.DataAccess", "OutdoorTodoList.DataAccess\OutdoorTodoList.DataAccess.csproj", "{7661F01E-4A0E-4065-8ED7-4DD821CBC834}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OutdoorTodoList.DataAccess", "OutdoorTodoList.DataAccess\OutdoorTodoList.DataAccess.csproj", "{7661F01E-4A0E-4065-8ED7-4DD821CBC834}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
