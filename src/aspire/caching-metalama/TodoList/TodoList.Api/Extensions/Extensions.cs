@@ -19,5 +19,5 @@ public static class Extensions
 
         return builder;
     }
-    // [<snippet MetalamaCacheConfiguration>]
+    // [<endsnippet MetalamaCacheConfiguration>]
 }
