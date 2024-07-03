@@ -42,8 +42,8 @@ using ( var scope = app.Services.CreateScope() )
 app.MapGet( "/todo", ( TodoService todos, CancellationToken cancellationToken )
     => todos.GetTodosAsync( cancellationToken ) );
 
-app.MapGet( "/todo/{id}", ( TodoService todos, string id, CancellationToken cancellationToken )
-    => todos.GetTodoAsync( int.Parse( id, CultureInfo.InvariantCulture ), cancellationToken ) );
+app.MapGet( "/todo/{id}", ( TodoService todos, int id, CancellationToken cancellationToken )
+    => todos.GetTodoAsync( id, cancellationToken ) );
 
 app.MapPost( "/todo", async ( TodoService todos, Todo todo, CancellationToken cancellationToken ) =>
 {
@@ -51,9 +51,14 @@ app.MapPost( "/todo", async ( TodoService todos, Todo todo, CancellationToken ca
     return Results.Created( $"/todo/{newTodo.Id}", newTodo );
 } );
 
-app.MapPut( "/todo/{id}", async ( TodoService todos, string id, Todo todo, CancellationToken cancellationToken ) =>
+app.MapPut( "/todo/{id}", async ( TodoService todos, int id, Todo todo, CancellationToken cancellationToken ) =>
 {
-    if ( await todos.UpdateTodoAsync( int.Parse( id, CultureInfo.InvariantCulture ), todo, cancellationToken ) )
+    if ( id != todo.Id )
+    {
+        return Results.BadRequest( "The ID in the URL does not match the ID in the request body." );
+    }
+
+    if ( await todos.UpdateTodoAsync( todo, cancellationToken ) )
     {
         return Results.NoContent();
 
@@ -64,9 +69,9 @@ app.MapPut( "/todo/{id}", async ( TodoService todos, string id, Todo todo, Cance
     }
 } );
 
-app.MapDelete( "/todo/{id}", async ( TodoService todos, string id, CancellationToken cancellationToken ) =>
+app.MapDelete( "/todo/{id}", async ( TodoService todos, int id, CancellationToken cancellationToken ) =>
 {
-    if ( await todos.DeleteTodoAsync( int.Parse( id, CultureInfo.InvariantCulture ), cancellationToken ) )
+    if ( await todos.DeleteTodoAsync( id, cancellationToken ) )
     {
         return Results.NoContent();
 

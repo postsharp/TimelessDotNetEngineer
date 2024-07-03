@@ -1,6 +1,7 @@
 ﻿using Metalama.Patterns.Caching;
 using Metalama.Patterns.Caching.Aspects;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using TodoList.ApiService.Model;
 
 namespace TodoList.ApiService.Services;
@@ -31,10 +32,10 @@ public partial class TodoService( ApplicationDbContext db )
     }
     // [<endsnippet ImperativeInvalidation>]
 
-    [InvalidateCache( nameof( this.GetTodosAsync ), nameof( this.GetTodoAsync ) )]
-    public async Task<bool> UpdateTodoAsync( int id, Todo todo, CancellationToken cancellationToken = default )
+    [InvalidateCache( nameof( this.GetTodosAsync ) )]
+    public async Task<bool> UpdateTodoAsync( Todo todo, CancellationToken cancellationToken = default )
     {
-        var existingTodo = await this.GetTodoAsync( id, cancellationToken );
+        var existingTodo = await this.GetTodoAsync( todo.Id, cancellationToken );
 
         if ( existingTodo is null )
         {
@@ -45,6 +46,8 @@ public partial class TodoService( ApplicationDbContext db )
         existingTodo.Title = todo.Title;
         db.Todos.Update( existingTodo );
         await db.SaveChangesAsync( cancellationToken );
+
+        await this._cachingService.InvalidateAsync( this.GetTodoAsync, todo.Id, cancellationToken );
 
         return true;
     }
