@@ -1,14 +1,14 @@
 ﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
 
-namespace LoggingWithInterpolation.WithMetalama;
+namespace SerilogInAspNetCore;
 
 #pragma warning disable CS8618
 
 // [<snippet body>]
 using Metalama.Extensions.DependencyInjection;
 using Metalama.Framework.Aspects;
-using Metalama.Framework.Code.SyntaxBuilders;
 using Microsoft.Extensions.Logging;
+using System.Text;
 
 public class LogAttribute : OverrideMethodAspect
 {
@@ -17,21 +17,18 @@ public class LogAttribute : OverrideMethodAspect
 
     public override dynamic? OverrideMethod()
     {
-        // LogInformation can't be called as an extension method here,
-        // because Metalama uses the dynamic type to represent run-time values
-        // and dynamic is not compatible with extension methods.
-        LoggingExtensions.LogInformation( this._logger, BuildInterpolatedString().ToValue() );
+        this._logger.LogTrace( BuildFormatString().ToString(), (object[]) meta.Target.Parameters.ToValueArray() );
 
         return meta.Proceed();
     }
 
     [CompileTime]
-    private static InterpolatedStringBuilder BuildInterpolatedString()
+    private static StringBuilder BuildFormatString()
     {
-        var stringBuilder = new InterpolatedStringBuilder();
+        var stringBuilder = new StringBuilder();
 
         // Include the type and method name.
-        stringBuilder.AddText( $"{meta.Target.Type}.{meta.Target.Method.Name}(" );
+        stringBuilder.Append( $"{meta.Target.Type}.{meta.Target.Method.Name}(" );
 
         var first = true;
 
@@ -40,20 +37,17 @@ public class LogAttribute : OverrideMethodAspect
         {
             if ( !first )
             {
-                stringBuilder.AddText( ", " );
+                stringBuilder.Append( ", " );
             }
 
-            stringBuilder.AddText( $"{parameter.Name}: " );
-
-            stringBuilder.AddExpression( parameter.Value );
+            stringBuilder.Append( $"{parameter.Name}: {{{parameter.Name}}}" );
 
             first = false;
         }
 
-        stringBuilder.AddText( ") started." );
+        stringBuilder.Append( ") started." );
 
         return stringBuilder;
     }
 }
-
 // [<endsnippet body>]
