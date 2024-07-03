@@ -1,5 +1,7 @@
+using Metalama.Patterns.Caching.Backends.Redis;
+using Metalama.Patterns.Caching.Building;
+using StackExchange.Redis;
 using System.Globalization;
-using TodoList.ApiService.Extensions;
 using TodoList.ApiService.Model;
 using TodoList.ApiService.Services;
 
@@ -10,7 +12,13 @@ builder.AddServiceDefaults();
 
 // [<snippet ApiCacheConfiguration>]
 // Add Metalama Caching with Redis.
-builder.AddDistributedMetalamaCaching( "cache", "todolist-api" );
+builder.AddRedisClient( "cache" );
+
+builder.Services.AddMetalamaCaching( caching => caching.WithBackend( backend =>
+{
+    var redisConnectionMultiplexer = backend.ServiceProvider!.GetRequiredService<IConnectionMultiplexer>();
+    return backend.Redis( new( redisConnectionMultiplexer, "todolist-api" ) );
+} ) );
 // [<endsnippet ApiCacheConfiguration>]
 
 // Add services to the container.
