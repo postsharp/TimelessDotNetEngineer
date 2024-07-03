@@ -6,7 +6,7 @@ namespace TodoList.ApiService.Extensions;
 
 public static class Extensions
 {
-    // [<snippet CacheConfiguration>]
+    // [<snippet MetalamaCacheConfiguration>]
     public static IHostApplicationBuilder AddDistributedMetalamaCaching(this IHostApplicationBuilder builder, string connectionName, string? keyPrefix = null)
     {
         builder.AddRedisClient(connectionName);
@@ -19,5 +19,5 @@ public static class Extensions
 
         return builder;
     }
-    // [<snippet CacheConfiguration>]
+    // [<snippet MetalamaCacheConfiguration>]
 }

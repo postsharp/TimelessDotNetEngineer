@@ -8,10 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add service defaults & Aspire components.
 builder.AddServiceDefaults();
 
-// [<snippet CacheConfiguration>]
+// [<snippet ApiCacheConfiguration>]
 // Add Metalama Caching with Redis.
 builder.AddDistributedMetalamaCaching( "cache", "todolist-api" );
-// [<endsnippet CacheConfiguration>]
+// [<endsnippet ApiCacheConfiguration>]
 
 // Add services to the container.
 builder.AddSqlServerDbContext<ApplicationDbContext>( "database" );

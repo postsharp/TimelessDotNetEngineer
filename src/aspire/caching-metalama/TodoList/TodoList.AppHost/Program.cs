@@ -6,7 +6,7 @@ var db = builder
     .AddSqlServer( "dbengine" )
     .AddDatabase( "database" );
 
-// [<snippet CacheConfiguration>]
+// [<snippet AppHostCacheConfiguration>]
 var cache = builder
     .AddRedis( "cache" );
 
@@ -14,7 +14,7 @@ var api = builder
     .AddProject<Projects.TodoList_Api>( "todolist-api" )
     .WithReference( db )
     .WithReference( cache );
-// [<endsnippet CacheConfiguration>]
+// [<endsnippet AppHostCacheConfiguration>]
 
 builder.AddProject<Projects.TodoList_Web>("todolist-web" )
     .WithExternalHttpEndpoints()
