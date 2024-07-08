@@ -10,16 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add service defaults & Aspire components.
 builder.AddServiceDefaults();
 
-// [<snippet ApiCacheConfiguration>]
-// Add Metalama Caching with Redis.
+// [<snippet AddRedis>]
 builder.AddRedisClient( "cache" );
+// [<endsnippet AddRedis>]
 
-builder.Services.AddMetalamaCaching( caching => caching.WithBackend( backend =>
-{
-    var redisConnectionMultiplexer = backend.ServiceProvider!.GetRequiredService<IConnectionMultiplexer>();
-    return backend.Redis( new( redisConnectionMultiplexer, "todolist-api" ) );
-} ) );
-// [<endsnippet ApiCacheConfiguration>]
+// [<snippet AddMetalamaCaching>]
+builder.Services.AddMetalamaCaching( 
+    caching => caching.WithBackend( backend => backend.Redis(  )) );
+// [<endsnippet AddMetalamaCaching>]
 
 // Add services to the container.
 builder.AddSqlServerDbContext<ApplicationDbContext>( "database" );
