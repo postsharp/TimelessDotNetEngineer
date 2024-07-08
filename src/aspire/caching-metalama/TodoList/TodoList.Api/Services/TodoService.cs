@@ -10,11 +10,11 @@ public partial class TodoService( ApplicationDbContext db )
 {
     // [<snippet Caching>]
     [Cache]
-    public async Task<IEnumerable<Todo>> GetTodosAsync( [NotCacheKey] CancellationToken cancellationToken = default )
+    public async Task<IEnumerable<Todo>> GetTodosAsync( CancellationToken cancellationToken = default )
         => await db.Todos.ToListAsync( cancellationToken );
 
     [Cache]
-    public async Task<Todo?> GetTodoAsync( int id, [NotCacheKey] CancellationToken cancellationToken = default )
+    public async Task<Todo?> GetTodoAsync( int id, CancellationToken cancellationToken = default )
         => await db.Todos.FindAsync( id );
     // [<endsnippet Caching>]
 
