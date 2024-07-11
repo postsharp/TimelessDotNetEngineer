@@ -11,9 +11,6 @@
         <memento:NotValueConverter x:Key="NotConverter" />
         <memento:SpeciesConverter x:Key="SpeciesConverter" />
     </Window.Resources>
-    <Window.InputBindings>
-        <KeyBinding Key="Z" Modifiers="Control" Command="{Binding UndoCommand}" />
-    </Window.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
