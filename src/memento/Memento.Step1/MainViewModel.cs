@@ -7,11 +7,13 @@ namespace Memento;
 
 public partial class MainViewModel : ObservableRecipient, IOriginator
 {
+    // [<snippet DataFields>]
     private readonly ICaretaker _caretaker;
     private readonly IDataSource _dataSource;
     private bool _isEditing;
     private ItemViewModel? _currentItem;
     private ImmutableList<ItemViewModel> _items = ImmutableList<ItemViewModel>.Empty;
+    // [<endsnippet DataFields>]
 
     public IRelayCommand NewCommand { get; }
 
@@ -25,11 +27,23 @@ public partial class MainViewModel : ObservableRecipient, IOriginator
 
     public IRelayCommand UndoCommand { get; }
 
-    public bool IsEditing { get =>  this._isEditing; set => this.SetProperty( ref this._isEditing, value, true ); }
+    public bool IsEditing 
+    { 
+        get =>  this._isEditing; 
+        set => this.SetProperty( ref this._isEditing, value, true ); 
+    }
 
-    public ImmutableList<ItemViewModel> Items { get => this._items; private set => this.SetProperty( ref this._items, value, true ); }
+    public ImmutableList<ItemViewModel> Items 
+    { 
+        get => this._items; 
+        private set => this.SetProperty( ref this._items, value, true ); 
+    }
 
-    public ItemViewModel? CurrentItem { get => this._currentItem; set => this.SetProperty( ref this._currentItem, value, true ); }
+    public ItemViewModel? CurrentItem 
+    { 
+        get => this._currentItem; 
+        set => this.SetProperty( ref this._currentItem, value, true ); 
+    }
 
     public MainViewModel( IDataSource dataSource, ICaretaker caretaker )
     {
@@ -148,6 +162,7 @@ public partial class MainViewModel : ObservableRecipient, IOriginator
         return this.IsEditing;
     }
 
+    // [<snippet ExecuteUndo>]
     private void ExecuteUndo()
     {
         this.IsEditing = false;
@@ -180,6 +195,7 @@ public partial class MainViewModel : ObservableRecipient, IOriginator
 
         this.UndoCommand.NotifyCanExecuteChanged();
     }
+    // [<endsnippet ExecuteUndo>]
 
     private bool CanExecuteUndo()
     {
@@ -203,6 +219,7 @@ public partial class MainViewModel : ObservableRecipient, IOriginator
         this.Items = m.Items;
     }
 
+    // [<snippet Memento>]
     private class Memento : IMemento
     {
         public IOriginator Originator { get; }
@@ -210,7 +227,11 @@ public partial class MainViewModel : ObservableRecipient, IOriginator
         public ItemViewModel? CurrentItem { get; }
         public ImmutableList<ItemViewModel> Items { get; }
 
-        public Memento( MainViewModel originator, bool isEditing, ItemViewModel? currentItem, ImmutableList<ItemViewModel> items )
+        public Memento( 
+            MainViewModel originator, 
+            bool isEditing, 
+            ItemViewModel? currentItem, 
+            ImmutableList<ItemViewModel> items )
         {
             this.Originator = originator;
             this.IsEditing = isEditing;
@@ -218,4 +239,5 @@ public partial class MainViewModel : ObservableRecipient, IOriginator
             this.Items = items;
         }
     }
+    // [<endsnippet Memento>]
 }

@@ -2,6 +2,7 @@
 
 namespace Memento;
 
+// [<snippet Type>]
 public partial class ItemViewModel : ObservableRecipient
 {
     private string? _name;
@@ -14,3 +15,4 @@ public partial class ItemViewModel : ObservableRecipient
 
     public DateTime DateAdded { get => this._dateAdded; set => this.SetProperty( ref this._dateAdded, value, true ); }
 }
+// [<endsnippet Type>]

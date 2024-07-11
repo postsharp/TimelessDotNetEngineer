@@ -1,16 +1,20 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace Memento;
 
+#pragma warning disable IDE0032 // Use auto property
+
 public partial class MainViewModel : ObservableRecipient
 {
+    // [<snippet DataFields>]
     private readonly IDataSource _dataSource;
     private bool _isEditing;
     private ItemViewModel? _currentItem;
-    private ImmutableList<ItemViewModel> _items = ImmutableList<ItemViewModel>.Empty;
+    private readonly ObservableCollection<ItemViewModel> _items = new ObservableCollection<ItemViewModel>();
+    // [<endsnippet DataFields>]
 
     public IRelayCommand NewCommand { get; }
 
@@ -22,11 +26,19 @@ public partial class MainViewModel : ObservableRecipient
 
     public IRelayCommand CancelCommand { get; }
 
-    public bool IsEditing { get =>  this._isEditing; set => this.SetProperty( ref this._isEditing, value, true ); }
+    public bool IsEditing 
+    { 
+        get =>  this._isEditing; 
+        set => this.SetProperty( ref this._isEditing, value, true ); 
+    }
 
-    public ImmutableList<ItemViewModel> Items { get => this._items; private set => this.SetProperty( ref this._items, value, true ); }
+    public ObservableCollection<ItemViewModel> Items => this._items;
 
-    public ItemViewModel? CurrentItem { get => this._currentItem; set => this.SetProperty( ref this._currentItem, value, true ); }
+    public ItemViewModel? CurrentItem 
+    { 
+        get => this._currentItem; 
+        set => this.SetProperty( ref this._currentItem, value, true ); 
+    }
 
     public MainViewModel( IDataSource dataSource )
     {
@@ -59,7 +71,7 @@ public partial class MainViewModel : ObservableRecipient
 
     private void ExecuteNew()
     {
-        this.Items = this.Items.Add( 
+        this.Items.Add( 
             new ItemViewModel()
             {
                 Name = this._dataSource.GetNewName(),
@@ -78,7 +90,7 @@ public partial class MainViewModel : ObservableRecipient
         if ( this.CurrentItem != null )
         {
             var index = this.Items.IndexOf( this.CurrentItem );
-            this.Items = this.Items.RemoveAt( index );
+            this.Items.RemoveAt( index );
 
             if (index < this.Items.Count )
             {

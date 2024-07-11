@@ -26,11 +26,23 @@ public partial class MainViewModel : ObservableRecipient
 
     public IRelayCommand UndoCommand { get; }
 
-    public bool IsEditing { get =>  this._isEditing; set => this.SetProperty( ref this._isEditing, value, true ); }
+    public bool IsEditing 
+    { 
+        get =>  this._isEditing; 
+        set => this.SetProperty( ref this._isEditing, value, true ); 
+    }
 
-    public ImmutableList<ItemViewModel> Items { get => this._items; private set => this.SetProperty( ref this._items, value, true ); }
+    public ImmutableList<ItemViewModel> Items 
+    { 
+        get => this._items; 
+        private set => this.SetProperty( ref this._items, value, true ); 
+    }
 
-    public ItemViewModel? CurrentItem { get => this._currentItem; set => this.SetProperty( ref this._currentItem, value, true ); }
+    public ItemViewModel? CurrentItem 
+    { 
+        get => this._currentItem; 
+        set => this.SetProperty( ref this._currentItem, value, true ); 
+    }
 
     public MainViewModel( IDataSource dataSource, ICaretaker caretaker )
     {
