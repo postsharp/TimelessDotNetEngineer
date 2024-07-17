@@ -27,7 +27,7 @@ builder.Services.AddSerilog();
 var app = builder.Build();
 
 #elif SERILOG_REQUEST_LOGGING
-// [<snippet RequestLogging>
+// [<snippet RequestLogging>]
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .MinimumLevel.Verbose()
@@ -40,7 +40,7 @@ builder.Services.AddSerilog();
 var app = builder.Build();
 app.UseSerilogRequestLogging();
 
-// [<endsnippet RequestLogging>
+// [<endsnippet RequestLogging>]
 #elif SCOPE_CONFIGURATION 
 // [<snippet ScopeConfiguration>]
 Log.Logger = new LoggerConfiguration()
