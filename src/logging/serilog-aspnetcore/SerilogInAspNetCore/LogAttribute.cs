@@ -16,9 +16,18 @@ public class LogAttribute : OverrideMethodAspect
 
     public override dynamic? OverrideMethod()
     {
-        _logger.LogDebug( BuildFormatString() + " started", (object[])meta.Target.Parameters.ToValueArray() );
+        var formatString = BuildFormatString();
 
-        return meta.Proceed();
+        try
+        {
+            _logger.LogDebug( formatString + " started.", (object[])meta.Target.Parameters.ToValueArray() );
+
+            return meta.Proceed();
+        }
+        finally
+        {
+            _logger.LogDebug( formatString + " finished.", (object[])meta.Target.Parameters.ToValueArray() );
+        }
     }
 
     [CompileTime]
