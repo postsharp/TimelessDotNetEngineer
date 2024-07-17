@@ -18,11 +18,11 @@ public class WeatherForecastController : ControllerBase
     public IEnumerable<WeatherForecast> Get( int days = 5 )
     {
         // [<snippet BeginScope>]
-        using ( this._logger.BeginScope( "Getting weather forecast" ) )
+        using ( this._logger.BeginScope( "Getting weather forecast for {ScopeDays} days", days ) )
         // [<endsnippet BeginScope>]
         {
             // [<snippet PushProperty>]
-            using ( LogContext.PushProperty( "ControllerName", nameof(WeatherForecastController) ) )
+            using ( LogContext.PushProperty( "ClientHost", HttpContext.Request.Host ) )
             // [<endsnippet PushProperty>]
             {
                 var today = DateOnly.FromDateTime( DateTime.Today );
