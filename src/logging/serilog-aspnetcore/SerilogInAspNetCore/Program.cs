@@ -26,7 +26,7 @@ var app = builder.Build();
 // [<snippet RequestLogging>]
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
-    .MinimumLevel.Debug()
+    .MinimumLevel.Verbose()
     .MinimumLevel.Override( "Microsoft.AspNetCore.Hosting", LogEventLevel.Warning )
     .MinimumLevel.Override( "Microsoft.AspNetCore.Mvc", LogEventLevel.Warning )
     .MinimumLevel.Override( "Microsoft.AspNetCore.Routing", LogEventLevel.Warning )

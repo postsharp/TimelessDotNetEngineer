@@ -1,5 +1,7 @@
 ﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
 
+using Metalama.Framework.Code;
+
 namespace SerilogInAspNetCore;
 
 #pragma warning disable CS8618
@@ -8,7 +10,6 @@ namespace SerilogInAspNetCore;
 using Metalama.Extensions.DependencyInjection;
 using Metalama.Framework.Aspects;
 using Microsoft.Extensions.Logging;
-using System.Text;
 
 public class LogAttribute : OverrideMethodAspect
 {
@@ -17,37 +18,19 @@ public class LogAttribute : OverrideMethodAspect
 
     public override dynamic? OverrideMethod()
     {
-        this._logger.LogTrace( BuildFormatString().ToString(), (object[]) meta.Target.Parameters.ToValueArray() );
+        this._logger.LogDebug( BuildFormatString() + " started", (object[]) meta.Target.Parameters.ToValueArray() );
 
         return meta.Proceed();
     }
 
     [CompileTime]
-    private static StringBuilder BuildFormatString()
+    private static string BuildFormatString()
     {
-        var stringBuilder = new StringBuilder();
-
-        // Include the type and method name.
-        stringBuilder.Append( $"{meta.Target.Type}.{meta.Target.Method.Name}(" );
-
-        var first = true;
-
-        // Include each parameter.
-        foreach ( var parameter in meta.Target.Parameters )
-        {
-            if ( !first )
-            {
-                stringBuilder.Append( ", " );
-            }
-
-            stringBuilder.Append( $"{parameter.Name}: {{{parameter.Name}}}" );
-
-            first = false;
-        }
-
-        stringBuilder.Append( ") started." );
-
-        return stringBuilder;
+        var parameters = meta.Target.Parameters
+            .Where(x => x.RefKind != RefKind.Out)
+            .Select(p => $"{p.Name}: {{{p.Name}}}");
+        
+        return $"{meta.Target.Type}.{meta.Target.Method.Name}({string.Join(", ", parameters)})";
     }
 }
 // [<endsnippet body>]
