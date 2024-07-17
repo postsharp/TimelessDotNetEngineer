@@ -1,6 +1,7 @@
 // Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
 
 #define  SCOPE_CONFIGURATION
+
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
@@ -18,7 +19,15 @@ builder.Services.AddSwaggerGen();
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateLogger();
+
+builder.Services.AddSerilog();
+
+// [<endsnippet AddSerilog>]
+
+var app = builder.Build();
+
 #elif SERILOG_REQUEST_LOGGING
+// [<snippet RequestLogging>
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .MinimumLevel.Verbose()
@@ -27,8 +36,12 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
     .CreateLogger();
 
-#elif SCOPE_CONFIGURATION 
+builder.Services.AddSerilog();
+var app = builder.Build();
+app.UseSerilogRequestLogging();
 
+// [<endsnippet RequestLogging>
+#elif SCOPE_CONFIGURATION 
 // [<snippet ScopeConfiguration>]
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
@@ -40,20 +53,12 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override( "Microsoft.AspNetCore.Mvc", LogEventLevel.Warning )
     .MinimumLevel.Override( "Microsoft.AspNetCore.Routing", LogEventLevel.Warning )
     .CreateLogger();
-#endif
 
 builder.Services.AddSerilog();
-// [<endsnippet AddSerilog>]
 
 var app = builder.Build();
 
-#if SERILOG_REQUEST_LOGGING
-// [<snippet RequestLogging>]
-app.UseSerilogRequestLogging();
-// [<endsnippet RequestLogging>]
 #endif
-
-
 
 
 
