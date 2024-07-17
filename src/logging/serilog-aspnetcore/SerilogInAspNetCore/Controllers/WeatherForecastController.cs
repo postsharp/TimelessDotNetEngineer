@@ -7,7 +7,7 @@ namespace SerilogInAspNetCore.Controllers;
 [ApiController]
 [Route( "[controller]" )]
 public class WeatherForecastController( ILogger<WeatherForecastController> logger ) : ControllerBase
-// [<end PullDependency>]
+// [<endsnippet PullDependency>]
 {
     [HttpGet( Name = "GetWeatherForecast" )]
     public IEnumerable<WeatherForecast> Get( int days = 5 )
