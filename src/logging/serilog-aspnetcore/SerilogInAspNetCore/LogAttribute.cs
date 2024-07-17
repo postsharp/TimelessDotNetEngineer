@@ -1,6 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
-
-using Metalama.Framework.Code;
+﻿using Metalama.Framework.Code;
 
 namespace SerilogInAspNetCore;
 
@@ -18,7 +16,7 @@ public class LogAttribute : OverrideMethodAspect
 
     public override dynamic? OverrideMethod()
     {
-        this._logger.LogDebug( BuildFormatString() + " started", (object[]) meta.Target.Parameters.ToValueArray() );
+        _logger.LogDebug( BuildFormatString() + " started", (object[])meta.Target.Parameters.ToValueArray() );
 
         return meta.Proceed();
     }
@@ -27,10 +25,11 @@ public class LogAttribute : OverrideMethodAspect
     private static string BuildFormatString()
     {
         var parameters = meta.Target.Parameters
-            .Where(x => x.RefKind != RefKind.Out)
-            .Select(p => $"{p.Name}: {{{p.Name}}}");
-        
-        return $"{meta.Target.Type}.{meta.Target.Method.Name}({string.Join(", ", parameters)})";
+            .Where( x => x.RefKind != RefKind.Out )
+            .Select( p => $"{p.Name}: {{{p.Name}}}" );
+
+        return $"{meta.Target.Type}.{meta.Target.Method.Name}({string.Join( ", ", parameters )})";
     }
 }
+
 // [<endsnippet body>]

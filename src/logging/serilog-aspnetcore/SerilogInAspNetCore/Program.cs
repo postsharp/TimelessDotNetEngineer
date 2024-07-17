@@ -1,6 +1,4 @@
-// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
-
-#define  SCOPE_CONFIGURATION
+#define SCOPE_CONFIGURATION
 
 using Serilog;
 using Serilog.Events;
@@ -41,12 +39,13 @@ var app = builder.Build();
 app.UseSerilogRequestLogging();
 
 // [<endsnippet RequestLogging>]
-#elif SCOPE_CONFIGURATION 
+#elif SCOPE_CONFIGURATION
+
 // [<snippet ScopeConfiguration>]
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
-    .WriteTo.Console(
-        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties}{NewLine}{Exception}")
+    .WriteTo.Console( outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties}{NewLine}{Exception}" )
+
 // [<endsnippet ScopeConfiguration>]    
     .MinimumLevel.Verbose()
     .MinimumLevel.Override( "Microsoft.AspNetCore.Hosting", LogEventLevel.Warning )
@@ -60,12 +59,8 @@ var app = builder.Build();
 
 #endif
 
-
-
-
-
 // Configure the HTTP request pipeline.
-if ( app.Environment.IsDevelopment() )
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
