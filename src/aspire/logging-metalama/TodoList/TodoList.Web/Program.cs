@@ -1,5 +1,6 @@
 using TodoList.Web;
 using TodoList.Web.Components;
+using TodoList.Web.Components.Pages;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddHttpClient<TodoApiClient>( client => client.BaseAddress = new( "https+http://todolist-api" ) );
+builder.Services.AddSingleton<Home>();
 
 var app = builder.Build();
 

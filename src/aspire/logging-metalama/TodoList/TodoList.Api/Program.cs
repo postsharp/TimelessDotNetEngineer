@@ -1,7 +1,5 @@
-using Metalama.Patterns.Caching.Backends.Redis;
-using Metalama.Patterns.Caching.Building;
-using StackExchange.Redis;
-using System.Globalization;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using TodoList.ApiService.Model;
 using TodoList.ApiService.Services;
 
@@ -10,20 +8,23 @@ var builder = WebApplication.CreateBuilder(args);
 // Add service defaults & Aspire components.
 builder.AddServiceDefaults();
 
-// [<snippet AddRedis>]
-builder.AddRedisClient( "cache" );
-// [<endsnippet AddRedis>]
-
-// [<snippet AddMetalamaCaching>]
-builder.Services.AddMetalamaCaching( 
-    caching => caching.WithBackend( backend => backend.Redis(  )) );
-// [<endsnippet AddMetalamaCaching>]
-
 // Add services to the container.
-builder.AddSqlServerDbContext<ApplicationDbContext>( "database" );
+
+// Keep the database connection open for the lifetime of the application, so the in-memory database is not lost after each operation.
+// https://github.com/dotnet/efcore/issues/9842#issuecomment-1634427346
+using var dbConnection = new SqliteConnection( "Data Source=:memory:" );
+await dbConnection.OpenAsync();
+builder.Services.AddDbContext<ApplicationDbContext>( dbOptions => dbOptions.UseSqlite( dbConnection ) );
+
 builder.Services.AddScoped<TodoService>();
 
 var app = builder.Build();
+
+using ( var scope = app.Services.CreateScope() )
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database;
+    db.EnsureCreated();
+}
 
 app.MapDefaultEndpoints();
 

@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-// [<snippet CacheKey>]
 public partial class Todo
 {
     public int Id { get; set; }
@@ -9,5 +8,6 @@ public partial class Todo
 
     [Required]
     public string Title { get; set; } = null!;
+
+    public override string ToString() => $"\"{this.Title}\"";
 }
-// [<endsnippet CacheKey>]

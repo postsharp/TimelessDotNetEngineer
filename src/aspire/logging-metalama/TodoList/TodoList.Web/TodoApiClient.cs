@@ -1,12 +1,12 @@
 ﻿namespace TodoList.Web;
 
-public class TodoApiClient( HttpClient httpClient )
+public partial class TodoApiClient( HttpClient httpClient )
 {
-    public Task<Todo[]?> GetTodosAsync( CancellationToken cancellationToken = default )
-        => httpClient.GetFromJsonAsync<Todo[]>( "/todo", cancellationToken );
+    public async Task<Todo[]?> GetTodosAsync( CancellationToken cancellationToken = default )
+        => await httpClient.GetFromJsonAsync<Todo[]>( "/todo", cancellationToken );
 
-    public Task<Todo?> GetTodoAsync( int id, CancellationToken cancellationToken = default )
-        => httpClient.GetFromJsonAsync<Todo>( $"/todo/{id}", cancellationToken );
+    public async Task<Todo?> GetTodoAsync( int id, CancellationToken cancellationToken = default )
+        => await httpClient.GetFromJsonAsync<Todo>( $"/todo/{id}", cancellationToken );
 
     public async Task CreateTodoAsync( Todo todo, CancellationToken cancellationToken = default )
     {

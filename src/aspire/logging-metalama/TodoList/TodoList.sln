@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35004.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.AppHost", "TodoList.AppHost\TodoList.AppHost.csproj", "{C6FB9F40-7DB1-409A-A8C6-ADF89F016CDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.AppHost", "TodoList.AppHost\TodoList.AppHost.csproj", "{C6FB9F40-7DB1-409A-A8C6-ADF89F016CDF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.ServiceDefaults", "TodoList.ServiceDefaults\TodoList.ServiceDefaults.csproj", "{A6319A72-71A1-448C-8B48-709D62AF224D}"
 EndProject
@@ -10,34 +10,53 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Web", "TodoList.We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Api", "TodoList.Api\TodoList.Api.csproj", "{84269CAC-7309-4DA3-A697-531BF569827D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.DataAccess", "TodoList.DataAccess\TodoList.DataAccess.csproj", "{7C6F71FC-E1BA-469F-AF58-271A9A0ED0A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.DataAccess", "TodoList.DataAccess\TodoList.DataAccess.csproj", "{7C6F71FC-E1BA-469F-AF58-271A9A0ED0A5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Aspects", "TodoList.Aspects\TodoList.Aspects.csproj", "{3AFA095E-65D5-45A0-8344-633CBEAEB527}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		LamaDebug|Any CPU = LamaDebug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C6FB9F40-7DB1-409A-A8C6-ADF89F016CDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C6FB9F40-7DB1-409A-A8C6-ADF89F016CDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6FB9F40-7DB1-409A-A8C6-ADF89F016CDF}.LamaDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6FB9F40-7DB1-409A-A8C6-ADF89F016CDF}.LamaDebug|Any CPU.Build.0 = Debug|Any CPU
 		{C6FB9F40-7DB1-409A-A8C6-ADF89F016CDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6FB9F40-7DB1-409A-A8C6-ADF89F016CDF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A6319A72-71A1-448C-8B48-709D62AF224D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A6319A72-71A1-448C-8B48-709D62AF224D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6319A72-71A1-448C-8B48-709D62AF224D}.LamaDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6319A72-71A1-448C-8B48-709D62AF224D}.LamaDebug|Any CPU.Build.0 = Debug|Any CPU
 		{A6319A72-71A1-448C-8B48-709D62AF224D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6319A72-71A1-448C-8B48-709D62AF224D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5FAE4E8E-3445-4890-AAB0-C436F918EA84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5FAE4E8E-3445-4890-AAB0-C436F918EA84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FAE4E8E-3445-4890-AAB0-C436F918EA84}.LamaDebug|Any CPU.ActiveCfg = LamaDebug|Any CPU
+		{5FAE4E8E-3445-4890-AAB0-C436F918EA84}.LamaDebug|Any CPU.Build.0 = LamaDebug|Any CPU
 		{5FAE4E8E-3445-4890-AAB0-C436F918EA84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FAE4E8E-3445-4890-AAB0-C436F918EA84}.Release|Any CPU.Build.0 = Release|Any CPU
 		{84269CAC-7309-4DA3-A697-531BF569827D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{84269CAC-7309-4DA3-A697-531BF569827D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84269CAC-7309-4DA3-A697-531BF569827D}.LamaDebug|Any CPU.ActiveCfg = LamaDebug|Any CPU
+		{84269CAC-7309-4DA3-A697-531BF569827D}.LamaDebug|Any CPU.Build.0 = LamaDebug|Any CPU
 		{84269CAC-7309-4DA3-A697-531BF569827D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84269CAC-7309-4DA3-A697-531BF569827D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7C6F71FC-E1BA-469F-AF58-271A9A0ED0A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7C6F71FC-E1BA-469F-AF58-271A9A0ED0A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C6F71FC-E1BA-469F-AF58-271A9A0ED0A5}.LamaDebug|Any CPU.ActiveCfg = LamaDebug|Any CPU
+		{7C6F71FC-E1BA-469F-AF58-271A9A0ED0A5}.LamaDebug|Any CPU.Build.0 = LamaDebug|Any CPU
 		{7C6F71FC-E1BA-469F-AF58-271A9A0ED0A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C6F71FC-E1BA-469F-AF58-271A9A0ED0A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AFA095E-65D5-45A0-8344-633CBEAEB527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AFA095E-65D5-45A0-8344-633CBEAEB527}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AFA095E-65D5-45A0-8344-633CBEAEB527}.LamaDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AFA095E-65D5-45A0-8344-633CBEAEB527}.LamaDebug|Any CPU.Build.0 = Debug|Any CPU
+		{3AFA095E-65D5-45A0-8344-633CBEAEB527}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AFA095E-65D5-45A0-8344-633CBEAEB527}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

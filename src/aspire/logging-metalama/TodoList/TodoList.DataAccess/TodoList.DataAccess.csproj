@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TodoList.Aspects\TodoList.Aspects.csproj" />
+  </ItemGroup>
+
 </Project>

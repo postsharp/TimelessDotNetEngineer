@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TodoList.Aspects\TodoList.Aspects.csproj" />
     <ProjectReference Include="..\TodoList.DataAccess\TodoList.DataAccess.csproj" />
     <ProjectReference Include="..\TodoList.ServiceDefaults\TodoList.ServiceDefaults.csproj" />
   </ItemGroup>

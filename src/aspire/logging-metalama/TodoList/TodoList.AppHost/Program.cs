@@ -2,19 +2,7 @@
 
 var builder = DistributedApplication.CreateBuilder( args );
 
-var db = builder
-    .AddSqlServer( "dbengine" )
-    .AddDatabase( "database" );
-
-// [<snippet AppHostCacheConfiguration>]
-var cache = builder
-    .AddRedis( "cache" );
-
-var api = builder
-    .AddProject<Projects.TodoList_Api>( "todolist-api" )
-    .WithReference( db )
-    .WithReference( cache );
-// [<endsnippet AppHostCacheConfiguration>]
+var api = builder.AddProject<Projects.TodoList_Api>( "todolist-api" );
 
 builder.AddProject<Projects.TodoList_Web>("todolist-web" )
     .WithExternalHttpEndpoints()

@@ -60,31 +60,31 @@
         todos = await TodoApi.GetTodosAsync();
     }
 
-    public string ItemClass(Todo todo)
+    private string ItemClass(Todo todo)
     {
         return todo.IsCompleted ? "item-completed" : "";
     }
 
-    public async Task ItemsChangedAsync()
+    private async Task ItemsChangedAsync()
     {
         todos = await TodoApi.GetTodosAsync();
         StateHasChanged();
     }
 
-    public async void Delete(Todo todo)
+    private async void Delete(Todo todo)
     {
         await TodoApi.DeleteTodoAsync(todo.Id);
         await this.ItemsChangedAsync();
     }
 
-    public async void Complete(Todo todo)
+    private async void Complete(Todo todo)
     {
         todo.IsCompleted = true;
         await TodoApi.UpdateTodoAsync(todo);
         await this.ItemsChangedAsync();
     }
 
-    public async void Uncomplete(Todo todo)
+    private async void Uncomplete(Todo todo)
     {
         todo.IsCompleted = false;
         await TodoApi.UpdateTodoAsync(todo);

@@ -7,18 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.2" />
-	<PackageReference Include="Aspire.StackExchange.Redis" Version="8.0.2" />
     <PackageReference Include="Azure.Identity" Version="1.12.0" />
-	<PackageReference Include="Metalama.Patterns.Caching.Aspects" Version="2024.2.14-rc" />
-	<PackageReference Include="Metalama.Patterns.Caching.Backends.Redis" Version="2024.2.14-rc" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 	
   <ItemGroup>
+    <ProjectReference Include="..\TodoList.Aspects\TodoList.Aspects.csproj" />
     <ProjectReference Include="..\TodoList.DataAccess\TodoList.DataAccess.csproj" />
     <ProjectReference Include="..\TodoList.ServiceDefaults\TodoList.ServiceDefaults.csproj" />
   </ItemGroup>

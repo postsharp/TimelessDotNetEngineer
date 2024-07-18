@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace TodoList.ApiService.Migrations
+namespace TodoList.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,6 +16,7 @@ namespace TodoList.ApiService.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    IsCompleted = table.Column<bool>(type: "INTEGER", nullable: false),
                     Title = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
