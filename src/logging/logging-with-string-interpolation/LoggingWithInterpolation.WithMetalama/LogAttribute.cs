@@ -17,10 +17,10 @@ public class LogAttribute : OverrideMethodAspect
 
     public override dynamic? OverrideMethod()
     {
-        // LogInformation can't be called as an extension method here,
+        // LogTrace can't be called as an extension method here,
         // because Metalama uses the dynamic type to represent run-time values
         // and dynamic is not compatible with extension methods.
-        LoggingExtensions.LogInformation( this._logger, BuildInterpolatedString().ToValue() );
+        LoggingExtensions.LogTrace( this._logger, BuildInterpolatedString().ToValue() );
 
         return meta.Proceed();
     }
@@ -55,5 +55,4 @@ public class LogAttribute : OverrideMethodAspect
         return stringBuilder;
     }
 }
-
 // [<endsnippet body>]
