@@ -3,6 +3,7 @@
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
+using SerilogInAspNetCore;
 
 var builder = WebApplication.CreateBuilder( args );
 
@@ -29,9 +30,9 @@ var app = builder.Build();
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .MinimumLevel.Verbose()
-    .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
-    .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
-    .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
+    .MinimumLevel.Override( "Microsoft.AspNetCore", LogEventLevel.Warning )
+    .MinimumLevel.Override( "Microsoft.Extensions.Hosting", LogEventLevel.Information )
+    .MinimumLevel.Override( "Microsoft.Hosting", LogEventLevel.Information )
     .CreateLogger();
 
 builder.Services.AddSerilog();
@@ -48,14 +49,25 @@ Log.Logger = new LoggerConfiguration()
 
 // [<endsnippet ScopeConfiguration>]    
     .MinimumLevel.Verbose()
-    .MinimumLevel.Override( "Microsoft.AspNetCore.Hosting", LogEventLevel.Warning )
-    .MinimumLevel.Override( "Microsoft.AspNetCore.Mvc", LogEventLevel.Warning )
-    .MinimumLevel.Override( "Microsoft.AspNetCore.Routing", LogEventLevel.Warning )
+    .MinimumLevel.Override( "Microsoft.AspNetCore", LogEventLevel.Warning )
+    .MinimumLevel.Override( "Microsoft.Extensions.Hosting", LogEventLevel.Information )
+    .MinimumLevel.Override( "Microsoft.Hosting", LogEventLevel.Information )
     .CreateLogger();
 
 builder.Services.AddSerilog();
 
+// [<snippet AddMiddleware1>]
+builder.Services.AddSingleton<PushPropertiesMiddleware>();
+
+// [<endsnippet AddMiddleware1>]
+
 var app = builder.Build();
+app.UseSerilogRequestLogging();
+
+// [<snippet AddMiddleware2>]
+app.UseMiddleware<PushPropertiesMiddleware>();
+
+// [<endsnippet AddMiddleware2>]
 
 #endif
 
