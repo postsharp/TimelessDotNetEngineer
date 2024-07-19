@@ -1,4 +1,6 @@
-﻿public interface IMemento
+﻿namespace Memento.Step2;
+
+public interface IMemento
 {
-    IOriginator Originator { get; }
+    IMementoable Originator { get; }
 }

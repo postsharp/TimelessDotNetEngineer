@@ -1,18 +1,19 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using NameGenerator.Generators;
 
-namespace Memento;
+namespace Memento.Step2;
 
 [Memento]
-public partial class MainViewModel : ObservableRecipient
+public sealed partial class MainViewModel : ObservableRecipient
 {
-    private readonly ICaretaker _caretaker;
-    private readonly IDataSource _dataSource;
+    private readonly ISnapshotCaretaker? _caretaker;
+    private readonly IFishGenerator _fishGenerator;
     private bool _isEditing;
-    private ItemViewModel? _currentItem;
-    private ImmutableList<ItemViewModel> _items = ImmutableList<ItemViewModel>.Empty;
+    private Fish? _currentFish;
+    private ImmutableList<Fish> _fishes = ImmutableList<Fish>.Empty;
 
     public IRelayCommand NewCommand { get; }
 
@@ -26,57 +27,60 @@ public partial class MainViewModel : ObservableRecipient
 
     public IRelayCommand UndoCommand { get; }
 
-    public bool IsEditing 
-    { 
-        get =>  this._isEditing; 
-        set => this.SetProperty( ref this._isEditing, value, true ); 
-    }
-
-    public ImmutableList<ItemViewModel> Items 
-    { 
-        get => this._items; 
-        private set => this.SetProperty( ref this._items, value, true ); 
-    }
-
-    public ItemViewModel? CurrentItem 
-    { 
-        get => this._currentItem; 
-        set => this.SetProperty( ref this._currentItem, value, true ); 
-    }
-
-    public MainViewModel( IDataSource dataSource, ICaretaker caretaker )
+    public bool IsEditing
     {
-        this._dataSource = dataSource;
-        this._caretaker = caretaker;
+        get => _isEditing;
+        set => SetProperty( ref _isEditing, value, true );
+    }
 
-        this.NewCommand = new RelayCommand(this.ExecuteNew, this.CanExecuteNew);
-        this.RemoveCommand = new RelayCommand( this.ExecuteRemove, this.CanExecuteRemove );
-        this.EditCommand = new RelayCommand( this.ExecuteEdit, this.CanExecuteEdit );
-        this.SaveCommand = new RelayCommand( this.ExecuteSave, this.CanExecuteSave );
-        this.CancelCommand = new RelayCommand( this.ExecuteCancel, this.CanExecuteCancel );
-        this.UndoCommand = new RelayCommand( this.ExecuteUndo, this.CanExecuteUndo );
+    public ImmutableList<Fish> Fishes
+    {
+        get => _fishes;
+        private set => SetProperty( ref _fishes, value, true );
+    }
+
+    public Fish? CurrentFish
+    {
+        get => _currentFish;
+        set => SetProperty( ref _currentFish, value, true );
+    }
+    
+    // Design-time.
+    public MainViewModel() : this( new FishGenerator( new RealNameGenerator()), null ) { }
+
+    public MainViewModel( IFishGenerator fishGenerator, ISnapshotCaretaker? caretaker )
+    {
+        _fishGenerator = fishGenerator;
+        _caretaker = caretaker;
+
+        NewCommand = new RelayCommand( ExecuteNew, CanExecuteNew );
+        RemoveCommand = new RelayCommand( ExecuteRemove, CanExecuteRemove );
+        EditCommand = new RelayCommand( ExecuteEdit, CanExecuteEdit );
+        SaveCommand = new RelayCommand( ExecuteSave, CanExecuteSave );
+        CancelCommand = new RelayCommand( ExecuteCancel, CanExecuteCancel );
+        UndoCommand = new RelayCommand( ExecuteUndo, CanExecuteUndo );
     }
 
     protected override void OnPropertyChanged( PropertyChangedEventArgs e )
     {
-        if ( e.PropertyName == nameof( this.IsEditing ) )
+        if (e.PropertyName == nameof(IsEditing))
         {
-            this.NewCommand.NotifyCanExecuteChanged();
-            this.RemoveCommand.NotifyCanExecuteChanged();
-            this.EditCommand.NotifyCanExecuteChanged();
-            this.SaveCommand.NotifyCanExecuteChanged();
-            this.CancelCommand.NotifyCanExecuteChanged();
-            this.UndoCommand.NotifyCanExecuteChanged();
+            NewCommand.NotifyCanExecuteChanged();
+            RemoveCommand.NotifyCanExecuteChanged();
+            EditCommand.NotifyCanExecuteChanged();
+            SaveCommand.NotifyCanExecuteChanged();
+            CancelCommand.NotifyCanExecuteChanged();
+            UndoCommand.NotifyCanExecuteChanged();
         }
-        else if ( e.PropertyName == nameof( this.CurrentItem ) )
+        else if (e.PropertyName == nameof(CurrentFish))
         {
-            this.EditCommand.NotifyCanExecuteChanged();
-            this.RemoveCommand.NotifyCanExecuteChanged();
-            this.UndoCommand.NotifyCanExecuteChanged();
+            EditCommand.NotifyCanExecuteChanged();
+            RemoveCommand.NotifyCanExecuteChanged();
+            UndoCommand.NotifyCanExecuteChanged();
         }
-        else if ( e.PropertyName == nameof( this.Items ) )
+        else if (e.PropertyName == nameof(Fishes))
         {
-            this.UndoCommand.NotifyCanExecuteChanged();
+            UndoCommand.NotifyCanExecuteChanged();
         }
 
         base.OnPropertyChanged( e );
@@ -84,118 +88,113 @@ public partial class MainViewModel : ObservableRecipient
 
     private void ExecuteNew()
     {
-        this._caretaker.Capture( this );
+        _caretaker?.CaptureSnapshot( this );
 
-        this.Items = this.Items.Add( 
-            new ItemViewModel()
-            {
-                Name = this._dataSource.GetNewName(),
-                Species = this._dataSource.GetNewSpecies(),
-                DateAdded = DateTime.Now,
-            } );
+        Fishes = Fishes.Add( new Fish() { Name = _fishGenerator.GetNewName(), Species = _fishGenerator.GetNewSpecies(), DateAdded = DateTime.Now } );
     }
 
     private bool CanExecuteNew()
     {
-        return !this.IsEditing;
+        return !IsEditing;
     }
 
     private void ExecuteRemove()
     {
-        if ( this.CurrentItem != null )
+        if (CurrentFish != null)
         {
-            this._caretaker.Capture( this );
+            _caretaker?.CaptureSnapshot( this );
 
-            var index = this.Items.IndexOf( this.CurrentItem );
-            this.Items = this.Items.RemoveAt( index );
+            var index = Fishes.IndexOf( CurrentFish );
+            Fishes = Fishes.RemoveAt( index );
 
-            if (index < this.Items.Count )
+            if (index < Fishes.Count)
             {
-                this.CurrentItem = this.Items[index];
+                CurrentFish = Fishes[index];
             }
-            else if ( this.Items.Count > 0 )
+            else if (Fishes.Count > 0)
             {
-                this.CurrentItem = this.Items[this.Items.Count - 1];
+                CurrentFish = Fishes[^1];
             }
             else
             {
-                this.CurrentItem = null;
+                CurrentFish = null;
             }
         }
     }
 
     private bool CanExecuteRemove()
     {
-        return this.CurrentItem != null && !this.IsEditing;
+        return CurrentFish != null && !IsEditing;
     }
 
     private void ExecuteEdit()
     {
-        this.IsEditing = true;
-        this._caretaker.Capture( this._currentItem! );
+        IsEditing = true;
+        _caretaker?.CaptureSnapshot( _currentFish! );
     }
 
     private bool CanExecuteEdit()
     {
-        return this.CurrentItem != null && !this.IsEditing;
+        return CurrentFish != null && !IsEditing;
     }
 
     private void ExecuteSave()
     {
-        this.IsEditing = false;
+        IsEditing = false;
     }
 
     private bool CanExecuteSave()
     {
-        return this.IsEditing;
+        return IsEditing;
     }
 
     private void ExecuteCancel()
     {
-        this.IsEditing = false;
-        this._caretaker.Undo();
+        IsEditing = false;
+        _caretaker?.Undo();
     }
 
     private bool CanExecuteCancel()
     {
-        return this.IsEditing;
+        return IsEditing;
     }
 
     private void ExecuteUndo()
     {
-        this.IsEditing = false;
+        IsEditing = false;
 
         // Remember the main list selection status before undo.
-        var item = this.CurrentItem;
-        var index = 
-            item != null
-            ? (int?)this.Items.IndexOf( item )
-            : null;
+        var item = CurrentFish;
 
-        this._caretaker.Undo();
+        var index =
+            item != null
+                ? (int?)Fishes.IndexOf( item )
+                : null;
+
+        _caretaker?.Undo();
 
         // Fix the current item after undo.
         if (index != null)
         {
-            if (index < this.Items.Count)
+            if (index < Fishes.Count)
             {
-                this.CurrentItem = this.Items[index.Value];
+                CurrentFish = Fishes[index.Value];
             }
-            else if (this.Items.Count > 0)
+            else if (Fishes.Count > 0)
             {
-                this.CurrentItem = this.Items[this.Items.Count - 1];
+                CurrentFish = Fishes[^1];
             }
             else
             {
-                this.CurrentItem = null;
+                CurrentFish = null;
             }
         }
 
-        this.UndoCommand.NotifyCanExecuteChanged();
+        UndoCommand.NotifyCanExecuteChanged();
     }
 
     private bool CanExecuteUndo()
     {
-        return this._caretaker.CanUndo;
+        return _caretaker is { CanUndo: true };
     }
 }

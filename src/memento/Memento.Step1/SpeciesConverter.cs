@@ -1,24 +1,25 @@
-﻿using System.Windows.Data;
+﻿using System.Globalization;
+using System.Windows.Data;
 
-namespace Memento;
+namespace Memento.Step1;
 
-internal class SpeciesConverter : IValueConverter
+internal sealed class SpeciesConverter : IValueConverter
 {
-    public object Convert( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
+    public object Convert( object? value, Type targetType, object? parameter, CultureInfo culture )
     {
-        if ( value is string s )
+        if (value is string s)
         {
             return s switch
             {
                 "Scuba Diver" => "🤿",
-                _ => (Math.Abs( StringComparer.Ordinal.GetHashCode( s ) ) % 5) switch
+                _ => ( Math.Abs( StringComparer.Ordinal.GetHashCode( s ) ) % 5 ) switch
                 {
                     0 => "🐟",
                     1 => "🐠",
                     2 => "🐡",
                     3 => "🦈",
                     4 => "🐬",
-                    _ => throw new NotImplementedException(),
+                    _ => throw new NotImplementedException()
                 }
             };
         }
@@ -26,7 +27,7 @@ internal class SpeciesConverter : IValueConverter
         return "";
     }
 
-    public object ConvertBack( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
+    public object ConvertBack( object? value, Type targetType, object? parameter, CultureInfo culture )
     {
         return "";
     }

@@ -6,7 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
-        <RootNamespace>Memento</RootNamespace>
+        <RootNamespace>Memento.Step2</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

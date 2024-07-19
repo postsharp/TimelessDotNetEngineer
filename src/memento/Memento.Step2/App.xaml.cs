@@ -1,34 +1,35 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NameGenerator;
 using NameGenerator.Generators;
-using System.Windows;
 
-namespace Memento;
+namespace Memento.Step2;
 
 /// <summary>
 /// Interaction logic for App.xaml
 /// </summary>
-public partial class App : Application
+public sealed partial class App : Application
 {
     public static IHost? Host { get; private set; }
 
     public App()
     {
         Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
-            .ConfigureServices( ( context, services ) =>
-            {
-                // Add windows
-                services.AddSingleton<MainWindow>();
+            .ConfigureServices(
+                ( context, services ) =>
+                {
+                    // Add windows
+                    services.AddSingleton<MainWindow>();
 
-                // Add root view models
-                services.AddSingleton<MainViewModel>();
+                    // Add root view models
+                    services.AddSingleton<MainViewModel>();
 
-                // Add services
-                services.AddSingleton<ICaretaker, Caretaker>();
-                services.AddSingleton<IDataSource, DataSource>();
-                services.AddSingleton<GeneratorBase, RealNameGenerator>();
-            } )
+                    // Add services
+                    services.AddSingleton<ISnapshotCaretaker, Caretaker>();
+                    services.AddSingleton<IFishGenerator, FishGenerator>();
+                    services.AddSingleton<GeneratorBase, RealNameGenerator>();
+                } )
             .Build();
     }
 

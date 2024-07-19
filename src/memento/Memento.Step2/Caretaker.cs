@@ -1,20 +1,22 @@
-﻿public class Caretaker : ICaretaker
-{
-    private readonly Stack<IMemento> _mementos = new Stack<IMemento>();
+﻿namespace Memento.Step2;
 
-    public void Capture( IOriginator originator )
+public sealed class Caretaker : ISnapshotCaretaker
+{
+    private readonly Stack<IMemento> _mementos = new();
+
+    public void CaptureSnapshot( IMementoable mementoable )
     {
-        this._mementos.Push( originator.Save() );
+        _mementos.Push( mementoable.SaveToMemento() );
     }
 
     public void Undo()
     {
-        if ( this._mementos.Count > 0 )
+        if (_mementos.Count > 0)
         {
-            var memento = this._mementos.Pop();
-            memento.Originator.Restore( memento );
+            var memento = _mementos.Pop();
+            memento.Originator.RestoreMemento( memento );
         }
     }
 
-    public bool CanUndo => this._mementos.Count > 0;
+    public bool CanUndo => _mementos.Count > 0;
 }

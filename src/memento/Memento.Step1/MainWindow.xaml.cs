@@ -1,16 +1,16 @@
 ﻿using System.Windows;
 
-namespace Memento;
+namespace Memento.Step1;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow : Window
+public sealed partial class MainWindow : Window
 {
     public MainWindow( MainViewModel mainViewModel )
     {
         InitializeComponent();
 
-        this.DataContext = mainViewModel;
+        DataContext = mainViewModel;
     }
 }

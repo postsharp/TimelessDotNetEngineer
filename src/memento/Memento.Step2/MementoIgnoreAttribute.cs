@@ -1,6 +1,4 @@
-﻿namespace Memento;
+﻿namespace Memento.Step2;
 
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-internal class MementoIgnoreAttribute : Attribute
-{
-}
+[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property )]
+internal sealed class MementoIgnoreAttribute : Attribute { }

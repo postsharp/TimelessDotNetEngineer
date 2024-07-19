@@ -1,19 +1,21 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using NameGenerator.Generators;
 
-namespace Memento;
+namespace Memento.Step0;
 
 #pragma warning disable IDE0032 // Use auto property
 
-public partial class MainViewModel : ObservableRecipient
+public sealed class MainViewModel : ObservableRecipient
 {
     // [<snippet DataFields>]
-    private readonly IDataSource _dataSource;
+    private readonly IFishGenerator _fishGenerator;
     private bool _isEditing;
-    private ItemViewModel? _currentItem;
-    private readonly ObservableCollection<ItemViewModel> _items = new ObservableCollection<ItemViewModel>();
+    private Fish? _currentFish;
+    
+    public ObservableCollection<Fish> Fishes { get; } = new();
     // [<endsnippet DataFields>]
 
     public IRelayCommand NewCommand { get; }
@@ -26,119 +28,115 @@ public partial class MainViewModel : ObservableRecipient
 
     public IRelayCommand CancelCommand { get; }
 
-    public bool IsEditing 
-    { 
-        get =>  this._isEditing; 
-        set => this.SetProperty( ref this._isEditing, value, true ); 
-    }
-
-    public ObservableCollection<ItemViewModel> Items => this._items;
-
-    public ItemViewModel? CurrentItem 
-    { 
-        get => this._currentItem; 
-        set => this.SetProperty( ref this._currentItem, value, true ); 
-    }
-
-    public MainViewModel( IDataSource dataSource )
+    public bool IsEditing
     {
-        this._dataSource = dataSource;
+        get => _isEditing;
+        set => SetProperty( ref _isEditing, value, true );
+    }
+    
+    public Fish? CurrentFish
+    {
+        get => _currentFish;
+        set => SetProperty( ref _currentFish, value, true );
+    }
 
-        this.NewCommand = new RelayCommand(this.ExecuteNew, this.CanExecuteNew);
-        this.RemoveCommand = new RelayCommand( this.ExecuteRemove, this.CanExecuteRemove );
-        this.EditCommand = new RelayCommand( this.ExecuteEdit, this.CanExecuteEdit );
-        this.SaveCommand = new RelayCommand( this.ExecuteSave, this.CanExecuteSave );
-        this.CancelCommand = new RelayCommand( this.ExecuteCancel, this.CanExecuteCancel );
+    // Design-time.
+    public MainViewModel() : this( new FishGenerator( new RealNameGenerator()) ) { }
+
+    public MainViewModel( IFishGenerator fishGenerator )
+    {
+        _fishGenerator = fishGenerator;
+
+        NewCommand = new RelayCommand( ExecuteNew, CanExecuteNew );
+        RemoveCommand = new RelayCommand( ExecuteRemove, CanExecuteRemove );
+        EditCommand = new RelayCommand( ExecuteEdit, CanExecuteEdit );
+        SaveCommand = new RelayCommand( ExecuteSave, CanExecuteSave );
+        CancelCommand = new RelayCommand( ExecuteCancel, CanExecuteCancel );
     }
 
     protected override void OnPropertyChanged( PropertyChangedEventArgs e )
     {
-        if ( e.PropertyName == nameof( this.IsEditing ) )
+        if (e.PropertyName == nameof(IsEditing))
         {
-            this.NewCommand.NotifyCanExecuteChanged();
-            this.RemoveCommand.NotifyCanExecuteChanged();
-            this.EditCommand.NotifyCanExecuteChanged();
-            this.SaveCommand.NotifyCanExecuteChanged();
-            this.CancelCommand.NotifyCanExecuteChanged();
+            NewCommand.NotifyCanExecuteChanged();
+            RemoveCommand.NotifyCanExecuteChanged();
+            EditCommand.NotifyCanExecuteChanged();
+            SaveCommand.NotifyCanExecuteChanged();
+            CancelCommand.NotifyCanExecuteChanged();
         }
-        else if ( e.PropertyName == nameof( this.CurrentItem ) )
+        else if (e.PropertyName == nameof(CurrentFish))
         {
-            this.EditCommand.NotifyCanExecuteChanged();
-            this.RemoveCommand.NotifyCanExecuteChanged();
+            EditCommand.NotifyCanExecuteChanged();
+            RemoveCommand.NotifyCanExecuteChanged();
         }
+
         base.OnPropertyChanged( e );
     }
 
     private void ExecuteNew()
     {
-        this.Items.Add( 
-            new ItemViewModel()
-            {
-                Name = this._dataSource.GetNewName(),
-                Species = this._dataSource.GetNewSpecies(),
-                DateAdded = DateTime.Now,
-            } );
+        Fishes.Add( new Fish() { Name = _fishGenerator.GetNewName(), Species = _fishGenerator.GetNewSpecies(), DateAdded = DateTime.Now } );
     }
 
     private bool CanExecuteNew()
     {
-        return !this.IsEditing;
+        return !IsEditing;
     }
 
     private void ExecuteRemove()
     {
-        if ( this.CurrentItem != null )
+        if (CurrentFish != null)
         {
-            var index = this.Items.IndexOf( this.CurrentItem );
-            this.Items.RemoveAt( index );
+            var index = Fishes.IndexOf( CurrentFish );
+            Fishes.RemoveAt( index );
 
-            if (index < this.Items.Count )
+            if (index < Fishes.Count)
             {
-                this.CurrentItem = this.Items[index];
+                CurrentFish = Fishes[index];
             }
-            else if ( this.Items.Count > 0 )
+            else if (Fishes.Count > 0)
             {
-                this.CurrentItem = this.Items[this.Items.Count - 1];
+                CurrentFish = Fishes[^1];
             }
             else
             {
-                this.CurrentItem = null;
+                CurrentFish = null;
             }
         }
     }
 
     private bool CanExecuteRemove()
     {
-        return this.CurrentItem != null && !this.IsEditing;
+        return CurrentFish != null && !IsEditing;
     }
 
     private void ExecuteEdit()
     {
-        this.IsEditing = true;
+        IsEditing = true;
     }
 
     private bool CanExecuteEdit()
     {
-        return this.CurrentItem != null && !this.IsEditing;
+        return CurrentFish != null && !IsEditing;
     }
 
     private void ExecuteSave()
     {
-        this.IsEditing = false;
+        IsEditing = false;
     }
 
     private bool CanExecuteSave()
     {
-        return this.IsEditing;
+        return IsEditing;
     }
 
     private void ExecuteCancel()
     {
-        this.IsEditing = false;
+        IsEditing = false;
     }
 
     private bool CanExecuteCancel()
     {
-        return this.IsEditing;
+        return IsEditing;
     }
 }
