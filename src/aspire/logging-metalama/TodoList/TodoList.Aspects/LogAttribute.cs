@@ -28,14 +28,14 @@ public class LogAttribute : OverrideMethodAspect
         // Write entry message.
         if ( isTracingEnabled )
         {
-            var entryMessage = BuildInterpolatedString();
-            var arguments = BuildArguments();
-            entryMessage.AddText( " started." );
-
             using ( var guard = LoggingRecursionGuard.Begin() )
             {
                 if ( guard.CanLog )
                 {
+                    var entryMessage = BuildInterpolatedString();
+                    var arguments = BuildArguments();
+                    entryMessage.AddText( " started." );
+
                     this._logger.LogTrace( (string) entryMessage.ToValue(), (object?[]) arguments.ToValue()! );
                 }
             }
@@ -48,36 +48,35 @@ public class LogAttribute : OverrideMethodAspect
 
             if ( isTracingEnabled )
             {
-                // Display the success message. The message is different when the method is void.
-                var successMessage = BuildInterpolatedString( true );
-                ExpressionBuilder arguments;
-                var isVoid = meta.Target.Method.GetAsyncInfo().ResultType.Is( typeof( void ) );
-
-                if ( isVoid )
-                {
-                    // When the method is void, display a constant text.
-                    successMessage.AddText(" succeeded.");
-                    arguments = BuildArguments(true);
-                }
-                else
-                {
-                    // When the method has a return value, add it to the message.
-                    successMessage.AddText(" returned {result}.");
-
-                    if ( SensitiveParameterFilter.IsSensitive( meta.Target.Method.ReturnParameter ) )
-                    {
-                        arguments = BuildArguments(true, true, true);
-                    }
-                    else
-                    {
-                        arguments = BuildArguments(true, true);
-                    }
-                }
-
                 using ( var guard = LoggingRecursionGuard.Begin() )
                 {
                     if ( guard.CanLog )
                     {
+                        // Display the success message. The message is different when the method is void.
+                        var successMessage = BuildInterpolatedString( true );
+                        ExpressionBuilder arguments;
+                        var isVoid = meta.Target.Method.GetAsyncInfo().ResultType.Is( typeof( void ) );
+
+                        if ( isVoid )
+                        {
+                            // When the method is void, display a constant text.
+                            successMessage.AddText( " succeeded." );
+                            arguments = BuildArguments( true );
+                        }
+                        else
+                        {
+                            // When the method has a return value, add it to the message.
+                            successMessage.AddText( " returned {result}." );
+
+                            if ( SensitiveParameterFilter.IsSensitive( meta.Target.Method.ReturnParameter ) )
+                            {
+                                arguments = BuildArguments( true, true, true );
+                            }
+                            else
+                            {
+                                arguments = BuildArguments( true, true );
+                            }
+                        }
                         this._logger.LogTrace( (string) successMessage.ToValue(), (object?[]) arguments.ToValue()! );
                     }
                 }
@@ -87,17 +86,18 @@ public class LogAttribute : OverrideMethodAspect
         }
         catch ( Exception e ) when ( this._logger.IsEnabled( LogLevel.Warning ) )
         {
-            // Display the failure message.
-            var failureMessage = BuildInterpolatedString();
-            var arguments = BuildArguments();
-            failureMessage.AddText( " failed: " );
-            failureMessage.AddExpression( e.Message );
-
             using ( var guard = LoggingRecursionGuard.Begin() )
             {
                 if ( guard.CanLog )
                 {
-                    this._logger.LogWarning( (string) failureMessage.ToValue(), (object?[])arguments.ToValue()! );
+                    // Display the failure message.
+                    var failureMessage = BuildInterpolatedString();
+                    var arguments = BuildArguments();
+                    failureMessage.AddText( " failed: " );
+                    failureMessage.AddExpression( e.Message );
+
+
+                    this._logger.LogWarning( (string) failureMessage.ToValue(), (object?[]) arguments.ToValue()! );
                 }
             }
 
