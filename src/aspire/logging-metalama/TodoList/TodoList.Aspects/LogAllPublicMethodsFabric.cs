@@ -1,7 +1,7 @@
 ﻿using Metalama.Framework.Fabrics;
 using Metalama.Framework.Code;
 
-// <snippet> Fabric
+// [<snippet Fabric>]
 internal class LogAllPublicMethodsFabric : TransitiveProjectFabric
 {
     public override void AmendProject( IProjectAmender amender ) =>
@@ -12,4 +12,4 @@ internal class LogAllPublicMethodsFabric : TransitiveProjectFabric
             .Where( method => method.Accessibility == Accessibility.Public && method.Name != "ToString" )
             .AddAspectIfEligible<LogAttribute>();
 }
-// <endsnippet> Fabric
+// [<endsnippet Fabric>]

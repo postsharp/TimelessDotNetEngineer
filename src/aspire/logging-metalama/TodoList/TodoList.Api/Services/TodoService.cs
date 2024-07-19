@@ -8,11 +8,11 @@ public partial class TodoService( ApplicationDbContext db )
     public async Task<IEnumerable<Todo>> GetTodosAsync( CancellationToken cancellationToken = default )
         => await db.Todos.ToArrayAsync( cancellationToken );
 
-    // <snippet> LogUsingAttribute
+    // [<snippet LogUsingAttribute>]
     [Log]
     public async Task<Todo?> GetTodoAsync( int id, CancellationToken cancellationToken = default )
         => await db.Todos.FindAsync( id );
-    // <endsnippet> LogUsingAttribute
+    // [<endsnippet LogUsingAttribute>]
 
     public async Task<Todo> AddTodoAsync( Todo todo, CancellationToken cancellationToken = default )
     {
