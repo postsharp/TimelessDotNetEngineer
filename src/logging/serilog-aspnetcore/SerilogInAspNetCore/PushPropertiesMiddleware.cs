@@ -8,7 +8,7 @@ public sealed class PushPropertiesMiddleware : IMiddleware
     {
         var requestId = Guid.NewGuid().ToString();
 
-        using (LogContext.PushProperty( "Host", context.Request.Host ))
+        using (LogContext.PushProperty( "Client", context.Request.Host ))
         using (LogContext.PushProperty( "RequestId", requestId ))
         {
             await next( context );

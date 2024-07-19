@@ -58,7 +58,6 @@ builder.Services.AddSerilog();
 
 // [<snippet AddMiddleware1>]
 builder.Services.AddSingleton<PushPropertiesMiddleware>();
-
 // [<endsnippet AddMiddleware1>]
 
 var app = builder.Build();
