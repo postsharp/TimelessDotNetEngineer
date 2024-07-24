@@ -3,11 +3,11 @@ using System.Runtime.CompilerServices;
 
 namespace Memento.Step2;
 
-public sealed class Caretaker : ISnapshotCaretaker
+public sealed class Caretaker : IMementoCaretaker
 {
     private readonly Stack<IMemento> _mementos = new();
 
-    public void CaptureSnapshot( IMementoable mementoable )
+    public void CaptureMemento( IMementoable mementoable )
     {
         _mementos.Push( mementoable.SaveToMemento() );
 

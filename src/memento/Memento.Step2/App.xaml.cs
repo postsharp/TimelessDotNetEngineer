@@ -26,7 +26,7 @@ public sealed partial class App : Application
                     services.AddSingleton<MainViewModel>();
 
                     // Add services
-                    services.AddSingleton<ISnapshotCaretaker, Caretaker>();
+                    services.AddSingleton<IMementoCaretaker, Caretaker>();
                     services.AddSingleton<IFishGenerator, FishGenerator>();
                     services.AddSingleton<GeneratorBase, RealNameGenerator>();
                 } )

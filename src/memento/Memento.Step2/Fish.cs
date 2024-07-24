@@ -1,12 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Metalama.Patterns.Observability;
+﻿using Metalama.Patterns.Observability;
 
 namespace Memento.Step2;
 
 // [<snippet Type>]
 [Memento]
 [Observable]
-public sealed partial class Fish : ObservableRecipient
+public sealed partial class Fish 
 {
     public string? Name { get; set; }
 

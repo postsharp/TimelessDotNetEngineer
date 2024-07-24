@@ -14,7 +14,7 @@ public sealed class MementoAttribute : TypeAspect
         // Introduce a new private nested class called Memento.
         var mementoType =
             builder.IntroduceClass(
-                "Snapshot",
+                "Memento",
                 buildType: b => b.Accessibility = Metalama.Framework.Code.Accessibility.Private );
 
         // Introduce originator property that will hold a reference to the instance that created the Memento.

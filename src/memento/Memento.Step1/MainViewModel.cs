@@ -13,6 +13,7 @@ public sealed class MainViewModel : ObservableRecipient, IMementoable
     private readonly IFishGenerator _fishGenerator;
     private bool _isEditing;
     private Fish? _currentFish;
+    private Fish? _editedFish; // Not memento
 
     private ImmutableList<Fish> _fishes = ImmutableList<Fish>.Empty;
 
@@ -47,7 +48,7 @@ public sealed class MainViewModel : ObservableRecipient, IMementoable
         get => _currentFish;
         set => SetProperty( ref _currentFish, value, true );
     }
-    
+
     // Design-time.
     public MainViewModel() : this( new FishGenerator( new RealNameGenerator()), null ) { }
 
@@ -89,12 +90,14 @@ public sealed class MainViewModel : ObservableRecipient, IMementoable
         base.OnPropertyChanged( e );
     }
 
+    // [<snippet ExecuteNew>]
     private void ExecuteNew()
     {
         _caretaker?.CaptureSnapshot( this );
 
         Fishes = Fishes.Add( new Fish() { Name = _fishGenerator.GetNewName(), Species = _fishGenerator.GetNewSpecies(), DateAdded = DateTime.Now } );
     }
+    // [<endsnippet ExecuteNew>]
 
     private bool CanExecuteNew()
     {
@@ -133,6 +136,7 @@ public sealed class MainViewModel : ObservableRecipient, IMementoable
     private void ExecuteEdit()
     {
         IsEditing = true;
+        
         _caretaker?.CaptureSnapshot( _currentFish! );
     }
 

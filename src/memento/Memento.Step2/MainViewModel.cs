@@ -1,7 +1,4 @@
 ﻿using System.Collections.Immutable;
-using System.ComponentModel;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using Metalama.Patterns.Observability;
 using Metalama.Patterns.Wpf;
 using NameGenerator.Generators;
@@ -10,9 +7,9 @@ namespace Memento.Step2;
 
 [Memento]
 [Observable]
-public sealed partial class MainViewModel : ObservableRecipient
+public sealed partial class MainViewModel 
 {
-    private ISnapshotCaretaker? _caretaker;
+    private readonly IMementoCaretaker? _caretaker;
     private readonly IFishGenerator _fishGenerator;
 
     public bool IsEditing { get; set; }
@@ -24,7 +21,7 @@ public sealed partial class MainViewModel : ObservableRecipient
     // Design-time.
     public MainViewModel() : this( new FishGenerator( new RealNameGenerator() ), null ) { }
 
-    public MainViewModel( IFishGenerator fishGenerator, ISnapshotCaretaker? caretaker )
+    public MainViewModel( IFishGenerator fishGenerator, IMementoCaretaker? caretaker )
     {
         _fishGenerator = fishGenerator;
         _caretaker = caretaker;
@@ -33,7 +30,7 @@ public sealed partial class MainViewModel : ObservableRecipient
     [Command]
     private void ExecuteNew()
     {
-        _caretaker?.CaptureSnapshot( this );
+        _caretaker?.CaptureMemento( this );
 
         Fishes = Fishes.Add( new Fish() { Name = _fishGenerator.GetNewName(), Species = _fishGenerator.GetNewSpecies(), DateAdded = DateTime.Now } );
     }
@@ -45,7 +42,7 @@ public sealed partial class MainViewModel : ObservableRecipient
     {
         if (CurrentFish != null)
         {
-            _caretaker?.CaptureSnapshot( this );
+            _caretaker?.CaptureMemento( this );
 
             var index = Fishes.IndexOf( CurrentFish );
             Fishes = Fishes.RemoveAt( index );
@@ -71,7 +68,7 @@ public sealed partial class MainViewModel : ObservableRecipient
     private void ExecuteEdit()
     {
         IsEditing = true;
-        _caretaker?.CaptureSnapshot( CurrentFish! );
+        _caretaker?.CaptureMemento( CurrentFish! );
     }
 
     public bool CanExecuteEdit => CurrentFish != null && !IsEditing;
