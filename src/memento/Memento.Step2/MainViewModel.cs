@@ -2,90 +2,35 @@
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Metalama.Patterns.Observability;
+using Metalama.Patterns.Wpf;
 using NameGenerator.Generators;
 
 namespace Memento.Step2;
 
 [Memento]
+[Observable]
 public sealed partial class MainViewModel : ObservableRecipient
 {
-    private readonly ISnapshotCaretaker? _caretaker;
+    private ISnapshotCaretaker? _caretaker;
     private readonly IFishGenerator _fishGenerator;
-    private bool _isEditing;
-    private Fish? _currentFish;
-    private ImmutableList<Fish> _fishes = ImmutableList<Fish>.Empty;
 
-    public IRelayCommand NewCommand { get; }
+    public bool IsEditing { get; set; }
 
-    public IRelayCommand RemoveCommand { get; }
+    public ImmutableList<Fish> Fishes { get; private set; } = ImmutableList<Fish>.Empty;
 
-    public IRelayCommand EditCommand { get; }
+    public Fish? CurrentFish { get; set; }
 
-    public IRelayCommand SaveCommand { get; }
-
-    public IRelayCommand CancelCommand { get; }
-
-    public IRelayCommand UndoCommand { get; }
-
-    public bool IsEditing
-    {
-        get => _isEditing;
-        set => SetProperty( ref _isEditing, value, true );
-    }
-
-    public ImmutableList<Fish> Fishes
-    {
-        get => _fishes;
-        private set => SetProperty( ref _fishes, value, true );
-    }
-
-    public Fish? CurrentFish
-    {
-        get => _currentFish;
-        set => SetProperty( ref _currentFish, value, true );
-    }
-    
     // Design-time.
-    public MainViewModel() : this( new FishGenerator( new RealNameGenerator()), null ) { }
+    public MainViewModel() : this( new FishGenerator( new RealNameGenerator() ), null ) { }
 
     public MainViewModel( IFishGenerator fishGenerator, ISnapshotCaretaker? caretaker )
     {
         _fishGenerator = fishGenerator;
         _caretaker = caretaker;
-
-        NewCommand = new RelayCommand( ExecuteNew, CanExecuteNew );
-        RemoveCommand = new RelayCommand( ExecuteRemove, CanExecuteRemove );
-        EditCommand = new RelayCommand( ExecuteEdit, CanExecuteEdit );
-        SaveCommand = new RelayCommand( ExecuteSave, CanExecuteSave );
-        CancelCommand = new RelayCommand( ExecuteCancel, CanExecuteCancel );
-        UndoCommand = new RelayCommand( ExecuteUndo, CanExecuteUndo );
     }
 
-    protected override void OnPropertyChanged( PropertyChangedEventArgs e )
-    {
-        if (e.PropertyName == nameof(IsEditing))
-        {
-            NewCommand.NotifyCanExecuteChanged();
-            RemoveCommand.NotifyCanExecuteChanged();
-            EditCommand.NotifyCanExecuteChanged();
-            SaveCommand.NotifyCanExecuteChanged();
-            CancelCommand.NotifyCanExecuteChanged();
-            UndoCommand.NotifyCanExecuteChanged();
-        }
-        else if (e.PropertyName == nameof(CurrentFish))
-        {
-            EditCommand.NotifyCanExecuteChanged();
-            RemoveCommand.NotifyCanExecuteChanged();
-            UndoCommand.NotifyCanExecuteChanged();
-        }
-        else if (e.PropertyName == nameof(Fishes))
-        {
-            UndoCommand.NotifyCanExecuteChanged();
-        }
-
-        base.OnPropertyChanged( e );
-    }
-
+    [Command]
     private void ExecuteNew()
     {
         _caretaker?.CaptureSnapshot( this );
@@ -93,11 +38,9 @@ public sealed partial class MainViewModel : ObservableRecipient
         Fishes = Fishes.Add( new Fish() { Name = _fishGenerator.GetNewName(), Species = _fishGenerator.GetNewSpecies(), DateAdded = DateTime.Now } );
     }
 
-    private bool CanExecuteNew()
-    {
-        return !IsEditing;
-    }
+    public bool CanExecuteNew => !IsEditing;
 
+    [Command]
     private void ExecuteRemove()
     {
         if (CurrentFish != null)
@@ -122,43 +65,35 @@ public sealed partial class MainViewModel : ObservableRecipient
         }
     }
 
-    private bool CanExecuteRemove()
-    {
-        return CurrentFish != null && !IsEditing;
-    }
+    public bool CanExecuteRemove => CurrentFish != null && !IsEditing;
 
+    [Command]
     private void ExecuteEdit()
     {
         IsEditing = true;
-        _caretaker?.CaptureSnapshot( _currentFish! );
+        _caretaker?.CaptureSnapshot( CurrentFish! );
     }
 
-    private bool CanExecuteEdit()
-    {
-        return CurrentFish != null && !IsEditing;
-    }
+    public bool CanExecuteEdit => CurrentFish != null && !IsEditing;
 
+    [Command]
     private void ExecuteSave()
     {
         IsEditing = false;
     }
 
-    private bool CanExecuteSave()
-    {
-        return IsEditing;
-    }
+    public bool CanExecuteSave => IsEditing;
 
+    [Command]
     private void ExecuteCancel()
     {
         IsEditing = false;
         _caretaker?.Undo();
     }
 
-    private bool CanExecuteCancel()
-    {
-        return IsEditing;
-    }
+    public bool CanExecuteCancel => IsEditing;
 
+    [Command]
     private void ExecuteUndo()
     {
         IsEditing = false;
@@ -189,12 +124,7 @@ public sealed partial class MainViewModel : ObservableRecipient
                 CurrentFish = null;
             }
         }
-
-        UndoCommand.NotifyCanExecuteChanged();
     }
 
-    private bool CanExecuteUndo()
-    {
-        return _caretaker is { CanUndo: true };
-    }
+    public bool CanExecuteUndo => _caretaker?.CanUndo == true;
 }

@@ -13,7 +13,8 @@
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
         <PackageReference Include="CommunityToolkit.Mvvm"  Version="8.1.0"/>
         <PackageReference Include="NameGenerator" Version="2.0.4" />
-        <PackageReference Include="Metalama.Framework" Version="2024.2.14-rc" />
+        <PackageReference Include="Metalama.Patterns.Observability" Version="$(MetalamaPatternsVersion)" />
+        <PackageReference Include="Metalama.Patterns.Wpf" Version="$(MetalamaPatternsVersion)" />
     </ItemGroup>
 
 </Project>

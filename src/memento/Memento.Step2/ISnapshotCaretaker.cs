@@ -1,6 +1,8 @@
-﻿namespace Memento.Step2;
+﻿using System.ComponentModel;
 
-public interface ISnapshotCaretaker
+namespace Memento.Step2;
+
+public interface ISnapshotCaretaker : INotifyPropertyChanged
 {
     bool CanUndo { get; }
 

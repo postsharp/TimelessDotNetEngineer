@@ -5,7 +5,7 @@ namespace Memento.Step2;
 
 internal sealed class NotValueConverter : IValueConverter
 {
-    public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
+    public object Convert( object? value, Type targetType, object? parameter, CultureInfo culture )
     {
         if (value is bool b)
         {
@@ -15,7 +15,7 @@ internal sealed class NotValueConverter : IValueConverter
         return false;
     }
 
-    public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
+    public object ConvertBack( object? value, Type targetType, object? parameter, CultureInfo culture )
     {
         if (value is bool b)
         {

@@ -7,6 +7,8 @@
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <RootNamespace>Memento.Step0</RootNamespace>
+        <Configurations>Debug;Release;LamaDebug</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <ItemGroup>

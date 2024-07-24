@@ -19,14 +19,7 @@ public sealed class MementoAttribute : TypeAspect
 
         // Introduce originator property that will hold a reference to the instance that created the Memento.
         var originatorProperty =
-            mementoType.IntroduceProperty(
-                nameof(Originator),
-                buildProperty: b =>
-                {
-                    b.Name = "Originator";
-                    b.Type = TypeFactory.GetType( typeof(IMementoable) );
-                    b.Accessibility = Metalama.Framework.Code.Accessibility.Public;
-                } );
+            mementoType.IntroduceProperty( nameof(Originator) );
 
         // Dictionary that maps fields of the target class to memento properties.
         var propertyMap = new Dictionary<IFieldOrProperty, IProperty>();
@@ -89,7 +82,7 @@ public sealed class MementoAttribute : TypeAspect
     public object? MementoProperty { get; }
 
     [Template]
-    public object? Originator { get; }
+    public IMementoable? Originator { get; }
 
     [Template]
     public IMemento SaveToMemento()
@@ -105,14 +98,12 @@ public sealed class MementoAttribute : TypeAspect
     {
         var buildAspectInfo = (BuildAspectInfo)meta.Tags.Source!;
 
-        var onPropertyChangedMethod = meta.Target.Type.AllMethods.OfName( "OnPropertyChanged" )
-            .Single( x => x.Parameters is [{ Type.SpecialType: SpecialType.String }] );
+        var typedSnapshot = meta.Cast( buildAspectInfo.SnapshotType, memento );
 
         // Set fields of this instance to the values stored in the Snapshot.
         foreach (var pair in buildAspectInfo.PropertyMap)
         {
-            pair.Key.Value = pair.Value.With( (IExpression)meta.Cast( buildAspectInfo.SnapshotType, memento )! ).Value;
-            onPropertyChangedMethod.Invoke( pair.Value.Name );
+            pair.Key.Value = pair.Value.With( (IExpression) typedSnapshot ).Value;
         }
     }
 
