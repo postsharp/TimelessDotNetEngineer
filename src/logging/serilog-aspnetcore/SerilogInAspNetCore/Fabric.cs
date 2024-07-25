@@ -10,7 +10,7 @@ internal class Fabric : ProjectFabric
 {
     public override void AmendProject( IProjectAmender amender )
     {
-        amender.Outbound
+        amender
             .Select( c => c.GlobalNamespace.GetDescendant( "SerilogInAspNetCore.Controllers" )! )
             .SelectMany( c => c.Types )
             .Where( t => t.Accessibility == Accessibility.Public )
