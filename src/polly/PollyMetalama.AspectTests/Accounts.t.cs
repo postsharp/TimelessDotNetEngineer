@@ -7,7 +7,7 @@ internal class Accounts
   [Retry]
   public async Task<IReadOnlyList<Account>> ListAsync(CancellationToken cancellationToken = default)
   {
-    var pipeline = this._resiliencePipelineProvider.GetPipeline("default");
+    var pipeline = _resiliencePipelineProvider.GetPipeline("default");
     return (IReadOnlyList<Account>)await pipeline.ExecuteAsync(Invoke);
     async ValueTask<object?> Invoke(CancellationToken cancellationToken_1 = default)
     {
@@ -30,7 +30,7 @@ internal class Accounts
   [DbTransaction]
   public async Task TransferAsync(int sourceAccountId, int targetAccountId, int amount, CancellationToken cancellationToken = default)
   {
-    var pipeline = this._resiliencePipelineProvider.GetPipeline("default");
+    var pipeline = _resiliencePipelineProvider.GetPipeline("default");
     await pipeline.ExecuteAsync(Invoke);
     return;
     async ValueTask<object?> Invoke(CancellationToken cancellationToken_1 = default)
@@ -75,7 +75,7 @@ internal class Accounts
   private ResiliencePipelineProvider<string> _resiliencePipelineProvider;
   public Accounts(DbConnection connection, ResiliencePipelineProvider<string>? resiliencePipelineProvider = default)
   {
-    this._connection = connection;
+    _connection = connection;
     this._resiliencePipelineProvider = resiliencePipelineProvider ?? throw new System.ArgumentNullException(nameof(resiliencePipelineProvider));
   }
 }
