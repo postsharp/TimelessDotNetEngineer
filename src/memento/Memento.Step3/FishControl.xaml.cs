@@ -19,7 +19,7 @@ public sealed partial class FishControl
         InitializeComponent();
     }
 
-    // <snippet OnPropertyChanged>
+    // [<snippet OnPropertyChanged>]
     protected override void OnPropertyChanged( DependencyPropertyChangedEventArgs e )
     {
         base.OnPropertyChanged( e );
@@ -50,9 +50,9 @@ public sealed partial class FishControl
             _caretaker?.CaptureMemento( fish );
         }
     }
-    // <endsnippet OnPropertyChanged>
+    // [<endsnippet OnPropertyChanged>]
 
-    // <snippet OnTextBoxUpdated>
+    // [<snippet OnTextBoxUpdated>]
     private void OnTextBoxUpdated( object sender, KeyEventArgs e )
     {
         if (sender is TextBox textBox)
@@ -65,6 +65,6 @@ public sealed partial class FishControl
             }
         }
     }
-    // </endsnippet>
+    // [</endsnippet>]
 
 }

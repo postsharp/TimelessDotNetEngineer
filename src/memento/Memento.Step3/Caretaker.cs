@@ -7,7 +7,7 @@ public sealed class Caretaker : IMementoCaretaker
 {
     private readonly Stack<IMemento> _mementos = new();
 
-    // <snippet CaptureMemento>
+    // [<snippet CaptureMemento>]
     public void CaptureMemento( IMementoable mementoable )
     {
         if (_mementos.Count > 0)
@@ -25,7 +25,7 @@ public sealed class Caretaker : IMementoCaretaker
         OnPropertyChanged( nameof(CanUndo) );
     }
 
-    // <endsnippet CaptureMemento>
+    // [<endsnippet CaptureMemento>]
 
     public void Undo()
     {

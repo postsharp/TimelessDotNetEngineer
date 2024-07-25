@@ -132,7 +132,7 @@ public sealed class MainViewModel : ObservableRecipient, IMementoable
         return CurrentFish != null && !IsEditing;
     }
 
-    // <snippet EditControl>
+    // [<snippet EditControl>]
     private void ExecuteEdit()
     {
         IsEditing = true;
@@ -151,7 +151,7 @@ public sealed class MainViewModel : ObservableRecipient, IMementoable
         _caretaker?.Undo();
     }
 
-    // <endsnippet EditControl>
+    // [<endsnippet EditControl>]
 
     private bool CanExecuteCancel()
     {
