@@ -1,3 +1,5 @@
+// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
 #define SCOPE_CONFIGURATION
 
 using Serilog;
@@ -45,7 +47,9 @@ app.UseSerilogRequestLogging();
 // [<snippet ScopeConfiguration>]
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
-    .WriteTo.Console( outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties}{NewLine}{Exception}" )
+    .WriteTo.Console(
+        outputTemplate:
+        "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties}{NewLine}{Exception}" )
 
 // [<endsnippet ScopeConfiguration>]    
     .MinimumLevel.Verbose()
@@ -58,6 +62,7 @@ builder.Services.AddSerilog();
 
 // [<snippet AddMiddleware1>]
 builder.Services.AddSingleton<PushPropertiesMiddleware>();
+
 // [<endsnippet AddMiddleware1>]
 
 var app = builder.Build();
@@ -71,7 +76,7 @@ app.UseMiddleware<PushPropertiesMiddleware>();
 #endif
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if ( app.Environment.IsDevelopment() )
 {
     app.UseSwagger();
     app.UseSwaggerUI();

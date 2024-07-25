@@ -1,4 +1,6 @@
-﻿using Metalama.Framework.Code;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using Metalama.Framework.Code;
 
 namespace SerilogInAspNetCore;
 
@@ -20,13 +22,17 @@ public class LogAttribute : OverrideMethodAspect
 
         try
         {
-            _logger.LogDebug( formatString + " started.", (object[])meta.Target.Parameters.ToValueArray() );
+            this._logger.LogDebug(
+                formatString + " started.",
+                (object[]) meta.Target.Parameters.ToValueArray() );
 
             return meta.Proceed();
         }
         finally
         {
-            _logger.LogDebug( formatString + " finished.", (object[])meta.Target.Parameters.ToValueArray() );
+            this._logger.LogDebug(
+                formatString + " finished.",
+                (object[]) meta.Target.Parameters.ToValueArray() );
         }
     }
 

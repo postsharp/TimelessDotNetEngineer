@@ -1,4 +1,6 @@
-﻿namespace SerilogInAspNetCore;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+namespace SerilogInAspNetCore;
 
 // [<snippet body>]
 using Metalama.Framework.Code;

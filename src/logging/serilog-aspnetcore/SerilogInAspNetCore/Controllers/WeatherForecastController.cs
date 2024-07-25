@@ -1,3 +1,5 @@
+// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
 using Microsoft.AspNetCore.Mvc;
 using Serilog.Context;
 
@@ -14,14 +16,19 @@ public class WeatherForecastController( ILogger<WeatherForecastController> logge
     public IEnumerable<WeatherForecast> Get( int days = 5 )
     {
         // [<snippet BeginScope>]
-        using (logger.BeginScope( "Getting weather forecast for {ScopeDays} days", days ))
+        using ( logger.BeginScope( "Getting weather forecast for {ScopeDays} days", days ) )
 
             // [<endsnippet BeginScope>]
         {
             var today = DateOnly.FromDateTime( DateTime.Today );
 
             var forecast = Enumerable.Range( 1, days )
-                .Select( index => new WeatherForecast { Date = today.AddDays( index ), Temperature = Random.Shared.Next( -20, 35 ) } )
+                .Select(
+                    index => new WeatherForecast
+                    {
+                        Date = today.AddDays( index ),
+                        Temperature = Random.Shared.Next( -20, 35 )
+                    } )
                 .ToArray();
 
             // [<snippet LogMessage>]
