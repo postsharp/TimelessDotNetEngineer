@@ -10,7 +10,7 @@
     <ItemGroup>
         <PackageReference Include="Serilog.AspNetCore" Version="8.0.0"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
-        <PackageReference Include="Metalama.Extensions.DependencyInjection" Version="2024.1.23"/>
+        <PackageReference Include="Metalama.Extensions.DependencyInjection" Version="$(MetalamaExtensionsVersion)"/>
     </ItemGroup>
 
 </Project>
