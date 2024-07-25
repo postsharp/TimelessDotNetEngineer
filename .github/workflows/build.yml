@@ -32,6 +32,13 @@ jobs:
       run: .\Build.ps1 test --disable-build-servers
 
     - uses: actions/upload-artifact@v3
+      if: always()
       with:
-        name: Build
+        name: artifacts
         path: artifacts
+
+    - uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: temp
+        path: ${{ runner.temp }}\Metalama
