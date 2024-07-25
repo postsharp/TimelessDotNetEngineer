@@ -1,4 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using Castle.DynamicProxy;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +32,8 @@ var services = new ServiceCollection()
         ( inner, serviceProvider ) => proxyGenerator.CreateInterfaceProxyWithTarget(
             inner,
             new RetryInterceptor(),
-            new ReportExceptionInterceptor( serviceProvider.GetRequiredService<IExceptionReportingService>() ) ) )
+            new ReportExceptionInterceptor(
+                serviceProvider.GetRequiredService<IExceptionReportingService>() ) ) )
     .BuildServiceProvider();
 
 var messenger = services.GetRequiredService<IMessenger>();

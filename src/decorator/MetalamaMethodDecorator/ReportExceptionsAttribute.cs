@@ -1,4 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using Metalama.Extensions.DependencyInjection;
 using Metalama.Framework.Aspects;
@@ -20,10 +20,13 @@ public class ReportExceptionsAttribute : OverrideMethodAspect
             {
                 throw new AggregateException(
                     e,
-                    new IOException( $"Failed to report exception. The {nameof(this._reportingService)} is missing." ) );
+                    new IOException(
+                        $"Failed to report exception. The {nameof(this._reportingService)} is missing." ) );
             }
 
-            this._reportingService.ReportException( $"Method '{meta.Target.Method.DeclaringType.Name}.{meta.Target.Method}' failed.", e );
+            this._reportingService.ReportException(
+                $"Method '{meta.Target.Method.DeclaringType.Name}.{meta.Target.Method}' failed.",
+                e );
 
             throw;
         }
@@ -41,10 +44,13 @@ public class ReportExceptionsAttribute : OverrideMethodAspect
             {
                 throw new AggregateException(
                     e,
-                    new IOException( $"Failed to report exception. The {nameof(this._reportingService)} is missing." ) );
+                    new IOException(
+                        $"Failed to report exception. The {nameof(this._reportingService)} is missing." ) );
             }
 
-            this._reportingService.ReportException( $"Method '{meta.Target.Method.DeclaringType.Name}.{meta.Target.Method}' failed.", e );
+            this._reportingService.ReportException(
+                $"Method '{meta.Target.Method.DeclaringType.Name}.{meta.Target.Method}' failed.",
+                e );
 
             throw;
         }

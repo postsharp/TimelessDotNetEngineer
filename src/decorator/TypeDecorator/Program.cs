@@ -1,7 +1,6 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using Microsoft.Extensions.DependencyInjection;
-
 
 // [<snippet TypeDecoratorUsage>]
 var originalMessenger = new Messenger();
@@ -12,6 +11,7 @@ var retryingMessenger = new ExceptionReportingMessenger(
 
 var clientUsingDecorator = new Client( retryingMessenger );
 clientUsingDecorator.Greet();
+
 // [<endsnippet TypeDecoratorUsage>]
 
 // [<snippet TypeDecoratorScrutor>]
@@ -25,4 +25,5 @@ var services = new ServiceCollection()
 
 var client = services.GetRequiredService<Client>();
 client.Greet();
+
 // [<endsnippet TypeDecoratorScrutor>]
