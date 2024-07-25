@@ -65,24 +65,29 @@ public sealed class MainViewModel : ObservableRecipient, IMementoable
 
     protected override void OnPropertyChanged( PropertyChangedEventArgs e )
     {
-        if (e.PropertyName == nameof(IsEditing))
+        switch (e.PropertyName)
         {
-            NewCommand.NotifyCanExecuteChanged();
-            RemoveCommand.NotifyCanExecuteChanged();
-            EditCommand.NotifyCanExecuteChanged();
-            SaveCommand.NotifyCanExecuteChanged();
-            CancelCommand.NotifyCanExecuteChanged();
-            UndoCommand.NotifyCanExecuteChanged();
-        }
-        else if (e.PropertyName == nameof(CurrentFish))
-        {
-            EditCommand.NotifyCanExecuteChanged();
-            RemoveCommand.NotifyCanExecuteChanged();
-            UndoCommand.NotifyCanExecuteChanged();
-        }
-        else if (e.PropertyName == nameof(Fishes))
-        {
-            UndoCommand.NotifyCanExecuteChanged();
+            case nameof(IsEditing):
+                NewCommand.NotifyCanExecuteChanged();
+                RemoveCommand.NotifyCanExecuteChanged();
+                EditCommand.NotifyCanExecuteChanged();
+                SaveCommand.NotifyCanExecuteChanged();
+                CancelCommand.NotifyCanExecuteChanged();
+                UndoCommand.NotifyCanExecuteChanged();
+
+                break;
+
+            case nameof(CurrentFish):
+                EditCommand.NotifyCanExecuteChanged();
+                RemoveCommand.NotifyCanExecuteChanged();
+                UndoCommand.NotifyCanExecuteChanged();
+
+                break;
+
+            case nameof(Fishes):
+                UndoCommand.NotifyCanExecuteChanged();
+
+                break;
         }
 
         base.OnPropertyChanged( e );
