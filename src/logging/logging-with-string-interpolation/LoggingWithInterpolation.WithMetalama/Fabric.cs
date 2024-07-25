@@ -10,7 +10,7 @@ internal class Fabric : ProjectFabric
 {
     public override void AmendProject( IProjectAmender amender )
     {
-        amender.Outbound
+        amender
             .SelectMany( c => c.Types )
             .Where( t => t.TypeKind is not TypeKind.RecordClass or TypeKind.RecordStruct )
             .Where( t => t.Accessibility == Accessibility.Public )

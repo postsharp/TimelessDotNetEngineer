@@ -45,7 +45,7 @@ public class LogAttribute : OverrideMethodAspect
 
             stringBuilder.AddText( $"{parameter.Name}: " );
 
-            stringBuilder.AddExpression( parameter.Value );
+            stringBuilder.AddExpression( parameter );
 
             first = false;
         }
