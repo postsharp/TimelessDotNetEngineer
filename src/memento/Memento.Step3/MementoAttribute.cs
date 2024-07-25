@@ -4,80 +4,182 @@ using Metalama.Framework.Code;
 
 namespace Memento.Step3;
 
+[Inheritable]
 public sealed class MementoAttribute : TypeAspect
 {
     [CompileTime]
-    private record BuildAspectInfo( INamedType SnapshotType, Dictionary<IFieldOrProperty, IProperty> PropertyMap, IProperty OriginatorProperty );
+    private record BuildAspectInfo(
+
+        // The newly introduced Memento type.
+        INamedType MementoType,
+
+        // Mapping from fields or properties in the Originator to the corresponding property
+        // in the Memento type.
+        Dictionary<IFieldOrProperty, IProperty> PropertyMap,
+
+        // The Originator property in the new Memento type.
+        IProperty? OriginatorProperty );
 
     public override void BuildAspect( IAspectBuilder<INamedType> builder )
     {
+        var isBaseMementotable = builder.Target.BaseType?.Is( typeof(IMementoable) ) == true;
+
+        INamedType? baseMementoType;
+        IConstructor? baseMementoConstructor;
+
+        if (isBaseMementotable)
+        {
+            var baseTypeDefinition = builder.Target.BaseType!.Definition;
+
+            baseMementoType = baseTypeDefinition.Types.OfName( baseTypeDefinition.Name + "Memento" )
+                .SingleOrDefault();
+
+            if (baseMementoType == null)
+            {
+                builder.Diagnostics.Report( DiagnosticDefinitions.BaseTypeHasNoMementoType.WithArguments( baseTypeDefinition ) );
+                builder.SkipAspect();
+
+                return;
+            }
+
+            if (baseMementoType.Accessibility !=
+                Metalama.Framework.Code.Accessibility.Protected)
+            {
+                builder.Diagnostics.Report( DiagnosticDefinitions.MementoTypeMustBeProtected.WithArguments( baseMementoType ) );
+                builder.SkipAspect();
+
+                return;
+            }
+
+            if (baseMementoType.IsSealed)
+            {
+                builder.Diagnostics.Report( DiagnosticDefinitions.MementoTypeMustNotBeSealed.WithArguments( baseMementoType ) );
+                builder.SkipAspect();
+
+                return;
+            }
+
+            baseMementoConstructor = baseMementoType.Constructors
+                .FirstOrDefault(
+                    c => c.Parameters.Count == 1 &&
+                         c.Parameters[0].Type.Is( baseTypeDefinition ) );
+
+            if (baseMementoConstructor == null)
+            {
+                builder.Diagnostics.Report(
+                    DiagnosticDefinitions.MementoTypeMustHaveConstructor
+                        .WithArguments( ( baseMementoType, baseTypeDefinition ) ) );
+
+                builder.SkipAspect();
+
+                return;
+            }
+
+            if (baseMementoConstructor.Accessibility is not (Metalama.Framework.Code.Accessibility
+                    .Protected or Metalama.Framework.Code.Accessibility.Public))
+            {
+                builder.Diagnostics.Report(
+                    DiagnosticDefinitions.MementoConstructorMustBePublicOrProtected
+                        .WithArguments( baseMementoConstructor ) );
+
+                builder.SkipAspect();
+
+                return;
+            }
+        }
+        else
+        {
+            baseMementoType = null;
+            baseMementoConstructor = null;
+        }
+
         // Introduce a new private nested class called Memento.
         var mementoType =
             builder.IntroduceClass(
-                "Memento",
-                buildType: b => b.Accessibility = Metalama.Framework.Code.Accessibility.Private );
+                builder.Target.Name + "Memento",
+                buildType: b =>
+                {
+                    b.Accessibility = Metalama.Framework.Code.Accessibility.Protected;
+                    b.BaseType = baseMementoType;
+                } );
 
-        // Introduce the Memento properties.
-        var originatorProperty =
-            mementoType.IntroduceProperty( nameof(Originator) );
-        
-        mementoType.IntroduceProperty( nameof(MementoTime) );
-
-        // Dictionary that maps fields of the target class to memento properties.
-        var propertyMap = new Dictionary<IFieldOrProperty, IProperty>();
+        var originatorFieldsAndProperties = builder.Target.FieldsAndProperties /* <SelectFields> */
+            .Where(
+                p => p is
+                {
+                    IsStatic: false,
+                    IsAutoPropertyOrField: true,
+                    IsImplicitlyDeclared: false,
+                    Writeability: Writeability.All
+                } )
+            .Where( p => !p.Attributes.OfAttributeType( typeof(MementoIgnoreAttribute) ).Any() ); /* </SelectFields> */
 
         // Introduce data properties to the Memento class for each field of the target class.
-        foreach (var fieldOrProperty in builder.Target.FieldsAndProperties)
+        var propertyMap = new Dictionary<IFieldOrProperty, IProperty>(); /* <IntroduceProperties> */
+
+        foreach (var fieldOrProperty in originatorFieldsAndProperties)
         {
-            if (fieldOrProperty is not { IsAutoPropertyOrField: true, IsImplicitlyDeclared: false })
-            {
-                // Ignore properties that are not auto-properties and fields that are not explicitly declared.
-                continue;
-            }
-
-            if (fieldOrProperty.Writeability is not Writeability.All ||
-                fieldOrProperty.Attributes.OfAttributeType( typeof(MementoIgnoreAttribute) ).Any())
-            {
-                // Ignore read-only declarations and those marked with the MementoIgnore attribute.
-                continue;
-            }
-
             var introducedField = mementoType.IntroduceProperty(
                 nameof(MementoProperty),
                 buildProperty: b =>
                 {
                     var trimmedName = fieldOrProperty.Name.TrimStart( '_' );
 
-                    b.Name = trimmedName.Substring( 0, 1 ).ToUpperInvariant() + trimmedName.Substring( 1 );
+                    b.Name = trimmedName.Substring( 0, 1 ).ToUpperInvariant() +
+                             trimmedName.Substring( 1 );
+
                     b.Type = fieldOrProperty.Type;
                 } );
 
             propertyMap.Add( fieldOrProperty, introducedField.Declaration );
-        }
+        } /* </IntroduceProperties> */
 
-        // Implement the ISnapshot interface on the Snapshot class.
-        mementoType.ImplementInterface( typeof(IMemento), whenExists: OverrideStrategy.Ignore );
-
-        // Add a constructor to the Memento class that records the state of the .
+        // Add a constructor to the Memento class that records the state of the originator.
         mementoType.IntroduceConstructor(
             nameof(MementoConstructorTemplate),
-            buildConstructor: b => { b.AddParameter( "originator", builder.Target ); } );
+            buildConstructor: b =>
+            {
+                var parameter = b.AddParameter( "originator", builder.Target );
 
-        // Introduce a Restore method to the target class, that loads the state of the object from a Memento.
+                if (baseMementoConstructor != null)
+                {
+                    b.InitializerKind = ConstructorInitializerKind.Base;
+                    b.AddInitializerArgument( parameter );
+                }
+            } );
+
+        // Implement the ISnapshot interface on the Memento class and add its members.   
+        mementoType.ImplementInterface( typeof(IMemento), whenExists: OverrideStrategy.Ignore );
+
+        var introducePropertyResult = mementoType.IntroduceProperty(
+            nameof(Originator),
+            whenExists: OverrideStrategy.Ignore );
+
+        var originatorProperty = introducePropertyResult.Outcome == AdviceOutcome.Default
+            ? introducePropertyResult.Declaration
+            : null;
+        
+        mementoType.IntroduceProperty( nameof(MementoTime) );
+
+        // Implement the rest of the IOriginator interface and its members.
+        builder.ImplementInterface( typeof(IMementoable), OverrideStrategy.Ignore );
+
         builder.IntroduceMethod(
             nameof(SaveToMemento),
             whenExists: OverrideStrategy.Override,
+            buildMethod: m => m.IsVirtual = !builder.Target.IsSealed,
             args: new { mementoType = mementoType.Declaration } );
 
-        // Introduce a Restore method to the target class, that loads the state of the object from a Memento.
         builder.IntroduceMethod(
             nameof(RestoreMemento),
+            buildMethod: m => m.IsVirtual = !builder.Target.IsSealed,
             whenExists: OverrideStrategy.Override );
 
-        // Implement the rest of the IOriginator interface.
-        builder.ImplementInterface( typeof(IMementoable) );
-
-        builder.Tags = new BuildAspectInfo( mementoType.Declaration, propertyMap, originatorProperty.Declaration );
+        // Pass the state to the templates.
+        builder.Tags = new BuildAspectInfo(
+            mementoType.Declaration,
+            propertyMap,          /* <SetTag> */
+            originatorProperty ); /* </SetTag> */
     }
 
     [Template]
@@ -89,10 +191,12 @@ public sealed class MementoAttribute : TypeAspect
     [Template]
     public IMemento SaveToMemento()
     {
-        var buildAspectInfo = (BuildAspectInfo)meta.Tags.Source!;
+        var buildAspectInfo = (BuildAspectInfo)meta.Tags.Source!; /* <GetTag> */
+        /* </GetTag> */
 
         // Invoke the constructor of the Memento class and pass this object as the originator.
-        return buildAspectInfo.SnapshotType.Constructors.Single().Invoke( (IExpression)meta.This )!;
+        return buildAspectInfo.MementoType.Constructors.Single()
+            .Invoke( (IExpression)meta.This )!;
     }
 
     [Template]
@@ -100,29 +204,42 @@ public sealed class MementoAttribute : TypeAspect
     {
         var buildAspectInfo = (BuildAspectInfo)meta.Tags.Source!;
 
-        var typedSnapshot = meta.Cast( buildAspectInfo.SnapshotType, memento );
+        // Call the base method if any, and if not abstract.
+        if (meta.Target.Method.OverriddenMethod is { IsAbstract: false })
+        {
+            meta.Proceed();
+        }
+
+        var typedSnapshot = meta.Cast( buildAspectInfo.MementoType, memento );
 
         // Set fields of this instance to the values stored in the Snapshot.
         foreach (var pair in buildAspectInfo.PropertyMap)
         {
-            pair.Key.Value = pair.Value.With( (IExpression) typedSnapshot ).Value;
+            pair.Key.Value = pair.Value.With( (IExpression)typedSnapshot ).Value;
         }
     }
 
-    [Template]
-    public DateTime MementoTime { get; } = DateTime.Now;
-
-    [Template]
+    [Template] /* <ConstructorTemplate> */
     public void MementoConstructorTemplate()
     {
         var buildAspectInfo = (BuildAspectInfo)meta.Tags.Source!;
 
         // Set the originator property and the data properties of the Snapshot.
-        buildAspectInfo.OriginatorProperty.Value = meta.Target.Parameters[0];
+        if (buildAspectInfo.OriginatorProperty != null)
+        {
+            buildAspectInfo.OriginatorProperty.Value = meta.Target.Parameters[0];
+        }
+        else
+        {
+            // We are in a derived type and there is no need to assign the property.
+        }
 
         foreach (var pair in buildAspectInfo.PropertyMap)
         {
             pair.Value.Value = pair.Key.With( meta.Target.Parameters[0] ).Value;
         }
-    }
+    } /* </ConstructorTemplate> */
+    
+    [Template]
+    public DateTime MementoTime { get; } = DateTime.Now;
 }
