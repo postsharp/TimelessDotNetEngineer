@@ -8,6 +8,7 @@ on:
 
 env:
   METALAMA_CONSOLE_TRACE: '*'
+  METALAMA_TEMP: ${{ runner.temp }}\Metalama
 
 jobs:
 
@@ -31,13 +32,15 @@ jobs:
       shell: pwsh
       run: .\Build.ps1 test --disable-build-servers
 
-    - uses: actions/upload-artifact@v3
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
       if: always()
       with:
         name: artifacts
         path: artifacts
 
-    - uses: actions/upload-artifact@v3
+    - name: Upload temp files
+      uses: actions/upload-artifact@v3
       if: always()
       with:
         name: temp
