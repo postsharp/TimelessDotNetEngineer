@@ -28,7 +28,7 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Set METALAMA_TEMP environment variable
-      run: echo "METALAMA_TEMP=${RUNNER_TEMP}\\Metalama" >> $GITHUB_ENV
+      run: echo "METALAMA_TEMP=${{ runner.os }}\\Metalama" >> ${{ github.env }}
 
     - name: Test using the master build script
       shell: pwsh
@@ -46,4 +46,4 @@ jobs:
       if: always()
       with:
         name: temp
-        path: ${{ env.METALAMA_TEMP }}\Metalama
+        path: ${{ runner.os }}\Metalama
