@@ -7,3 +7,4 @@ obj/
 *.Import.props
 artifacts/
 .idea/
+*.DotSettings.user
