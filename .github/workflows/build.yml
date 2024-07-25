@@ -29,5 +29,9 @@ jobs:
 
     - name: Test using the master build script
       shell: pwsh
-      run: .\Build.ps1 test -v detailed --disable-build-servers
+      run: .\Build.ps1 test --disable-build-servers
 
+    - uses: actions/upload-artifact@v3
+      with:
+        name: Build
+        path: artifacts
