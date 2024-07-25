@@ -26,28 +26,28 @@ public sealed partial class FishControl
 
         if (e.Property.Name == nameof(DataContext))
         {
-            if (e.OldValue is Fish oldFish)
+            if (e.OldValue is IMementoable and INotifyPropertyChanged newObservable )
             {
-                oldFish.PropertyChanged -= OnFishPropertyChanged;
+                newObservable.PropertyChanged -= OnMementoablePropertyChanged;
             }
 
-            if (e.NewValue is Fish newFish)
+            if (e.NewValue is IMementoable newMementoable and INotifyPropertyChanged newObervable )
             {
-                newFish.PropertyChanged += OnFishPropertyChanged;
+                newObervable.PropertyChanged += OnMementoablePropertyChanged;
 
-                // Capture before any change.
-                _caretaker?.CaptureMemento( newFish );
+                // Capture _before_ any change.
+                _caretaker?.CaptureMemento( newMementoable );
             }
         }
     }
 
-    private void OnFishPropertyChanged( object? sender, PropertyChangedEventArgs e )
+    private void OnMementoablePropertyChanged( object? sender, PropertyChangedEventArgs e )
     {
-        var fish = (Fish?)DataContext;
+        var mementoable = (IMementoable?) DataContext;
 
-        if (fish != null)
+        if (mementoable != null)
         {
-            _caretaker?.CaptureMemento( fish );
+            _caretaker?.CaptureMemento( mementoable );
         }
     }
     // [<endsnippet OnPropertyChanged>]
