@@ -13,8 +13,6 @@ public sealed class MainViewModel : ObservableRecipient, IMementoable
     private readonly IFishGenerator _fishGenerator;
     private bool _isEditing;
     private Fish? _currentFish;
-    private Fish? _editedFish; // Not memento
-
     private ImmutableList<Fish> _fishes = ImmutableList<Fish>.Empty;
 
     // [<endsnippet DataFields>]
