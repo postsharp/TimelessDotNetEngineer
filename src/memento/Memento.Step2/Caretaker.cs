@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Memento.Step2;
@@ -9,28 +11,28 @@ public sealed class Caretaker : IMementoCaretaker
 
     public void CaptureMemento( IMementoable mementoable )
     {
-        _mementos.Push( mementoable.SaveToMemento() );
+        this._mementos.Push( mementoable.SaveToMemento() );
 
-        OnPropertyChanged( nameof(CanUndo) );
+        this.OnPropertyChanged( nameof(this.CanUndo) );
     }
 
     public void Undo()
     {
-        if (_mementos.Count > 0)
+        if ( this._mementos.Count > 0 )
         {
-            var memento = _mementos.Pop();
+            var memento = this._mementos.Pop();
             memento.Originator.RestoreMemento( memento );
         }
 
-        OnPropertyChanged( nameof(CanUndo) );
+        this.OnPropertyChanged( nameof(this.CanUndo) );
     }
 
-    public bool CanUndo => _mementos.Count > 0;
+    public bool CanUndo => this._mementos.Count > 0;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
     private void OnPropertyChanged( [CallerMemberName] string? propertyName = null )
     {
-        PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
+        this.PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
     }
 }

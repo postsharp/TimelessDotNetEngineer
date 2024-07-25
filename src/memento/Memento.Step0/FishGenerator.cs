@@ -1,4 +1,6 @@
-﻿using NameGenerator;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using NameGenerator;
 
 namespace Memento.Step0
 {
@@ -28,18 +30,18 @@ namespace Memento.Step0
 
         public FishGenerator( GeneratorBase nameGenerator )
         {
-            _nameGenerator = nameGenerator;
-            _random = new Random();
+            this._nameGenerator = nameGenerator;
+            this._random = new Random();
         }
 
         public string GetNewName()
         {
-            return _nameGenerator.Generate();
+            return this._nameGenerator.Generate();
         }
 
         public string GetNewSpecies()
         {
-            return FishSpecies[_random.Next( FishSpecies.Length )];
+            return FishSpecies[this._random.Next( FishSpecies.Length )];
         }
     }
 }

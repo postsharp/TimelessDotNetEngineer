@@ -1,11 +1,13 @@
-﻿using Metalama.Patterns.Observability;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using Metalama.Patterns.Observability;
 
 namespace Memento.Step2;
 
 // [<snippet Type>]
 [Memento]
 [Observable]
-public sealed partial class Fish 
+public sealed partial class Fish
 {
     public string? Name { get; set; }
 

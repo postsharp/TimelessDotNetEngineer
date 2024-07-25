@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using System.ComponentModel;
 
 namespace Memento.Step2;
 

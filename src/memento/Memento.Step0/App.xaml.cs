@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NameGenerator;

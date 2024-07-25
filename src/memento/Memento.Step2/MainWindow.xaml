@@ -8,7 +8,7 @@
         Title="My Little Fish Tank" Height="450" Width="800"
         x:Name="window">
     <Window.DataContext>
-        <step2:MainViewModel/>    
+        <step2:MainViewModel />
     </Window.DataContext>
     <Window.Resources>
         <step2:NotValueConverter x:Key="NotConverter" />

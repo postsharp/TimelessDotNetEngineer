@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using System.Windows.Controls;
 
 namespace Memento.Step2;
 
@@ -9,6 +11,6 @@ public sealed partial class FishControl : UserControl
 {
     public FishControl()
     {
-        InitializeComponent();
+        this.InitializeComponent();
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using System.Globalization;
 using System.Windows.Data;
 
 namespace Memento.Step3;
@@ -7,7 +9,7 @@ internal sealed class NotValueConverter : IValueConverter
 {
     public object Convert( object? value, Type targetType, object? parameter, CultureInfo culture )
     {
-        if (value is bool b)
+        if ( value is bool b )
         {
             return !b;
         }
@@ -15,9 +17,13 @@ internal sealed class NotValueConverter : IValueConverter
         return false;
     }
 
-    public object ConvertBack( object? value, Type targetType, object? parameter, CultureInfo culture )
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture )
     {
-        if (value is bool b)
+        if ( value is bool b )
         {
             return !b;
         }

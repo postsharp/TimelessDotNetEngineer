@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,11 +14,12 @@ namespace Memento.Step3;
 /// </summary>
 public sealed partial class FishControl
 {
-    private readonly IMementoCaretaker? _caretaker = App.Host?.Services.GetService<IMementoCaretaker>();
+    private readonly IMementoCaretaker? _caretaker =
+        App.Host?.Services.GetService<IMementoCaretaker>();
 
     public FishControl()
     {
-        InitializeComponent();
+        this.InitializeComponent();
     }
 
     // [<snippet OnPropertyChanged>]
@@ -24,47 +27,48 @@ public sealed partial class FishControl
     {
         base.OnPropertyChanged( e );
 
-        if (e.Property.Name == nameof(DataContext))
+        if ( e.Property.Name == nameof(this.DataContext) )
         {
-            if (e.OldValue is IMementoable and INotifyPropertyChanged newObservable )
+            if ( e.OldValue is IMementoable and INotifyPropertyChanged newObservable )
             {
-                newObservable.PropertyChanged -= OnMementoablePropertyChanged;
+                newObservable.PropertyChanged -= this.OnMementoablePropertyChanged;
             }
 
-            if (e.NewValue is IMementoable newMementoable and INotifyPropertyChanged newObervable )
+            if ( e.NewValue is IMementoable newMementoable and INotifyPropertyChanged newObervable )
             {
-                newObervable.PropertyChanged += OnMementoablePropertyChanged;
+                newObervable.PropertyChanged += this.OnMementoablePropertyChanged;
 
                 // Capture _before_ any change.
-                _caretaker?.CaptureMemento( newMementoable );
+                this._caretaker?.CaptureMemento( newMementoable );
             }
         }
     }
 
     private void OnMementoablePropertyChanged( object? sender, PropertyChangedEventArgs e )
     {
-        var mementoable = (IMementoable?) DataContext;
+        var mementoable = (IMementoable?) this.DataContext;
 
-        if (mementoable != null)
+        if ( mementoable != null )
         {
-            _caretaker?.CaptureMemento( mementoable );
+            this._caretaker?.CaptureMemento( mementoable );
         }
     }
+
     // [<endsnippet OnPropertyChanged>]
 
     // [<snippet OnTextBoxUpdated>]
     private void OnTextBoxUpdated( object sender, KeyEventArgs e )
     {
-        if (sender is TextBox textBox)
+        if ( sender is TextBox textBox )
         {
             var binding = BindingOperations.GetBindingExpression( textBox, TextBox.TextProperty );
 
-            if (binding != null)
+            if ( binding != null )
             {
                 binding.UpdateSource();
             }
         }
     }
-    // [<endsnippet OnTextBoxUpdated>]
 
+    // [<endsnippet OnTextBoxUpdated>]
 }

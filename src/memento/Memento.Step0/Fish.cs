@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Memento.Step0;
 
@@ -11,20 +13,20 @@ public sealed class Fish : ObservableRecipient
 
     public string? Name
     {
-        get => _name;
-        set => SetProperty( ref _name, value, true );
+        get => this._name;
+        set => this.SetProperty( ref this._name, value, true );
     }
 
     public string? Species
     {
-        get => _species;
-        set => SetProperty( ref _species, value, true );
+        get => this._species;
+        set => this.SetProperty( ref this._species, value, true );
     }
 
     public DateTime DateAdded
     {
-        get => _dateAdded;
-        set => SetProperty( ref _dateAdded, value, true );
+        get => this._dateAdded;
+        set => this.SetProperty( ref this._dateAdded, value, true );
     }
 }
 

@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -14,8 +16,9 @@ public sealed class MainViewModel : ObservableRecipient
     private readonly IFishGenerator _fishGenerator;
     private bool _isEditing;
     private Fish? _currentFish;
-    
+
     public ObservableCollection<Fish> Fishes { get; } = new();
+
     // [<endsnippet DataFields>]
 
     public IRelayCommand NewCommand { get; }
@@ -30,44 +33,44 @@ public sealed class MainViewModel : ObservableRecipient
 
     public bool IsEditing
     {
-        get => _isEditing;
-        set => SetProperty( ref _isEditing, value, true );
+        get => this._isEditing;
+        set => this.SetProperty( ref this._isEditing, value, true );
     }
-    
+
     public Fish? CurrentFish
     {
-        get => _currentFish;
-        set => SetProperty( ref _currentFish, value, true );
+        get => this._currentFish;
+        set => this.SetProperty( ref this._currentFish, value, true );
     }
 
     // Design-time.
-    public MainViewModel() : this( new FishGenerator( new RealNameGenerator()) ) { }
+    public MainViewModel() : this( new FishGenerator( new RealNameGenerator() ) ) { }
 
     public MainViewModel( IFishGenerator fishGenerator )
     {
-        _fishGenerator = fishGenerator;
+        this._fishGenerator = fishGenerator;
 
-        NewCommand = new RelayCommand( ExecuteNew, CanExecuteNew );
-        RemoveCommand = new RelayCommand( ExecuteRemove, CanExecuteRemove );
-        EditCommand = new RelayCommand( ExecuteEdit, CanExecuteEdit );
-        SaveCommand = new RelayCommand( ExecuteSave, CanExecuteSave );
-        CancelCommand = new RelayCommand( ExecuteCancel, CanExecuteCancel );
+        this.NewCommand = new RelayCommand( this.ExecuteNew, this.CanExecuteNew );
+        this.RemoveCommand = new RelayCommand( this.ExecuteRemove, this.CanExecuteRemove );
+        this.EditCommand = new RelayCommand( this.ExecuteEdit, this.CanExecuteEdit );
+        this.SaveCommand = new RelayCommand( this.ExecuteSave, this.CanExecuteSave );
+        this.CancelCommand = new RelayCommand( this.ExecuteCancel, this.CanExecuteCancel );
     }
 
     protected override void OnPropertyChanged( PropertyChangedEventArgs e )
     {
-        if (e.PropertyName == nameof(IsEditing))
+        if ( e.PropertyName == nameof(this.IsEditing) )
         {
-            NewCommand.NotifyCanExecuteChanged();
-            RemoveCommand.NotifyCanExecuteChanged();
-            EditCommand.NotifyCanExecuteChanged();
-            SaveCommand.NotifyCanExecuteChanged();
-            CancelCommand.NotifyCanExecuteChanged();
+            this.NewCommand.NotifyCanExecuteChanged();
+            this.RemoveCommand.NotifyCanExecuteChanged();
+            this.EditCommand.NotifyCanExecuteChanged();
+            this.SaveCommand.NotifyCanExecuteChanged();
+            this.CancelCommand.NotifyCanExecuteChanged();
         }
-        else if (e.PropertyName == nameof(CurrentFish))
+        else if ( e.PropertyName == nameof(this.CurrentFish) )
         {
-            EditCommand.NotifyCanExecuteChanged();
-            RemoveCommand.NotifyCanExecuteChanged();
+            this.EditCommand.NotifyCanExecuteChanged();
+            this.RemoveCommand.NotifyCanExecuteChanged();
         }
 
         base.OnPropertyChanged( e );
@@ -75,68 +78,74 @@ public sealed class MainViewModel : ObservableRecipient
 
     private void ExecuteNew()
     {
-        Fishes.Add( new Fish() { Name = _fishGenerator.GetNewName(), Species = _fishGenerator.GetNewSpecies(), DateAdded = DateTime.Now } );
+        this.Fishes.Add(
+            new Fish()
+            {
+                Name = this._fishGenerator.GetNewName(),
+                Species = this._fishGenerator.GetNewSpecies(),
+                DateAdded = DateTime.Now
+            } );
     }
 
     private bool CanExecuteNew()
     {
-        return !IsEditing;
+        return !this.IsEditing;
     }
 
     private void ExecuteRemove()
     {
-        if (CurrentFish != null)
+        if ( this.CurrentFish != null )
         {
-            var index = Fishes.IndexOf( CurrentFish );
-            Fishes.RemoveAt( index );
+            var index = this.Fishes.IndexOf( this.CurrentFish );
+            this.Fishes.RemoveAt( index );
 
-            if (index < Fishes.Count)
+            if ( index < this.Fishes.Count )
             {
-                CurrentFish = Fishes[index];
+                this.CurrentFish = this.Fishes[index];
             }
-            else if (Fishes.Count > 0)
+            else if ( this.Fishes.Count > 0 )
             {
-                CurrentFish = Fishes[^1];
+                this.CurrentFish = this.Fishes[^1];
             }
             else
             {
-                CurrentFish = null;
+                this.CurrentFish = null;
             }
         }
     }
 
     private bool CanExecuteRemove()
     {
-        return CurrentFish != null && !IsEditing;
+        return this.CurrentFish != null && !this.IsEditing;
     }
 
     private void ExecuteEdit()
     {
-        IsEditing = true;
+        this.IsEditing = true;
     }
 
     private bool CanExecuteEdit()
     {
-        return CurrentFish != null && !IsEditing;
+        return this.CurrentFish != null && !this.IsEditing;
     }
 
     private void ExecuteSave()
     {
-        IsEditing = false;
+        this.IsEditing = false;
     }
 
     private bool CanExecuteSave()
     {
-        return IsEditing;
+        return this.IsEditing;
     }
 
     private void ExecuteCancel()
     {
-        IsEditing = false;
+        this.IsEditing = false;
     }
 
     private bool CanExecuteCancel()
     {
-        return IsEditing;
+        return this.IsEditing;
     }
 }

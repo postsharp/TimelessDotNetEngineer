@@ -1,4 +1,6 @@
-﻿namespace TodoList.Web;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+namespace TodoList.Web;
 
 public class TodoApiClient( HttpClient httpClient )
 {

@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Memento.Step1;
 
@@ -11,42 +13,46 @@ public sealed class Fish : ObservableRecipient, IMementoable
 
     public string? Name
     {
-        get => _name;
-        set => SetProperty( ref _name, value, true );
+        get => this._name;
+        set => this.SetProperty( ref this._name, value, true );
     }
 
     public string? Species
     {
-        get => _species;
-        set => SetProperty( ref _species, value, true );
+        get => this._species;
+        set => this.SetProperty( ref this._species, value, true );
     }
 
     public DateTime DateAdded
     {
-        get => _dateAdded;
-        set => SetProperty( ref _dateAdded, value, true );
+        get => this._dateAdded;
+        set => this.SetProperty( ref this._dateAdded, value, true );
     }
 
     public void RestoreMemento( IMemento memento )
     {
-        if (memento is not Memento s)
+        if ( memento is not Memento s )
         {
             throw new InvalidOperationException( "Invalid snapshot." );
         }
 
-        Name = s.Name;
-        Species = s.Species;
-        DateAdded = s.DateAdded;
+        this.Name = s.Name;
+        this.Species = s.Species;
+        this.DateAdded = s.DateAdded;
     }
 
     public IMemento SaveToMemento()
     {
-        return new Memento( this, Name, Species, DateAdded );
+        return new Memento( this, this.Name, this.Species, this.DateAdded );
     }
 
-    private sealed record Memento( Fish Originator, string? Name, string? Species, DateTime DateAdded ) : IMemento
+    private sealed record Memento(
+        Fish Originator,
+        string? Name,
+        string? Species,
+        DateTime DateAdded ) : IMemento
     {
-        IMementoable IMemento.Originator => Originator;
+        IMementoable IMemento.Originator => this.Originator;
     }
 }
 

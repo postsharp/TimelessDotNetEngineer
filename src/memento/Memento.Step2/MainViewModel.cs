@@ -1,4 +1,6 @@
-﻿using System.Collections.Immutable;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using System.Collections.Immutable;
 using Metalama.Patterns.Observability;
 using Metalama.Patterns.Wpf;
 using NameGenerator.Generators;
@@ -7,7 +9,7 @@ namespace Memento.Step2;
 
 [Memento]
 [Observable]
-public sealed partial class MainViewModel 
+public sealed partial class MainViewModel
 {
     private readonly IMementoCaretaker? _caretaker;
     private readonly IFishGenerator _fishGenerator;
@@ -23,105 +25,111 @@ public sealed partial class MainViewModel
 
     public MainViewModel( IFishGenerator fishGenerator, IMementoCaretaker? caretaker )
     {
-        _fishGenerator = fishGenerator;
-        _caretaker = caretaker;
+        this._fishGenerator = fishGenerator;
+        this._caretaker = caretaker;
     }
 
     [Command]
     private void ExecuteNew()
     {
-        _caretaker?.CaptureMemento( this );
+        this._caretaker?.CaptureMemento( this );
 
-        Fishes = Fishes.Add( new Fish() { Name = _fishGenerator.GetNewName(), Species = _fishGenerator.GetNewSpecies(), DateAdded = DateTime.Now } );
+        this.Fishes = this.Fishes.Add(
+            new Fish()
+            {
+                Name = this._fishGenerator.GetNewName(),
+                Species = this._fishGenerator.GetNewSpecies(),
+                DateAdded = DateTime.Now
+            } );
     }
 
-    public bool CanExecuteNew => !IsEditing;
+    public bool CanExecuteNew => !this.IsEditing;
 
     [Command]
     private void ExecuteRemove()
     {
-        if (CurrentFish != null)
+        if ( this.CurrentFish != null )
         {
-            _caretaker?.CaptureMemento( this );
+            this._caretaker?.CaptureMemento( this );
 
-            var index = Fishes.IndexOf( CurrentFish );
-            Fishes = Fishes.RemoveAt( index );
+            var index = this.Fishes.IndexOf( this.CurrentFish );
+            this.Fishes = this.Fishes.RemoveAt( index );
 
-            if (index < Fishes.Count)
+            if ( index < this.Fishes.Count )
             {
-                CurrentFish = Fishes[index];
+                this.CurrentFish = this.Fishes[index];
             }
-            else if (Fishes.Count > 0)
+            else if ( this.Fishes.Count > 0 )
             {
-                CurrentFish = Fishes[^1];
+                this.CurrentFish = this.Fishes[^1];
             }
             else
             {
-                CurrentFish = null;
+                this.CurrentFish = null;
             }
         }
     }
 
-    public bool CanExecuteRemove => CurrentFish != null && !IsEditing;
+    public bool CanExecuteRemove => this.CurrentFish != null && !this.IsEditing;
 
     [Command]
     private void ExecuteEdit()
     {
-        IsEditing = true;
-        _caretaker?.CaptureMemento( CurrentFish! );
+        this.IsEditing = true;
+        this._caretaker?.CaptureMemento( this.CurrentFish! );
     }
 
-    public bool CanExecuteEdit => CurrentFish != null && !IsEditing;
+    public bool CanExecuteEdit => this.CurrentFish != null && !this.IsEditing;
 
     [Command]
     private void ExecuteSave()
     {
-        IsEditing = false;
+        this.IsEditing = false;
     }
 
-    public bool CanExecuteSave => IsEditing;
+    public bool CanExecuteSave => this.IsEditing;
 
     [Command]
     private void ExecuteCancel()
     {
-        IsEditing = false;
-        _caretaker?.Undo();
+        this.IsEditing = false;
+        this._caretaker?.Undo();
     }
 
-    public bool CanExecuteCancel => IsEditing;
+    public bool CanExecuteCancel => this.IsEditing;
 
     [Command]
     private void ExecuteUndo()
     {
-        IsEditing = false;
+        this.IsEditing = false;
 
         // Remember the main list selection status before undo.
-        var item = CurrentFish;
+        var item = this.CurrentFish;
 
         var index =
             item != null
-                ? (int?)Fishes.IndexOf( item )
+                ? (int?) this.Fishes.IndexOf( item )
                 : null;
 
-        _caretaker?.Undo();
+        this._caretaker?.Undo();
 
         // Fix the current item after undo.
-        if (index != null)
+        if ( index != null )
         {
-            if (index < Fishes.Count)
+            if ( index < this.Fishes.Count )
             {
-                CurrentFish = Fishes[index.Value];
+                this.CurrentFish = this.Fishes[index.Value];
             }
-            else if (Fishes.Count > 0)
+            else if ( this.Fishes.Count > 0 )
             {
-                CurrentFish = Fishes[^1];
+                this.CurrentFish = this.Fishes[^1];
             }
             else
             {
-                CurrentFish = null;
+                this.CurrentFish = null;
             }
         }
     }
 
-    public bool CanExecuteUndo => _caretaker?.CanUndo == true;
+    public bool CanExecuteUndo => this._caretaker?.CanUndo == true;
 }

@@ -1,4 +1,6 @@
-﻿namespace Memento.Step1;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+namespace Memento.Step1;
 
 public sealed class MementoCaretaker : IMementoCaretaker
 {
@@ -6,17 +8,17 @@ public sealed class MementoCaretaker : IMementoCaretaker
 
     public void CaptureSnapshot( IMementoable mementoable )
     {
-        _mementos.Push( mementoable.SaveToMemento() );
+        this._mementos.Push( mementoable.SaveToMemento() );
     }
 
     public void Undo()
     {
-        if (_mementos.Count > 0)
+        if ( this._mementos.Count > 0 )
         {
-            var memento = _mementos.Pop();
+            var memento = this._mementos.Pop();
             memento.Originator.RestoreMemento( memento );
         }
     }
 
-    public bool CanUndo => _mementos.Count > 0;
+    public bool CanUndo => this._mementos.Count > 0;
 }
