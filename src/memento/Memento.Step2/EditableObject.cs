@@ -8,6 +8,11 @@ public abstract partial class EditableObject : IEditableObject, IMementoable
     
     public void BeginEdit()
     {
+        if (this._beforeEditMemento != null)
+        {
+            throw new InvalidOperationException();
+        }
+        
         this._beforeEditMemento = this.SaveToMemento();
     }
 
@@ -23,6 +28,11 @@ public abstract partial class EditableObject : IEditableObject, IMementoable
 
     public void EndEdit()
     {
+        if (this._beforeEditMemento == null)
+        {
+            throw new InvalidOperationException();
+        }
+        
         this._beforeEditMemento = null;
     }
 
