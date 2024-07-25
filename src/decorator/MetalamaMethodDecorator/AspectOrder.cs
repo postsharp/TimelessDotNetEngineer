@@ -2,4 +2,8 @@
 
 using Metalama.Framework.Aspects;
 
-[assembly: AspectOrder( typeof(ReportExceptionsAttribute), typeof(RetryAttribute) )]
+[assembly:
+    AspectOrder(
+        AspectOrderDirection.RunTime,
+        typeof(ReportExceptionsAttribute),
+        typeof(RetryAttribute) )]
