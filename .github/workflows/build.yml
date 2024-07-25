@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 env:
-  METALAMA_CONSOLE_TRACE: '*'
+  # METALAMA_CONSOLE_TRACE: '*'
 
 jobs:
 
@@ -32,7 +32,7 @@ jobs:
 
     - name: Test using the master build script
       shell: pwsh
-      run: .\Build.ps1 test --disable-build-servers
+      run: .\Build.ps1 test # --disable-build-servers
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
