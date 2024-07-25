@@ -50,7 +50,7 @@ public sealed class MainViewModel : ObservableRecipient, IMementoable
     }
 
     // Design-time.
-    public MainViewModel() : this( new FishGenerator( new RealNameGenerator()), null ) { }
+    public MainViewModel() : this( new FishGenerator( new RealNameGenerator() ), null ) { }
 
     public MainViewModel( IFishGenerator fishGenerator, IMementoCaretaker? caretaker )
     {
@@ -97,6 +97,7 @@ public sealed class MainViewModel : ObservableRecipient, IMementoable
 
         Fishes = Fishes.Add( new Fish() { Name = _fishGenerator.GetNewName(), Species = _fishGenerator.GetNewSpecies(), DateAdded = DateTime.Now } );
     }
+
     // [<endsnippet ExecuteNew>]
 
     private bool CanExecuteNew()
@@ -133,26 +134,17 @@ public sealed class MainViewModel : ObservableRecipient, IMementoable
         return CurrentFish != null && !IsEditing;
     }
 
+    // <snippet EditControl>
     private void ExecuteEdit()
     {
         IsEditing = true;
-        
-        _caretaker?.CaptureSnapshot( _currentFish! );
-    }
 
-    private bool CanExecuteEdit()
-    {
-        return CurrentFish != null && !IsEditing;
+        _caretaker?.CaptureSnapshot( _currentFish! );
     }
 
     private void ExecuteSave()
     {
         IsEditing = false;
-    }
-
-    private bool CanExecuteSave()
-    {
-        return IsEditing;
     }
 
     private void ExecuteCancel()
@@ -161,9 +153,21 @@ public sealed class MainViewModel : ObservableRecipient, IMementoable
         _caretaker?.Undo();
     }
 
+    // <endsnippet EditControl>
+
     private bool CanExecuteCancel()
     {
         return IsEditing;
+    }
+
+    private bool CanExecuteSave()
+    {
+        return IsEditing;
+    }
+
+    private bool CanExecuteEdit()
+    {
+        return CurrentFish != null && !IsEditing;
     }
 
     // [<snippet ExecuteUndo>]

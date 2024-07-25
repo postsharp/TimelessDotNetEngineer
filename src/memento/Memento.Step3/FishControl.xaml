@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Memento.Step1.FishControl"
+﻿<UserControl x:Class="Memento.Step3.FishControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -17,10 +17,10 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Name" />
-        <TextBox Grid.Row="0" Grid.Column="1" Margin="2" Text="{Binding Name}" />
-        CaptureMemento Grid.Row="1" Grid.Column="0" Text="Species" />
-        <TextBox Grid.Row="1" Grid.Column="1" Margin="2" Text="{Binding Species}" />
+        <TextBox Grid.Row="0" Grid.Column="1" Margin="2" Text="{Binding Name}" KeyUp="OnTextBoxUpdated" />
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Species" />
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="2" Text="{Binding Species}" KeyUp="OnTextBoxUpdated"/>
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Date Added" />
-        <DatePicker Grid.Row="2" Grid.Column="1" Margin="2" SelectedDate="{Binding DateAdded}" />
+        <DatePicker Grid.Row="2" Grid.Column="1" Margin="2" SelectedDate="{Binding DateAdded}" KeyUp="OnTextBoxUpdated"/>
     </Grid>
 </UserControl>
