@@ -2,4 +2,7 @@
 
 using Metalama.Framework.Aspects;
 
-[assembly: AspectOrder( typeof(RetryAttribute), typeof(DbTransactionAttribute) )]
+[assembly: AspectOrder( 
+    AspectOrderDirection.RunTime, 
+    typeof(RetryAttribute),
+    typeof(DbTransactionAttribute) )]
