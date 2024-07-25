@@ -6,16 +6,15 @@ on:
   pull_request:
     branches: [ "main" ]
 
-env:
-  # METALAMA_CONSOLE_TRACE: '*'
+# env:
+#  METALAMA_CONSOLE_TRACE: '*'
 
 jobs:
 
   build:
 
-    runs-on: windows-latest  # For a list of available runner types, refer to
-                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
-
+    runs-on: windows-latest  
+                             
     steps:
     - name: Checkout
       uses: actions/checkout@v4
