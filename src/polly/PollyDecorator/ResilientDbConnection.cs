@@ -1,4 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using System.Data;
 using System.Data.Common;
@@ -9,7 +9,9 @@ public class ResilientDbConnection : DbConnection
     private readonly ResiliencePipeline _resiliencePipeline;
     private readonly DbConnection _underlyingConnection;
 
-    public ResilientDbConnection( DbConnection underlyingConnection, ResiliencePipeline resiliencePipeline )
+    public ResilientDbConnection(
+        DbConnection underlyingConnection,
+        ResiliencePipeline resiliencePipeline )
     {
         this._underlyingConnection = underlyingConnection;
         this._resiliencePipeline = resiliencePipeline;
@@ -51,6 +53,8 @@ public class ResilientDbConnection : DbConnection
 
     protected override DbCommand CreateDbCommand()
     {
-        return new ResilientDbCommand( this._underlyingConnection.CreateCommand(), this._resiliencePipeline );
+        return new ResilientDbCommand(
+            this._underlyingConnection.CreateCommand(),
+            this._resiliencePipeline );
     }
 }
