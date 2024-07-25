@@ -65,6 +65,6 @@ public sealed partial class FishControl
             }
         }
     }
-    // [</endsnippet OnTextBoxUpdated>]
+    // [<endsnippet OnTextBoxUpdated>]
 
 }
