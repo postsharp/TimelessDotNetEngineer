@@ -8,7 +8,6 @@ on:
 
 env:
   METALAMA_CONSOLE_TRACE: '*'
-  METALAMA_TEMP: ${{ runner.temp }}\Metalama
 
 jobs:
 
@@ -44,4 +43,4 @@ jobs:
       if: always()
       with:
         name: temp
-        path: ${{ runner.temp }}\Metalama
+        path: ${{ env.TEMP }}\Metalama
