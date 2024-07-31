@@ -1,9 +1,10 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using System.Collections.Concurrent;
 using System.Diagnostics;
 
 [Singleton]
+
 // [<snippet body>]
 public class PerformanceCounterManager : IPerformanceCounterManager
 {
@@ -17,9 +18,9 @@ public class PerformanceCounterManager : IPerformanceCounterManager
         this._uploader = uploader;
     }
 
-    public void IncrementCounter( string name ) 
+    public void IncrementCounter( string name )
         => this._counters.AddOrUpdate( name, 1, ( _, value ) => value + 1 );
-    
+
     public void UploadAndReset()
     {
         Dictionary<string, int> oldCounters;
@@ -35,8 +36,9 @@ public class PerformanceCounterManager : IPerformanceCounterManager
 
         foreach ( var counter in oldCounters )
         {
-            this._uploader.UploadCounter( counter.Key,  counter.Value / elapsed.TotalSeconds );
+            this._uploader.UploadCounter( counter.Key, counter.Value / elapsed.TotalSeconds );
         }
     }
 }
+
 // [<endsnippet body>]

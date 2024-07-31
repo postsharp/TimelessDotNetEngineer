@@ -1,4 +1,4 @@
-// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -32,8 +32,10 @@ public class PerformanceCounterManager
 
         foreach ( var counter in oldCounters )
         {
-            Console.WriteLine( $"{counter.Key}: {counter.Value / elapsed.TotalSeconds:f2} calls/s" );
+            Console.WriteLine(
+                $"{counter.Key}: {counter.Value / elapsed.TotalSeconds:f2} calls/s" );
         }
     }
 }
+
 // [<endsnippet body>]

@@ -1,6 +1,7 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 // [<snippet body>]
+
 using Metalama.Extensions.Architecture.Aspects;
 using Metalama.Framework.Aspects;
 using Metalama.Framework.Code;
@@ -11,7 +12,8 @@ public class SingletonAttribute : TypeAspect
 {
     public override void BuildAspect( IAspectBuilder<INamedType> builder )
     {
-        builder.Outbound.SelectMany( t => t.Constructors ).AddAspect<SingletonConstructorAttribute>();
+        builder.Outbound.SelectMany( t => t.Constructors )
+            .AddAspect<SingletonConstructorAttribute>();
     }
 
     private class SingletonConstructorAttribute : CanOnlyBeUsedFromAttribute
@@ -22,11 +24,12 @@ public class SingletonAttribute : TypeAspect
             this.Namespaces = ["**.Tests"];
 
             // Allow from the Startup class.
-            this.Types = [typeof( Startup )];
+            this.Types = [typeof(Startup)];
 
             // Justification.
             this.Description = "The class is a [Singleton].";
         }
     }
 }
+
 // [<endsnippet body>]

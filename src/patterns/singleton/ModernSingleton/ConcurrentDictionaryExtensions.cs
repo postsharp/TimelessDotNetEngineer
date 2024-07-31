@@ -1,19 +1,20 @@
-// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using System.Collections.Concurrent;
 
 internal static class ConcurrentDictionaryExtensions
 {
     // https://stackoverflow.com/a/66118283/41071
-    public static Dictionary<TKey, TValue> RemoveAll<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> source) where TKey : notnull
+    public static Dictionary<TKey, TValue> RemoveAll<TKey, TValue>(
+        this ConcurrentDictionary<TKey, TValue> source ) where TKey : notnull
     {
         var result = new Dictionary<TKey, TValue>();
-        
-        foreach (var (key, _) in source)
+
+        foreach ( var (key, _) in source )
         {
-            if (!result.ContainsKey(key) && source.TryRemove(key, out var value))
+            if ( !result.ContainsKey( key ) && source.TryRemove( key, out var value ) )
             {
-                result.Add(key, value);
+                result.Add( key, value );
             }
         }
 
