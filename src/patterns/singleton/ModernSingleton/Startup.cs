@@ -1,7 +1,5 @@
 // Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
-// [<snippet body>]
-
 using Microsoft.Extensions.DependencyInjection;
 
 public static class Startup
@@ -11,8 +9,6 @@ public static class Startup
         serviceCollection
             .AddSingleton<IPerformanceCounterUploader, AwsPerformanceCounterUploader>();
 
-        serviceCollection.AddSingleton<IPerformanceCounterManager, PerformanceCounterManager>();
+        serviceCollection.AddSingleton<PerformanceCounterManager>();
     }
 }
-
-// [<endsnippet body>]

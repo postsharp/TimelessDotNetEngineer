@@ -9,10 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModernSingleton", "ModernSi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModernSingletonArchUnit", "ModernSingletonArchUnit\ModernSingletonArchUnit.csproj", "{B8F216F4-F1D5-4DD8-AD07-403AA7FAF8CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassicSingletonMetalama", "ClassicSingletonMetalama\ClassicSingletonMetalama.csproj", "{0B70B770-E487-4A6B-AF8E-CD50E483F876}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		LamaDebug|Any CPU = LamaDebug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -22,13 +25,25 @@ Global
 		{0B654755-2570-4AA8-A0BB-2B65AD0731F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B654755-2570-4AA8-A0BB-2B65AD0731F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B654755-2570-4AA8-A0BB-2B65AD0731F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B654755-2570-4AA8-A0BB-2B65AD0731F1}.LamaDebug|Any CPU.ActiveCfg = LamaDebug|Any CPU
+		{0B654755-2570-4AA8-A0BB-2B65AD0731F1}.LamaDebug|Any CPU.Build.0 = LamaDebug|Any CPU
 		{6779471A-01C5-40C8-8D53-BA6CB4F73A20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6779471A-01C5-40C8-8D53-BA6CB4F73A20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6779471A-01C5-40C8-8D53-BA6CB4F73A20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6779471A-01C5-40C8-8D53-BA6CB4F73A20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6779471A-01C5-40C8-8D53-BA6CB4F73A20}.LamaDebug|Any CPU.ActiveCfg = LamaDebug|Any CPU
+		{6779471A-01C5-40C8-8D53-BA6CB4F73A20}.LamaDebug|Any CPU.Build.0 = LamaDebug|Any CPU
 		{B8F216F4-F1D5-4DD8-AD07-403AA7FAF8CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B8F216F4-F1D5-4DD8-AD07-403AA7FAF8CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8F216F4-F1D5-4DD8-AD07-403AA7FAF8CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8F216F4-F1D5-4DD8-AD07-403AA7FAF8CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8F216F4-F1D5-4DD8-AD07-403AA7FAF8CC}.LamaDebug|Any CPU.ActiveCfg = LamaDebug|Any CPU
+		{B8F216F4-F1D5-4DD8-AD07-403AA7FAF8CC}.LamaDebug|Any CPU.Build.0 = LamaDebug|Any CPU
+		{0B70B770-E487-4A6B-AF8E-CD50E483F876}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B70B770-E487-4A6B-AF8E-CD50E483F876}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B70B770-E487-4A6B-AF8E-CD50E483F876}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B70B770-E487-4A6B-AF8E-CD50E483F876}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B70B770-E487-4A6B-AF8E-CD50E483F876}.LamaDebug|Any CPU.ActiveCfg = LamaDebug|Any CPU
+		{0B70B770-E487-4A6B-AF8E-CD50E483F876}.LamaDebug|Any CPU.Build.0 = LamaDebug|Any CPU
 	EndGlobalSection
 EndGlobal

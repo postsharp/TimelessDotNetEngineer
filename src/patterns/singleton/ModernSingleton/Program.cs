@@ -10,7 +10,7 @@ internal class Program
         Startup.ConfigureServices( services );
         var serviceProvider = services.BuildServiceProvider();
 
-        var performanceCounter = serviceProvider.GetRequiredService<IPerformanceCounterManager>();
+        var performanceCounter = serviceProvider.GetRequiredService<PerformanceCounterManager>();
 
         for ( var i = 0; i < 100; i++ )
         {
