@@ -6,7 +6,7 @@ using System.Diagnostics;
 [Singleton]
 
 // [<snippet body>]
-public class PerformanceCounterManager
+public class PerformanceCounterManager : IPerformanceCounterManager
 {
     private readonly Stopwatch _stopwatch = Stopwatch.StartNew();
 
