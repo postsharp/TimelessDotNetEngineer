@@ -1,10 +1,12 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 public class ExceptionReportingMessenger : MessengerDecorator
 {
     private readonly IExceptionReportingService _reportingService;
 
-    public ExceptionReportingMessenger( IMessenger underlying, IExceptionReportingService reportingService ) :
+    public ExceptionReportingMessenger(
+        IMessenger underlying,
+        IExceptionReportingService reportingService ) :
         base( underlying )
     {
         this._reportingService = reportingService;

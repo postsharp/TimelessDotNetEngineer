@@ -1,10 +1,12 @@
-// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 var isOtherTime = false;
 
 var builder = WebApplication.CreateBuilder( args );
 var app = builder.Build();
 
-app.MapGet( "/FailEveryOtherTime", () => (isOtherTime = !isOtherTime) ? Results.StatusCode( 500 ) : Results.Ok( "Hello" ) );
+app.MapGet(
+    "/FailEveryOtherTime",
+    () => (isOtherTime = !isOtherTime) ? Results.StatusCode( 500 ) : Results.Ok( "Hello" ) );
 
 app.Run();

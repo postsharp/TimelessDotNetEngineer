@@ -1,4 +1,4 @@
-// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using Microsoft.Extensions.Caching.Memory;
 using Sample1.Data;
@@ -6,7 +6,8 @@ using Sample1.Data;
 namespace Sample1.Pages;
 
 // [<snippet constructor>]
-public class WithMemoryCacheModel( IHttpClientFactory httpClientFactory, IMemoryCache memoryCache ) : BaseModel
+public class WithMemoryCacheModel( IHttpClientFactory httpClientFactory, IMemoryCache memoryCache )
+    : BaseModel
 
 // [<endsnippet constructor>]
 {
@@ -20,7 +21,10 @@ public class WithMemoryCacheModel( IHttpClientFactory httpClientFactory, IMemory
         async Task<CoinCapData> GetData()
         {
             using var httpClient = httpClientFactory.CreateClient();
-            var response = await httpClient.GetFromJsonAsync<CoinCapResponse>( $"https://api.coincap.io/v2/rates/{id}" );
+
+            var response =
+                await httpClient.GetFromJsonAsync<CoinCapResponse>(
+                    $"https://api.coincap.io/v2/rates/{id}" );
 
             return response!.Data;
         }

@@ -1,9 +1,9 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 public abstract class AbstractDecorator( IPolicy policy )
 {
     protected T Invoke<T>( Func<T> func ) => policy.Invoke( func );
-    
+
     protected void Invoke( Action action )
         => policy.Invoke<object?>(
             () =>
@@ -12,5 +12,4 @@ public abstract class AbstractDecorator( IPolicy policy )
 
                 return null!;
             } );
-
 }

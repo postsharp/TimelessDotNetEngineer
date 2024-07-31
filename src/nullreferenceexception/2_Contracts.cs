@@ -1,4 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 namespace NullReferenceException.Contracts;
 
@@ -8,7 +8,7 @@ internal class Contracts
 {
     // [<snippet methods>]
     // This method requires a Customer but does not promise to return an Order.
-    public Order? GetLastOrder( Customer customer ) 
+    public Order? GetLastOrder( Customer customer )
         => customer.Orders.OrderByDescending( o => o.Date ).FirstOrDefault();
 
     public void RepeatLastOrder( Customer customer )

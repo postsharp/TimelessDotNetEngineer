@@ -1,4 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using System.Data.Common;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +15,10 @@ internal class Accounts(
     {
         await using var command = connection.CreateCommand();
         command.CommandText = "SELECT id, name, balance FROM accounts";
-        await using var reader = await resiliencePipeline.ExecuteAsync( async t => await command.ExecuteReaderAsync( t ) );
+
+        await using var reader =
+            await resiliencePipeline.ExecuteAsync(
+                async t => await command.ExecuteReaderAsync( t ) );
 
         while ( await resiliencePipeline.ExecuteAsync( async ct => await reader.ReadAsync( ct ) ) )
         {
@@ -39,7 +42,9 @@ internal class Accounts(
                 {
                     await using ( var command = connection.CreateCommand() )
                     {
-                        command.CommandText = "UPDATE accounts SET balance = balance - $amount WHERE id = $id";
+                        command.CommandText =
+                            "UPDATE accounts SET balance = balance - $amount WHERE id = $id";
+
                         command.AddParameter( "$id", sourceAccountId );
                         command.AddParameter( "$amount", amount );
                         await command.ExecuteNonQueryAsync( t );
@@ -47,7 +52,9 @@ internal class Accounts(
 
                     await using ( var command = connection.CreateCommand() )
                     {
-                        command.CommandText = "UPDATE accounts SET balance = balance + $amount WHERE id = $id";
+                        command.CommandText =
+                            "UPDATE accounts SET balance = balance + $amount WHERE id = $id";
+
                         command.AddParameter( "$id", targetAccountId );
                         command.AddParameter( "$amount", amount );
                         await command.ExecuteNonQueryAsync( t );

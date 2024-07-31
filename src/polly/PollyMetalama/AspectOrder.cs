@@ -1,5 +1,8 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using Metalama.Framework.Aspects;
 
-[assembly: AspectOrder( typeof(RetryAttribute), typeof(DbTransactionAttribute) )]
+[assembly: AspectOrder( 
+    AspectOrderDirection.RunTime, 
+    typeof(RetryAttribute),
+    typeof(DbTransactionAttribute) )]
