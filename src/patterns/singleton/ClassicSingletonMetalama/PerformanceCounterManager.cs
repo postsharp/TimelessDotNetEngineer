@@ -5,8 +5,10 @@ using System.Diagnostics;
 
 namespace ClassicSingletonMetalama;
 
+// [<snippet head>]
 [Singleton]
 public partial class PerformanceCounterManager
+// [<endsnippet head>]
 {
     private readonly Stopwatch _stopwatch = Stopwatch.StartNew();
 
