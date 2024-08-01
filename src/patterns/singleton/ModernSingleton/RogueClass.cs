@@ -4,6 +4,5 @@ namespace ModernSingleton;
 
 public class RogueClass
 {
-    private PerformanceCounterManager _manager =
-        new PerformanceCounterManager( new AwsPerformanceCounterUploader() );
+    public PerformanceCounterManager Manager { get;  } = new PerformanceCounterManager( new AwsPerformanceCounterUploader() );
 }

@@ -12,7 +12,7 @@
 
     <PropertyGroup>
         <PostSharpEngineeringVersion>2023.2.113</PostSharpEngineeringVersion>
-        <MetalamaVersion>2024.2.17-rc</MetalamaVersion>
+        <MetalamaVersion>2024.2.19</MetalamaVersion>
         <MetalamaExtensionsVersion>$(MetalamaVersion)</MetalamaExtensionsVersion>
         <MetalamaPatternsVersion>$(MetalamaVersion)</MetalamaPatternsVersion>
     </PropertyGroup>

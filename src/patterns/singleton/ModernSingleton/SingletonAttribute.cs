@@ -11,7 +11,7 @@ public class SingletonAttribute : TypeAspect
     {
         builder.Outbound
             .SelectMany( t => t.Constructors )
-            .CannotBeUsedFrom(
+            .CanOnlyBeUsedFrom(
                 scope => scope.Type( typeof(Startup) ).Or().Namespace( "**.Tests.**" ),
                 description: "The class is a [Singleton]." );
     }
