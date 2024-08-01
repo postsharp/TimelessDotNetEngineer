@@ -34,5 +34,4 @@ public ref struct LogInformationInterpolatedStringHandler
 
     public void Log() => this.logger.Log( LogLevel.Information, this.messageBuilder.ToString() );
 }
-
 // [<endsnippet body>]

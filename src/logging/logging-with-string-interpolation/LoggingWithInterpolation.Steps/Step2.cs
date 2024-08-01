@@ -37,7 +37,6 @@ public ref struct LogInformationInterpolatedStringHandler
 
         this.isEnabled = isEnabled;
     }
-
     // [<endsnippet handler-constructor>]
 
     public void AppendLiteral( string literal ) => this.messageBuilder.Append( literal );
