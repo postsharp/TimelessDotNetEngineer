@@ -1,4 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using System.Data;
 using System.Data.Common;
@@ -50,7 +50,8 @@ public class UnreliableDbCommand : DbCommand
         set => this._underlyingCommand.Connection = value;
     }
 
-    protected override DbParameterCollection DbParameterCollection => this._underlyingCommand.Parameters;
+    protected override DbParameterCollection DbParameterCollection
+        => this._underlyingCommand.Parameters;
 
     protected override DbTransaction? DbTransaction
     {

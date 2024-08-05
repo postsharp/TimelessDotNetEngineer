@@ -1,4 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using System.Data.Common;
 using Microsoft.Data.Sqlite;
@@ -7,7 +7,8 @@ using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
 
-await using var connection = new UnreliableDbConnection( new SqliteConnection( "Data Source=:memory:" ) );
+await using var connection =
+    new UnreliableDbConnection( new SqliteConnection( "Data Source=:memory:" ) );
 
 connection.Open();
 
@@ -30,7 +31,8 @@ services.AddResiliencePipeline(
                     MaxRetryAttempts = 3,
                     BackoffType = DelayBackoffType.Exponential
                 } )
-            .ConfigureTelemetry( LoggerFactory.Create( loggingBuilder => loggingBuilder.AddConsole() ) );
+            .ConfigureTelemetry(
+                LoggerFactory.Create( loggingBuilder => loggingBuilder.AddConsole() ) );
     } );
 
 // [<endsnippet ResiliencePipelineBuilder>]
@@ -61,7 +63,10 @@ async Task CreateSchemaAsync()
 async Task PopulateDataAsync()
 {
     await using var insertUserCommand = connection.CreateCommand();
-    insertUserCommand.CommandText = "INSERT INTO accounts (id, name, balance) VALUES ($id, $name, $balance)";
+
+    insertUserCommand.CommandText =
+        "INSERT INTO accounts (id, name, balance) VALUES ($id, $name, $balance)";
+
     insertUserCommand.AddParameter( "$id", SqliteType.Integer );
     insertUserCommand.AddParameter( "$name", SqliteType.Text );
     insertUserCommand.AddParameter( "$balance", SqliteType.Integer );

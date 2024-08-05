@@ -1,4 +1,4 @@
-// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using Polly;
 using Polly.Registry;
@@ -12,7 +12,9 @@ public class Step4Model : BaseModel
     private readonly IAsyncPolicy _cachePolicy;
     private IHttpClientFactory _httpClientFactory;
 
-    public Step4Model( IReadOnlyPolicyRegistry<string> policyRegistry, IHttpClientFactory httpClientFactory )
+    public Step4Model(
+        IReadOnlyPolicyRegistry<string> policyRegistry,
+        IHttpClientFactory httpClientFactory )
     {
         this._httpClientFactory = httpClientFactory;
         this._cachePolicy = policyRegistry.Get<IAsyncPolicy>( "defaultPolicy" );
@@ -30,7 +32,10 @@ public class Step4Model : BaseModel
         async Task<CoinCapData> GetData()
         {
             using var httpClient = this._httpClientFactory.CreateClient();
-            var response = await httpClient.GetFromJsonAsync<CoinCapResponse>( $"https://api.coincap.io/v2/rates/{id}" );
+
+            var response =
+                await httpClient.GetFromJsonAsync<CoinCapResponse>(
+                    $"https://api.coincap.io/v2/rates/{id}" );
 
             return response!.Data;
         }

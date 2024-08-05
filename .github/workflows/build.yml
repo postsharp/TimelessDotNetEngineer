@@ -6,13 +6,15 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# env:
+#  METALAMA_CONSOLE_TRACE: '*'
+
 jobs:
 
   build:
 
-    runs-on: windows-latest  # For a list of available runner types, refer to
-                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
-
+    runs-on: windows-latest  
+                             
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -24,7 +26,23 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
+    - name: Set METALAMA_TEMP environment variable
+      run: echo "METALAMA_TEMP=${{ runner.temp }}" >> ${{ github.env }}
+
     - name: Test using the master build script
       shell: pwsh
-      run: .\Build.ps1 test
+      run: .\Build.ps1 test # --disable-build-servers
 
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: artifacts
+        path: artifacts
+
+    - name: Upload temp files
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: temp
+        path: ${{ runner.temp }}\Metalama

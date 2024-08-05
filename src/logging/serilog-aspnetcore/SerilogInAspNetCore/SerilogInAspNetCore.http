@@ -1,0 +1,6 @@
+@SerilogInAspNetCore_HostAddress = http://localhost:5106
+
+GET {{SerilogInAspNetCore_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
