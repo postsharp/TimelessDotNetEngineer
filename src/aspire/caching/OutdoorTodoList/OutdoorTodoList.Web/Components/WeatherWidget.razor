@@ -12,7 +12,9 @@
 
         @if (forecasts == null)
         {
-            <p><em>Loading weather...</em></p>
+            <p>
+                <em>Loading weather...</em>
+            </p>
         }
         else
         {
@@ -21,7 +23,9 @@
                 <div class="col-2 text-center">
                     <div style="font-size: 200%">@forecast.Summary</div>
                     <div>@forecast.TemperatureC °C / @forecast.TemperatureF °F</div>
-                    <div><b>@forecast.Date.ToString("ddd", CultureInfo.InvariantCulture)</b></div>
+                    <div>
+                        <b>@forecast.Date.ToString( "ddd", CultureInfo.InvariantCulture )</b>
+                    </div>
                 </div>
             }
         }
@@ -30,26 +34,26 @@
 </div>
 
 @* [<snippet DistributedCacheUsage>] *@
+
 @code {
     private WeatherForecast[]? forecasts;
 
     protected override async Task OnInitializedAsync()
     {
-        var cachedForecast = await Cache.GetStringAsync(nameof(WeatherForecast));
+        var cachedForecast = await Cache.GetStringAsync( nameof(WeatherForecast) );
 
         if (cachedForecast == null)
         {
             forecasts = await WeatherApi.GetWeatherAsync();
 
-            await Cache.SetStringAsync(nameof(WeatherForecast), JsonSerializer.Serialize(forecasts), new DistributedCacheEntryOptions
-                {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(5)
-                });
+            await Cache.SetStringAsync( nameof(WeatherForecast), JsonSerializer.Serialize( forecasts ), new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds( 5 ) } );
         }
         else
         {
-            forecasts = JsonSerializer.Deserialize<WeatherForecast[]>(cachedForecast);
+            forecasts = JsonSerializer.Deserialize<WeatherForecast[]>( cachedForecast );
         }
     }
+
 }
+
 @* [<endsnippet DistributedCacheUsage>] *@

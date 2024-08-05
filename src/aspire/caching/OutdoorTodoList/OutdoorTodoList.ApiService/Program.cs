@@ -1,8 +1,10 @@
+// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
 using OutdoorTodoList.ApiService.Interceptors;
 using OutdoorTodoList.ApiService.Model;
 using OutdoorTodoList.ApiService.Services;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder( args );
 
 // Add service defaults & Aspire components.
 builder.AddServiceDefaults();
@@ -16,6 +18,7 @@ var sqlSlowDown = new SqlSlowDownInterceptor();
 
 builder.AddSqlServerDbContext<ApplicationDbContext>(
     "database",
+
     // Slow down the database to show the effect of caching.
     configureDbContextOptions: options => options.AddInterceptors( sqlSlowDown ) );
 

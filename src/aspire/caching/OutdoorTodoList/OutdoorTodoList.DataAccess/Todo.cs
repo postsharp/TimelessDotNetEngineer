@@ -1,4 +1,6 @@
-﻿using Metalama.Patterns.Caching.Aspects;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using Metalama.Patterns.Caching.Aspects;
 using System.ComponentModel.DataAnnotations;
 
 public partial class Todo

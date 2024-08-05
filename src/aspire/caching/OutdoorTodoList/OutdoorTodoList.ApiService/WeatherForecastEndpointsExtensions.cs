@@ -1,4 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using Microsoft.AspNetCore.OutputCaching;
 using OutdoorTodoList.ApiService.Services;
@@ -10,21 +10,23 @@ internal static class WeatherForecastEndpointsExtensions
         app.MapGet(
             "/weatherforecast",
             ( WeatherForecastService forecastService )
-            => forecastService.GetWeatherForecast() );
+                => forecastService.GetWeatherForecast() );
 
         // [<snippet OutputCachingExtensionMethod>]
         app.MapGet(
-            "/weatherforecast-cached",
-            ( WeatherForecastService forecastService )
-            => forecastService.GetWeatherForecast() )
+                "/weatherforecast-cached",
+                ( WeatherForecastService forecastService )
+                    => forecastService.GetWeatherForecast() )
             .CacheOutput( policy => policy.Expire( TimeSpan.FromSeconds( 5 ) ) );
+
         // [<endsnippet OutputCachingExtensionMethod>]
 
         // [<snippet OutputCachingCustomAttribute>]
         app.MapGet(
             "/weatherforecast-cached-attribute",
-            [OutputCache( Duration = 5 )] ( WeatherForecastService forecastService )
-            => forecastService.GetWeatherForecast() );
+            [OutputCache( Duration = 5 )]( WeatherForecastService forecastService )
+                => forecastService.GetWeatherForecast() );
+
         // [<endsnippet OutputCachingCustomAttribute>]
 
         return app;

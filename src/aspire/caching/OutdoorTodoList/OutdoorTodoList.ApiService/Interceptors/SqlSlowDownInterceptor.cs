@@ -1,4 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -39,7 +39,8 @@ public class SqlSlowDownInterceptor : IDbCommandInterceptor
 
         //    try
         //    {
-                result.CommandText = "WAITFOR DELAY '00:00:02'; " + result.CommandText;
+        result.CommandText = "WAITFOR DELAY '00:00:02'; " + result.CommandText;
+
         //    }
         //    finally
         //    {
