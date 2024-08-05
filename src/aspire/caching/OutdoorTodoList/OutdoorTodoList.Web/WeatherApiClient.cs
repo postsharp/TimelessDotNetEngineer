@@ -1,47 +1,27 @@
 // Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
+using Microsoft.Extensions.Caching.Memory;
+
 namespace OutdoorTodoList.Web;
 
-public class WeatherApiClient( HttpClient httpClient )
+// [<snippet HttpClientCache>]        
+public partial class WeatherApiClient( HttpClient httpClient, IMemoryCache cache )
 {
     private async Task<WeatherForecast[]> GetWeatherAsync(
         string endpoint,
         int maxItems,
         CancellationToken cancellationToken )
     {
-        List<WeatherForecast>? forecasts = null;
+        var cacheKey = $"{nameof(GetWeatherAsync)}({endpoint})";
 
-        await foreach ( var forecast in httpClient.GetFromJsonAsAsyncEnumerable<WeatherForecast>(
-                           endpoint,
-                           cancellationToken ) )
-        {
-            if ( forecasts?.Count >= maxItems )
-            {
-                break;
-            }
+        var forecast = await cache.GetOrCreateAsync(
+            cacheKey,
+            async _ => await httpClient.GetFromJsonAsync<WeatherForecast[]>(
+                endpoint,
+                cancellationToken ) );
 
-            if ( forecast is not null )
-            {
-                forecasts ??= [];
-                forecasts.Add( forecast );
-            }
-        }
-
-        return forecasts?.ToArray() ?? [];
+        return forecast!.Take( maxItems ).ToArray();
     }
 
-    public Task<WeatherForecast[]> GetWeatherAsync(
-        int maxItems = 10,
-        CancellationToken cancellationToken = default )
-        => this.GetWeatherAsync( "/weatherforecast", maxItems, cancellationToken );
-
-    public Task<WeatherForecast[]> GetCachedWeatherAsync(
-        int maxItems = 10,
-        CancellationToken cancellationToken = default )
-        => this.GetWeatherAsync( "/weatherforecast-cached", maxItems, cancellationToken );
-
-    public Task<WeatherForecast[]> GetCachedByAttributeWeatherAsync(
-        int maxItems = 10,
-        CancellationToken cancellationToken = default )
-        => this.GetWeatherAsync( "/weatherforecast-cached-attribute", maxItems, cancellationToken );
+// [<endsnippet HttpClientCache>]        
 }
