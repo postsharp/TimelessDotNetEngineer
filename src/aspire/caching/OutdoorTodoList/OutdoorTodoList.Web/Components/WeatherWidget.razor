@@ -1,0 +1,43 @@
+﻿@using System.Globalization
+@using Microsoft.Extensions.Caching.Distributed
+
+@* [<snippet DistributedCacheInjection>] *@
+@inject WeatherApiClient WeatherApi
+@inject IDistributedCache Cache;
+@* [<endsnippet DistributedCacheInjection>] *@
+
+<div class="container">
+    <div class="row justify-content-center mt-4">
+
+        @if (_forecasts == null)
+        {
+            <p>
+                <em>Loading weather...</em>
+            </p>
+        }
+        else
+        {
+            @foreach (var forecast in _forecasts)
+            {
+                <div class="col-2 text-center">
+                    <div style="font-size: 200%">@forecast.Summary</div>
+                    <div>@forecast.TemperatureC °C / @forecast.TemperatureF °F</div>
+                    <div>
+                        <b>@forecast.Date.ToString( "ddd", CultureInfo.InvariantCulture )</b>
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+</div>
+
+@code {
+    private WeatherForecast[]? _forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _forecasts = await WeatherApi.GetWeatherAsync();
+    }
+
+}
