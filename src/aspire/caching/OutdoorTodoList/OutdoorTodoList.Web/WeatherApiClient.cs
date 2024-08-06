@@ -12,10 +12,8 @@ public partial class WeatherApiClient( HttpClient httpClient, IMemoryCache cache
         int maxItems,
         CancellationToken cancellationToken )
     {
-        var cacheKey = $"{nameof(GetWeatherAsync)}({endpoint})";
-
         var forecast = await cache.GetOrCreateAsync(
-            cacheKey,
+            CacheKeyFactory.GetWeather( endpoint ),
             async _ => await httpClient.GetFromJsonAsync<WeatherForecast[]>(
                 endpoint,
                 cancellationToken ) );
