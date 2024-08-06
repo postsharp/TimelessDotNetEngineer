@@ -13,7 +13,7 @@ public partial class TodoService( ApplicationDbContext db )
     [Cache]
     public async Task<IEnumerable<Todo>> GetTodosAsync(
         [NotCacheKey] CancellationToken cancellationToken = default )
-        => await db.Todos.ToListAsync();
+        => await db.Todos.ToListAsync( cancellationToken );
 
     [Cache]
     public async Task<Todo?> GetTodoAsync(
@@ -21,22 +21,16 @@ public partial class TodoService( ApplicationDbContext db )
         [NotCacheKey] CancellationToken cancellationToken = default )
         => await db.Todos.FindAsync( id );
 
-    // [<endsnippet Caching>]
-
     [InvalidateCache( nameof(this.GetTodosAsync) )]
     public async Task<Todo> AddTodoAsync( Todo todo, CancellationToken cancellationToken = default )
     {
         var newEntry = db.Todos.Add( todo );
         await db.SaveChangesAsync( cancellationToken );
 
-        // Invalidate the cache for GetTodoAsync imperatively, as we don't know the new entry's ID upfront.
-        await this._cachingService.InvalidateAsync(
-            this.GetTodoAsync,
-            newEntry.Entity.Id,
-            cancellationToken );
-
         return newEntry.Entity;
     }
+
+    // [<endsnippet Caching>]
 
     [InvalidateCache( nameof(this.GetTodosAsync), nameof(this.GetTodoAsync) )]
     public async Task<bool> UpdateTodoAsync(

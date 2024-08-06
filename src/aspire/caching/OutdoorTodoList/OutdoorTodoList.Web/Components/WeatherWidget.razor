@@ -1,6 +1,5 @@
 ﻿@using System.Globalization
 @using Microsoft.Extensions.Caching.Distributed
-@using System.Text.Json
 
 @* [<snippet DistributedCacheInjection>] *@
 @inject WeatherApiClient WeatherApi
@@ -10,7 +9,7 @@
 <div class="container">
     <div class="row justify-content-center mt-4">
 
-        @if (forecasts == null)
+        @if (_forecasts == null)
         {
             <p>
                 <em>Loading weather...</em>
@@ -18,7 +17,7 @@
         }
         else
         {
-            @foreach (var forecast in forecasts)
+            @foreach (var forecast in _forecasts)
             {
                 <div class="col-2 text-center">
                     <div style="font-size: 200%">@forecast.Summary</div>
@@ -33,27 +32,12 @@
     </div>
 </div>
 
-@* [<snippet DistributedCacheUsage>] *@
-
 @code {
-    private WeatherForecast[]? forecasts;
+    private WeatherForecast[]? _forecasts;
 
     protected override async Task OnInitializedAsync()
     {
-        var cachedForecast = await Cache.GetStringAsync( nameof(WeatherForecast) );
-
-        if (cachedForecast == null)
-        {
-            forecasts = await WeatherApi.GetWeatherAsync();
-
-            await Cache.SetStringAsync( nameof(WeatherForecast), JsonSerializer.Serialize( forecasts ), new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds( 5 ) } );
-        }
-        else
-        {
-            forecasts = JsonSerializer.Deserialize<WeatherForecast[]>( cachedForecast );
-        }
+        _forecasts = await WeatherApi.GetWeatherAsync();
     }
 
 }
-
-@* [<endsnippet DistributedCacheUsage>] *@
