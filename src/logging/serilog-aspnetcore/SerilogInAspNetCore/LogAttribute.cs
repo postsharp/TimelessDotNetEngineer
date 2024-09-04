@@ -1,6 +1,7 @@
 ﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using Metalama.Framework.Code;
+using Serilog.Events;
 
 namespace SerilogInAspNetCore;
 
@@ -20,19 +21,27 @@ public class LogAttribute : OverrideMethodAspect
     {
         var formatString = BuildFormatString();
 
+        var isLoggingEnabled = this._logger.IsEnabled( LogLevel.Trace );
+
         try
         {
-            this._logger.LogDebug(
-                formatString + " started.",
-                (object[]) meta.Target.Parameters.ToValueArray() );
+            if ( isLoggingEnabled )
+            {
+                this._logger.LogTrace(
+                    formatString + " started.",
+                    (object[]) meta.Target.Parameters.ToValueArray() );
+            }
 
             return meta.Proceed();
         }
         finally
         {
-            this._logger.LogDebug(
-                formatString + " finished.",
-                (object[]) meta.Target.Parameters.ToValueArray() );
+            if ( isLoggingEnabled )
+            {
+                this._logger.LogTrace(
+                    formatString + " finished.",
+                    (object[]) meta.Target.Parameters.ToValueArray() );
+            }
         }
     }
 
