@@ -27,8 +27,8 @@ internal partial class DieRoller( ILogger<DieRoller> logger )
         // [<endsnippet Serilog.Log>]
 
         // [<snippet LogLevel>]
-        this._logger.Log( LogLevel.Information, "Rolling a {sides}-sided die.", sides );
-        Log.Write( LogEventLevel.Information, "Rolling a {sides}-sided die.", sides );
+        this._logger.Log( LogLevel.Information, "Rolling a {sides}-sided die.", sides ); // Microsoft.Extensions.Logging API
+        Log.Write( LogEventLevel.Information, "Rolling a {sides}-sided die.", sides ); // Serilog API
         // [<endsnippet LogLevel>]
 
         // [<snippet LogRollingDie-usage>]

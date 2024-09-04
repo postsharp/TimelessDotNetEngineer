@@ -19,6 +19,8 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 // [<endsnippet cs-configuration>]
 
+
+
 // [<snippet json-configuration>]
 var configuration = new ConfigurationBuilder()
     .AddJsonFile( "appsettings.json" )
