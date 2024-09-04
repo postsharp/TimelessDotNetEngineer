@@ -1,4 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using System.Data.Common;
 using Microsoft.Data.Sqlite;
@@ -8,7 +8,8 @@ internal class Accounts( DbConnection connection )
     private readonly DbConnection _connection = connection;
 
     [Retry]
-    public async Task<IReadOnlyList<Account>> ListAsync( CancellationToken cancellationToken = default )
+    public async Task<IReadOnlyList<Account>> ListAsync(
+        CancellationToken cancellationToken = default )
     {
         var list = new List<Account>();
         await using var command = this._connection.CreateCommand();
@@ -17,7 +18,8 @@ internal class Accounts( DbConnection connection )
 
         while ( await reader.ReadAsync( cancellationToken ) )
         {
-            list.Add( new Account( reader.GetInt32( 0 ), reader.GetString( 1 ), reader.GetInt32( 2 ) ) );
+            list.Add(
+                new Account( reader.GetInt32( 0 ), reader.GetString( 1 ), reader.GetInt32( 2 ) ) );
         }
 
         return list;

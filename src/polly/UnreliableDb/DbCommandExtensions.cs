@@ -1,4 +1,4 @@
-// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using System.Data;
 using System.Data.Common;
@@ -23,7 +23,7 @@ public static class DbCommandExtensions
 
         return command;
     }
-    
+
     public static DbCommand AddParameter( this DbCommand command, string name, object? value )
     {
         var parameter = command.CreateParameter( name, value );

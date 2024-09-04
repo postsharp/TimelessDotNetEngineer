@@ -6,4 +6,5 @@ obj/
 *.csproj.user
 *.Import.props
 artifacts/
+*.DotSettings.user
 .idea/

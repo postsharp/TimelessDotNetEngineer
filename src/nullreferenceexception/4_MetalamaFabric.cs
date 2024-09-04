@@ -1,4 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 namespace NullReferenceException.WithMetalama;
 
@@ -9,6 +9,7 @@ using Metalama.Patterns.Contracts;
 internal class Fabric : ProjectFabric
 {
     public override void AmendProject( IProjectAmender amender )
-        => amender.Outbound.VerifyNotNullableDeclarations();
+        => amender.VerifyNotNullableDeclarations();
 }
+
 // [<endsnippet body>]

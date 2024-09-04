@@ -1,4 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
@@ -17,8 +17,13 @@ public class MemoryCacheTest
 
     public MemoryCacheTest()
     {
-        this._existingItems = Enumerable.Range( 0, n ).Select( x => (x.ToString(), new object()) ).ToArray();
-        this._newItems = Enumerable.Range( n, 2 * n ).Select( x => (x.ToString(), new object()) ).ToArray();
+        this._existingItems = Enumerable.Range( 0, n )
+            .Select( x => (x.ToString(), new object()) )
+            .ToArray();
+
+        this._newItems = Enumerable.Range( n, 2 * n )
+            .Select( x => (x.ToString(), new object()) )
+            .ToArray();
 
         foreach ( var item in this._existingItems )
         {

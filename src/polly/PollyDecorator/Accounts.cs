@@ -1,4 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using System.Data.Common;
 using System.Runtime.CompilerServices;
@@ -6,7 +6,8 @@ using Microsoft.Data.Sqlite;
 
 internal class Accounts( DbConnection connection )
 {
-    public async IAsyncEnumerable<(int Id, string Name, int Balance)> ListAsync( [EnumeratorCancellation] CancellationToken cancellationToken = default )
+    public async IAsyncEnumerable<(int Id, string Name, int Balance)> ListAsync(
+        [EnumeratorCancellation] CancellationToken cancellationToken = default )
     {
         await using var command = connection.CreateCommand();
         command.CommandText = "SELECT id, name, balance FROM accounts";
@@ -31,7 +32,9 @@ internal class Accounts( DbConnection connection )
         {
             await using ( var command = connection.CreateCommand() )
             {
-                command.CommandText = "UPDATE accounts SET balance = balance - $amount WHERE id = $id";
+                command.CommandText =
+                    "UPDATE accounts SET balance = balance - $amount WHERE id = $id";
+
                 command.AddParameter( "$id", sourceAccountId );
                 command.AddParameter( "$amount", amount );
                 await command.ExecuteNonQueryAsync( cancellationToken );
@@ -39,7 +42,9 @@ internal class Accounts( DbConnection connection )
 
             await using ( var command = connection.CreateCommand() )
             {
-                command.CommandText = "UPDATE accounts SET balance = balance + $amount WHERE id = $id";
+                command.CommandText =
+                    "UPDATE accounts SET balance = balance + $amount WHERE id = $id";
+
                 command.AddParameter( "$id", targetAccountId );
                 command.AddParameter( "$amount", amount );
                 await command.ExecuteNonQueryAsync( cancellationToken );

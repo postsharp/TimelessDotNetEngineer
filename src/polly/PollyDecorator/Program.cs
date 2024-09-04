@@ -1,4 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using System.Data.Common;
 using Microsoft.Data.Sqlite;
@@ -11,7 +11,8 @@ using System.Data;
 var services = new ServiceCollection();
 
 // [<snippet DecoratorUsage>]
-await using var connection = new UnreliableDbConnection( new SqliteConnection( "Data Source=:memory:" ) );
+await using var connection =
+    new UnreliableDbConnection( new SqliteConnection( "Data Source=:memory:" ) );
 
 var resiliencePipeline = CreateRetryOnDbExceptionPipeline();
 var resilientConnection = new ResilientDbConnection( connection, resiliencePipeline );
@@ -47,7 +48,10 @@ async Task CreateSchemaAsync()
 async Task PopulateDataAsync()
 {
     await using var insertUserCommand = connection.CreateCommand();
-    insertUserCommand.CommandText = "INSERT INTO accounts (id, name, balance) VALUES ($id, $name, $balance)";
+
+    insertUserCommand.CommandText =
+        "INSERT INTO accounts (id, name, balance) VALUES ($id, $name, $balance)";
+
     insertUserCommand.AddParameter( "$id", DbType.Int32 );
     insertUserCommand.AddParameter( "$name", DbType.String );
     insertUserCommand.AddParameter( "$balance", DbType.Int32 );

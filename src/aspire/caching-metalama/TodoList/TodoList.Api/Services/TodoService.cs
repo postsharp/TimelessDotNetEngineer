@@ -1,4 +1,6 @@
-﻿using Metalama.Patterns.Caching;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using Metalama.Patterns.Caching;
 using Metalama.Patterns.Caching.Aspects;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -10,12 +12,14 @@ public partial class TodoService( ApplicationDbContext db )
 {
     // [<snippet Caching>]
     [Cache]
-    public async Task<IEnumerable<Todo>> GetTodosAsync( CancellationToken cancellationToken = default )
+    public async Task<IEnumerable<Todo>> GetTodosAsync(
+        CancellationToken cancellationToken = default )
         => await db.Todos.ToListAsync( cancellationToken );
 
     [Cache]
     public async Task<Todo?> GetTodoAsync( int id, CancellationToken cancellationToken = default )
         => await db.Todos.FindAsync( id );
+
     // [<endsnippet Caching>]
 
     [InvalidateCache( nameof(this.GetTodosAsync) )]
@@ -24,16 +28,19 @@ public partial class TodoService( ApplicationDbContext db )
         var newEntry = db.Todos.Add( todo );
         await db.SaveChangesAsync( cancellationToken );
 
-
-        await this._cachingService.InvalidateAsync( this.GetTodoAsync, newEntry.Entity.Id, cancellationToken,
+        await this._cachingService.InvalidateAsync(
+            this.GetTodoAsync,
+            newEntry.Entity.Id,
+            cancellationToken,
             cancellationToken );
 
         return newEntry.Entity;
     }
 
-
     // [<snippet ImperativeInvalidation>]
-    public async Task<bool> UpdateTodoAsync( Todo todo, CancellationToken cancellationToken = default )
+    public async Task<bool> UpdateTodoAsync(
+        Todo todo,
+        CancellationToken cancellationToken = default )
     {
         var existingTodo = await this.GetTodoAsync( todo.Id, cancellationToken );
 
@@ -48,11 +55,20 @@ public partial class TodoService( ApplicationDbContext db )
         await db.SaveChangesAsync( cancellationToken );
 
         // Invalidate the cache for GetTodoAsync imperatively, as the todo.Id is not directly visible from the parameter.
-        await this._cachingService.InvalidateAsync( this.GetTodoAsync, todo.Id, cancellationToken, cancellationToken );
-        await this._cachingService.InvalidateAsync( this.GetTodosAsync, cancellationToken, cancellationToken );
+        await this._cachingService.InvalidateAsync(
+            this.GetTodoAsync,
+            todo.Id,
+            cancellationToken,
+            cancellationToken );
+
+        await this._cachingService.InvalidateAsync(
+            this.GetTodosAsync,
+            cancellationToken,
+            cancellationToken );
 
         return true;
     }
+
     // [<endsnippet ImperativeInvalidation>]
 
     // [<snippet DeclarativeInvalidation>]
@@ -71,5 +87,6 @@ public partial class TodoService( ApplicationDbContext db )
 
         return true;
     }
+
     // [<endsnippet DeclarativeInvalidation>]
 }

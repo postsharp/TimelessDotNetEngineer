@@ -1,4 +1,4 @@
-// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using System.Diagnostics;
 using System.Text.RegularExpressions;
@@ -18,7 +18,9 @@ public static class Program
 
         // Add services to the container.
         builder.Services.AddHttpClient();
-        builder.Services.AddRazorPages( options => { options.Conventions.AddPageRoute( "/", "/Step1" ); } );
+
+        builder.Services.AddRazorPages(
+            options => { options.Conventions.AddPageRoute( "/", "/Step1" ); } );
 
         // [<snippet AddMemoryCache>]
         builder.Services.AddMemoryCache();

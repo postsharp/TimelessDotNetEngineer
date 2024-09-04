@@ -1,4 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using System.Collections;
 using System.Data.Common;
@@ -10,7 +10,9 @@ public class ResilientDbDataReader : DbDataReader
     private readonly ResiliencePipeline _resiliencePipeline;
     private readonly DbDataReader _underlyingReader;
 
-    public ResilientDbDataReader( DbDataReader underlyingReader, ResiliencePipeline resiliencePipeline )
+    public ResilientDbDataReader(
+        DbDataReader underlyingReader,
+        ResiliencePipeline resiliencePipeline )
     {
         this._underlyingReader = underlyingReader;
         this._resiliencePipeline = resiliencePipeline;
@@ -40,7 +42,12 @@ public class ResilientDbDataReader : DbDataReader
         return this._underlyingReader.GetByte( ordinal );
     }
 
-    public override long GetBytes( int ordinal, long dataOffset, byte[]? buffer, int bufferOffset, int length )
+    public override long GetBytes(
+        int ordinal,
+        long dataOffset,
+        byte[]? buffer,
+        int bufferOffset,
+        int length )
     {
         return this._underlyingReader.GetBytes( ordinal, dataOffset, buffer, bufferOffset, length );
     }
@@ -50,7 +57,12 @@ public class ResilientDbDataReader : DbDataReader
         return this._underlyingReader.GetChar( ordinal );
     }
 
-    public override long GetChars( int ordinal, long dataOffset, char[]? buffer, int bufferOffset, int length )
+    public override long GetChars(
+        int ordinal,
+        long dataOffset,
+        char[]? buffer,
+        int bufferOffset,
+        int length )
     {
         return this._underlyingReader.GetChars( ordinal, dataOffset, buffer, bufferOffset, length );
     }

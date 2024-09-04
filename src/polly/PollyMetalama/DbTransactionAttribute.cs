@@ -1,4 +1,4 @@
-﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using System.Data.Common;
 using Metalama.Framework.Aspects;
@@ -16,11 +16,13 @@ public class DbTransactionAttribute : OverrideMethodAspect
     {
         base.BuildAspect( builder );
 
-        var connectionField = builder.Target.DeclaringType.AllFields.OfName( "_connection" ).SingleOrDefault();
+        var connectionField = builder.Target.DeclaringType.AllFields.OfName( "_connection" )
+            .SingleOrDefault();
 
         if ( connectionField == null || !connectionField.Type.Is( typeof(DbConnection) ) )
         {
-            builder.Diagnostics.Report( _missingField.WithArguments( builder.Target.DeclaringType ) );
+            builder.Diagnostics.Report(
+                _missingField.WithArguments( builder.Target.DeclaringType ) );
         }
     }
 

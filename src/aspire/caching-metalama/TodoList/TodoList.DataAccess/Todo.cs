@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using System.ComponentModel.DataAnnotations;
 
 // [<snippet CacheKey>]
 public partial class Todo
@@ -10,4 +12,5 @@ public partial class Todo
     [Required]
     public string Title { get; set; } = null!;
 }
+
 // [<endsnippet CacheKey>]
