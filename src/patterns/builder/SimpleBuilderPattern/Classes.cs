@@ -1,7 +1,6 @@
 ﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using System.Collections.Immutable;
-using System.ComponentModel.DataAnnotations;
 
 namespace SimpleBuilderPattern;
 
