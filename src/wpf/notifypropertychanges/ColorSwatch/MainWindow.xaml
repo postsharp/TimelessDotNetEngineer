@@ -1,0 +1,23 @@
+﻿<Window x:Class="ColorSwatch.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ColorSwatch"
+        mc:Ignorable="d"
+        Title="ColorSwatch" Height="450" Width="800">
+    <Window.DataContext>
+        <local:ColorViewModel />
+    </Window.DataContext>
+
+    <!-- Bind the Background property to the ViewModel's BackgroundBrush -->
+    <Window.Background>
+        <Binding Path="BackgroundBrush" />
+    </Window.Background>
+
+    <Grid Margin="20">
+        <Label Content="{Binding Path=HexColor}" ContentStringFormat="Write an Hex Color (e.g., {0})" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,103,0,0" />
+        <TextBox Text="{Binding HexColor, UpdateSourceTrigger=PropertyChanged}" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,129,0,0" />
+    </Grid>
+
+</Window>

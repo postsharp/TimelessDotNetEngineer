@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorSwatch", "ColorSwatch.csproj", "{52BB8680-04F8-4014-B9F5-6988719FE36C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52BB8680-04F8-4014-B9F5-6988719FE36C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52BB8680-04F8-4014-B9F5-6988719FE36C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52BB8680-04F8-4014-B9F5-6988719FE36C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52BB8680-04F8-4014-B9F5-6988719FE36C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4DB9FC0C-11BC-4CF7-ABE3-F8610999F358}
+	EndGlobalSection
+EndGlobal
