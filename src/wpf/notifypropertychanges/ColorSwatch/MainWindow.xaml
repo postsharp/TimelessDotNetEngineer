@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ColorSwatch"
         mc:Ignorable="d"
-        Title="ColorSwatch" Height="450" Width="800">
+        Title="ColorSwatch" Height="200" Width="400">
     <Window.DataContext>
         <local:ColorViewModel />
     </Window.DataContext>
@@ -16,8 +16,8 @@
     </Window.Background>
 
     <Grid Margin="20">
-        <Label Content="{Binding Path=HexColor}" ContentStringFormat="Write an Hex Color (e.g., {0})" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,103,0,0" />
-        <TextBox Text="{Binding HexColor, UpdateSourceTrigger=PropertyChanged}" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,129,0,0" />
+        <Label Content="{Binding Path=HexColor}" ContentStringFormat="Write an Hex Color (e.g., {0})" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,28,0,0" />
+        <TextBox Text="{Binding HexColor, UpdateSourceTrigger=PropertyChanged}" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,53,0,0" />
     </Grid>
 
 </Window>
