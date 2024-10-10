@@ -9,8 +9,8 @@ using Metalama.Patterns.Observability;
 
 namespace ColorSwatch
 {
-    [NotifyPropertyChangedAttribute]
-    public partial class ColorViewModel : INotifyPropertyChanged
+    [Observable]
+    public partial class ColorViewModel
     {
         private ColorModel _colorModel;
 
@@ -28,8 +28,6 @@ namespace ColorSwatch
                 if (_colorModel.HexColor != value)
                 {
                     _colorModel.HexColor = value;
-                    // Notify that BackgroundBrush changed due to the HexColor change
-                    OnPropertyChanged(nameof(BackgroundBrush));
                 }
             }
         }
@@ -39,13 +37,6 @@ namespace ColorSwatch
             get {
                 return ColorModel.ConvertToBrush(HexColor);
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
