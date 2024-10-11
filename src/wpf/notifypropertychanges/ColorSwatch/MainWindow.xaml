@@ -16,8 +16,21 @@
     </Window.Background>
 
     <Grid Margin="20">
-        <Label Content="{Binding Path=HexColor}" ContentStringFormat="Write an Hex Color (e.g., {0})" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,28,0,0" />
-        <TextBox Text="{Binding HexColor, UpdateSourceTrigger=PropertyChanged}" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,53,0,0" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label  Grid.Column="0" Grid.Row="0" Content="Red"/>
+        <TextBox  Grid.Column="1" Grid.Row="0" Text="{Binding Path=RgbColor.Red}" Padding="10" />
+        <Label  Grid.Column="0" Grid.Row="1" Content="Green"/>
+        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=RgbColor.Green}" />
+        <Label  Grid.Column="0" Grid.Row="2" Content="Blue"/>
+        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=RgbColor.Blue}" />
     </Grid>
 
 </Window>
