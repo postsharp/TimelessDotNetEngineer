@@ -21,6 +21,13 @@ namespace ColorSwatch
 
         public string Hex => $"#{this.Red:x2}{this.Green:x2}{this.Blue:x2}";
 
+        public void IncreaseBrightness( int increment )
+        {
+            this.Red += increment;
+            this.Green += increment;
+            this.Blue += increment;
+        }
+
     }
     // [<endsnippet RgbColor>]
 }
