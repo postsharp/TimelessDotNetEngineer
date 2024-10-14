@@ -28,6 +28,7 @@ namespace ColorSwatch
             this.Blue += increment;
         }
 
+        public RgbColor Grayscale => ColorHelper.RgbToGrayscale(this);
     }
     // [<endsnippet RgbColor>]
 }
