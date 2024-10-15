@@ -18,12 +18,11 @@ namespace ColorSwatch
             }
         }
 
-        [ConstantAttribute]
         // [<snippet RgbToGrayscale>]
         public static RgbColor RgbToGrayscale(RgbColor color)
         {
             // Calculate the grayscale value using the luminance formula
-            int grayValue = (int)(color.Red * 0.299 + color.Green * 0.587 + color.Blue * 0.114);
+            var grayValue = (int)(color.Red * 0.299 + color.Green * 0.587 + color.Blue * 0.114);
 
             // Ensure the grayscale value is clamped between 0 and 255
             grayValue = Math.Clamp(grayValue, 0, 255);
