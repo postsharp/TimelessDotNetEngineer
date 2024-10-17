@@ -20,5 +20,5 @@ namespace RectangleArea
         public double Area => this.Height * this.Width;
         public double ScaledArea => this.Area * this.ScaleFactor;
     }
-    // [<endsnipet Rectangle>]
+    // [<endsnippet Rectangle>]
 }

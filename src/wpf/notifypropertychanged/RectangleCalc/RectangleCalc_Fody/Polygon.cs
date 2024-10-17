@@ -19,6 +19,6 @@ namespace RectangleArea
         public Polygon() {
             ScaleFactor = 1;
         }
-        // [<endsnipet Polygon>]
     }
+    // [<endsnippet Polygon>]
 }
