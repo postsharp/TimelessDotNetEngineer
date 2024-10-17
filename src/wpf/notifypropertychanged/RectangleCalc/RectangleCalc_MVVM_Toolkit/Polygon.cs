@@ -12,15 +12,11 @@ namespace RectangleArea
     {
         // This attribute represents a multiplier for dimensions
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(ScaledArea))]
         public double scaleFactor;
 
         public Polygon() {
             scaleFactor = 1;
         }
-
-        [ObservableProperty]
-        public double scaledArea;
     }
     //[<endsnippet Polygon>]
 }

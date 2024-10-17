@@ -24,7 +24,7 @@ namespace RectangleArea
         [NotifyPropertyChangedFor(nameof(ScaledArea))]
         public double height;
         public double Area => this.Height * this.Width;
-        new public double ScaledArea => this.Area * this.ScaleFactor;
+        public double ScaledArea => this.Area * this.ScaleFactor;
     }
     // [<endsnippet Rectangle>]
 }
