@@ -10,6 +10,7 @@ using System.Xml.Linq;
 
 namespace RectangleArea
 {
+    // [<snippet RectangleCalcViewModel>]
     [Observable]
     partial class RectangleCalcViewModel
     {
@@ -17,4 +18,5 @@ namespace RectangleArea
 
         public double Area => this.Rectangle.Area;
     }
+    // [<endsnippet RectangleCalcViewModel>]
 }

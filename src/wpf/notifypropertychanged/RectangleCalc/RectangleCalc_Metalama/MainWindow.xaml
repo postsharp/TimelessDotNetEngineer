@@ -35,12 +35,12 @@
                 </TextBlock.Text>
             </TextBlock>
         </Label>
-        <Label Grid.Column="1" Grid.Row="2"  Content="{Binding Path=Area}" VerticalAlignment="Center" Height="26"/>
+        <Label Grid.Column="1" Grid.Row="2"  Content="{Binding Path=Area}" VerticalAlignment="Center" Height="26" Padding="0,5,0,5"/>
 
         <Label Content="Scale Factor:" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Height="26" HorizontalAlignment="Left"/>
         <TextBox Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Text="{Binding Path=Rectangle.ScaleFactor, UpdateSourceTrigger=PropertyChanged, Delay=400}" VerticalAlignment="Center" Height="18"/>
 
         <Label Content="Scaled Area:" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" Height="26" HorizontalAlignment="Left"/>
-        <Label Grid.Column="1" Grid.Row="4"  Content="{Binding Path=Rectangle.ScaledArea}" VerticalAlignment="Center" Height="26"/>
+        <Label Grid.Column="1" Grid.Row="4"  Content="{Binding Path=Rectangle.ScaledArea}" VerticalAlignment="Center" Height="26" Padding="0,5,0,5"/>
     </Grid>
 </Window>

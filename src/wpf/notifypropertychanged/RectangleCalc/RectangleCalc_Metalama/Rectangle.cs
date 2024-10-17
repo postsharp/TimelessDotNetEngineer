@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace RectangleArea
 {
+    // [<snippet Rectangle>]
     [Observable]
     partial class Rectangle : Polygon
     {
@@ -21,4 +22,5 @@ namespace RectangleArea
         public double Area => this.Height * this.Width;
         public double ScaledArea => this.Area * this.ScaleFactor;
     }
+    // [<endsnippet Rectangle>]
 }

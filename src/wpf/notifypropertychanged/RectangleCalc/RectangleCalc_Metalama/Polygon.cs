@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace RectangleArea
 {
+    // [<snippet Polygon>]
     [Observable]
     partial class Polygon
     {
@@ -17,4 +18,5 @@ namespace RectangleArea
             ScaleFactor = 1;
         }
     }
+    // [<endsnippet Polygon>]
 }
