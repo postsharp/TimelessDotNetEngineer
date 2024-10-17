@@ -8,18 +8,17 @@ namespace RectangleArea
         private Rectangle _rectangle;
         public Rectangle Rectangle
         {
-            get
-            {
-                return _rectangle;
-            }
+            get => _rectangle;
+
             set
             {
                 if (!object.ReferenceEquals(value, _rectangle))
                 {
+                    UnsubscribeFromRectangle();
                     _rectangle = value;
                     this.OnPropertyChanged(nameof(Rectangle));
+                    SubscribeToRectangle(Rectangle);
                 }
-
             }
         }
         // [<endsnippet RectangleProp>]
@@ -31,30 +30,36 @@ namespace RectangleArea
 
         public RectangleCalcViewModel()
         {
-            _rectangle = new Rectangle(10, 5);
-            SubscribeToRectangle(Rectangle);
+            Rectangle = new Rectangle(10, 5);
         }
-
-        private PropertyChangedEventHandler? _handleRectanglePropertyChanged;
 
         private void SubscribeToRectangle(Rectangle value)
         {
             if (value != null)
             {
-                _handleRectanglePropertyChanged ??= HandlePropertyChanged;
-                value.PropertyChanged += _handleRectanglePropertyChanged;
+                value.PropertyChanged += HandleRectanglePropertyChanged;
             }
-
-            void HandlePropertyChanged(object? sender, PropertyChangedEventArgs e)
+            
+        }
+        
+        private void HandleRectanglePropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
             {
+                var propertyName = e.PropertyName;
+                if (propertyName is null or "Area" or "Width" or "Height")
                 {
-                    var propertyName = e.PropertyName;
-                    if (propertyName is null or "Area" or "Width" or "Height")
-                    {
-                        OnPropertyChanged("Area");
-                    }
+                    OnPropertyChanged("Area");
                 }
             }
+        }
+
+        private void UnsubscribeFromRectangle()
+        {
+            if ( this._rectangle != null! )
+            {
+                this._rectangle.PropertyChanged -= this.HandleRectanglePropertyChanged;
+            }
+            
         }
         // [<endsnippet AreaChildProperty>]
 
