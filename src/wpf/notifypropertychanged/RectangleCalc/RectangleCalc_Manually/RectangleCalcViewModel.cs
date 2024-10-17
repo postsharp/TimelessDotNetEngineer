@@ -4,7 +4,12 @@ namespace RectangleArea
 {
     partial class RectangleCalcViewModel : INotifyPropertyChanged
     {
-        // [<snippet RectangleProp>]
+        public RectangleCalcViewModel()
+        {
+            Rectangle = new Rectangle(10, 5);
+        }
+
+        // [<snippet AreaChildProperty>]
         private Rectangle _rectangle;
         public Rectangle Rectangle
         {
@@ -21,17 +26,9 @@ namespace RectangleArea
                 }
             }
         }
-        // [<endsnippet RectangleProp>]
-
-        // [<snippet AreaChildProperty>]
         // [<snippet AreaProp>]
         public double Area => this.Rectangle.Area;
         // [<endsnippet AreaProp>]
-
-        public RectangleCalcViewModel()
-        {
-            Rectangle = new Rectangle(10, 5);
-        }
 
         private void SubscribeToRectangle(Rectangle value)
         {
