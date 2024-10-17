@@ -45,16 +45,9 @@
         }
         // [<snippet AreaProp>]
         public double Area => this.Height * this.Width;
-        // [<endsnippet AreaProp>]
-
-        public Rectangle(double width, double height)
-        {
-            this.Width = width;
-            this.Height = height;
-        }
-
         // [<snippet ScaledAreaProp>]
         public double ScaledArea => this.Area * this.ScaleFactor;
+        // [<endsnippet AreaProp>]
 
         protected override void OnPropertyChanged(string propertyName)
         {
@@ -68,5 +61,12 @@
             base.OnPropertyChanged(propertyName);
         }
         // [<endsnippet ScaledAreaProp>]
+
+        public Rectangle(double width, double height)
+        {
+            this.Width = width;
+            this.Height = height;
+        }
+
     }
 }

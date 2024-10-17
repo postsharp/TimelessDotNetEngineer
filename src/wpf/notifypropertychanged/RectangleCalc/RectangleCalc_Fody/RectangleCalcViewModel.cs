@@ -15,6 +15,7 @@ namespace RectangleArea
 
         public Rectangle Rectangle { get; set; } = new Rectangle(10, 5);
 
+        // WARNING! This property that depends on the child object Rectangle does not raise PropertyChanged events.
         public double Area => this.Rectangle.Area;
     }
 }

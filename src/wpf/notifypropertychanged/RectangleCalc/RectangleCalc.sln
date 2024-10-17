@@ -3,7 +3,46 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RectangleCalc_Manually", "RectangleCalc_Manually\RectangleCalc_Manually.csproj", "{93B86274-D923-4A1C-852A-27B5B9F070F3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RectangleCalc_Metalama", "RectangleCalc_Metalama\RectangleCalc_Metalama.csproj", "{828FA3DF-0F79-4168-99E9-B8BBD77BB1D1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RectangleCalc_MVVM_Toolkit", "RectangleCalc_MVVM_Toolkit\RectangleCalc_MVVM_Toolkit.csproj", "{CD0D4BB8-5401-4CCB-B1DE-EFDAA5ACB25E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RectangleCalc_Fody", "RectangleCalc_Fody\RectangleCalc_Fody.csproj", "{5D3B3B37-1B6A-42B9-B68D-25A7CE14B06E}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		LamaDebug|Any CPU = LamaDebug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{93B86274-D923-4A1C-852A-27B5B9F070F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93B86274-D923-4A1C-852A-27B5B9F070F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93B86274-D923-4A1C-852A-27B5B9F070F3}.LamaDebug|Any CPU.ActiveCfg = LamaDebug|Any CPU
+		{93B86274-D923-4A1C-852A-27B5B9F070F3}.LamaDebug|Any CPU.Build.0 = LamaDebug|Any CPU
+		{93B86274-D923-4A1C-852A-27B5B9F070F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93B86274-D923-4A1C-852A-27B5B9F070F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{828FA3DF-0F79-4168-99E9-B8BBD77BB1D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{828FA3DF-0F79-4168-99E9-B8BBD77BB1D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{828FA3DF-0F79-4168-99E9-B8BBD77BB1D1}.LamaDebug|Any CPU.ActiveCfg = LamaDebug|Any CPU
+		{828FA3DF-0F79-4168-99E9-B8BBD77BB1D1}.LamaDebug|Any CPU.Build.0 = LamaDebug|Any CPU
+		{828FA3DF-0F79-4168-99E9-B8BBD77BB1D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{828FA3DF-0F79-4168-99E9-B8BBD77BB1D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD0D4BB8-5401-4CCB-B1DE-EFDAA5ACB25E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD0D4BB8-5401-4CCB-B1DE-EFDAA5ACB25E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD0D4BB8-5401-4CCB-B1DE-EFDAA5ACB25E}.LamaDebug|Any CPU.ActiveCfg = LamaDebug|Any CPU
+		{CD0D4BB8-5401-4CCB-B1DE-EFDAA5ACB25E}.LamaDebug|Any CPU.Build.0 = LamaDebug|Any CPU
+		{CD0D4BB8-5401-4CCB-B1DE-EFDAA5ACB25E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD0D4BB8-5401-4CCB-B1DE-EFDAA5ACB25E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D3B3B37-1B6A-42B9-B68D-25A7CE14B06E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D3B3B37-1B6A-42B9-B68D-25A7CE14B06E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D3B3B37-1B6A-42B9-B68D-25A7CE14B06E}.LamaDebug|Any CPU.ActiveCfg = LamaDebug|Any CPU
+		{5D3B3B37-1B6A-42B9-B68D-25A7CE14B06E}.LamaDebug|Any CPU.Build.0 = LamaDebug|Any CPU
+		{5D3B3B37-1B6A-42B9-B68D-25A7CE14B06E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D3B3B37-1B6A-42B9-B68D-25A7CE14B06E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
