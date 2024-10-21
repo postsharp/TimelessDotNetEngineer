@@ -2,35 +2,34 @@
 
 using System.ComponentModel;
 
-namespace RectangleArea
+namespace RectangleArea;
+
+internal partial class Polygon : INotifyPropertyChanged
 {
-    internal partial class Polygon : INotifyPropertyChanged
+    private double _scaleFactor = 1;
+
+    // This attribute represents a multiplier for dimensions
+    public double ScaleFactor
     {
-        private double _scaleFactor = 1;
-
-        // This attribute represents a multiplier for dimensions
-        public double ScaleFactor
+        get
         {
-            get
-            {
-                return this._scaleFactor;
-            }
-
-            set
-            {
-                if ( this._scaleFactor != value )
-                {
-                    this._scaleFactor = value;
-                    this.OnPropertyChanged( nameof(this.ScaleFactor) );
-                }
-            }
+            return this._scaleFactor;
         }
 
-        protected virtual void OnPropertyChanged( string propertyName )
+        set
         {
-            this.PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
+            if ( this._scaleFactor != value )
+            {
+                this._scaleFactor = value;
+                this.OnPropertyChanged( nameof(this.ScaleFactor) );
+            }
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
     }
+
+    protected virtual void OnPropertyChanged( string propertyName )
+    {
+        this.PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 }

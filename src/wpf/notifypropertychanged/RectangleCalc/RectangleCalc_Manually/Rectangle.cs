@@ -1,81 +1,80 @@
 ﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
-namespace RectangleArea
+namespace RectangleArea;
+
+internal partial class Rectangle : Polygon
 {
-    internal partial class Rectangle : Polygon
+    // [<snippet WidthProp>]
+    private double _width;
+
+    public double Width
     {
-        // [<snippet WidthProp>]
-        private double _width;
-
-        public double Width
+        get
         {
-            get
-            {
-                return this._width;
-            }
-
-            set
-            {
-                if ( this._width != value )
-                {
-                    this._width = value;
-                    this.OnPropertyChanged( nameof(this.Width) );
-                    this.OnPropertyChanged( nameof(this.Area) );
-                    this.OnPropertyChanged( nameof(this.ScaledArea) );
-                }
-            }
+            return this._width;
         }
 
-        // [<endsnippet WidthProp>]
-
-        private double _height;
-
-        public double Height
+        set
         {
-            get
+            if ( this._width != value )
             {
-                return this._height;
-            }
-
-            set
-            {
-                if ( this._height != value )
-                {
-                    this._height = value;
-                    this.OnPropertyChanged( nameof(this.Height) );
-                    this.OnPropertyChanged( nameof(this.Area) );
-                    this.OnPropertyChanged( nameof(this.ScaledArea) );
-                }
+                this._width = value;
+                this.OnPropertyChanged( nameof(this.Width) );
+                this.OnPropertyChanged( nameof(this.Area) );
+                this.OnPropertyChanged( nameof(this.ScaledArea) );
             }
         }
+    }
 
-        // [<snippet AreaProp>]
-        public double Area => this.Height * this.Width;
+    // [<endsnippet WidthProp>]
 
-        // [<snippet ScaledAreaProp>]
-        public double ScaledArea => this.Area * this.ScaleFactor;
+    private double _height;
 
-        // [<endsnippet AreaProp>]
-
-        protected override void OnPropertyChanged( string propertyName )
+    public double Height
+    {
+        get
         {
-            switch ( propertyName )
+            return this._height;
+        }
+
+        set
+        {
+            if ( this._height != value )
             {
-                case nameof(this.ScaleFactor):
-                    this.OnPropertyChanged( nameof(this.ScaledArea) );
-
-                    break;
+                this._height = value;
+                this.OnPropertyChanged( nameof(this.Height) );
+                this.OnPropertyChanged( nameof(this.Area) );
+                this.OnPropertyChanged( nameof(this.ScaledArea) );
             }
-
-            base.OnPropertyChanged( propertyName );
         }
+    }
 
-        // [<endsnippet ScaledAreaProp>]
+    // [<snippet AreaProp>]
+    public double Area => this.Height * this.Width;
 
-        public Rectangle( double width, double height )
+    // [<snippet ScaledAreaProp>]
+    public double ScaledArea => this.Area * this.ScaleFactor;
+
+    // [<endsnippet AreaProp>]
+
+    protected override void OnPropertyChanged( string propertyName )
+    {
+        switch ( propertyName )
         {
-            this.Width = width;
-            this.Height = height;
+            case nameof(this.ScaleFactor):
+                this.OnPropertyChanged( nameof(this.ScaledArea) );
+
+                break;
         }
+
+        base.OnPropertyChanged( propertyName );
+    }
+
+    // [<endsnippet ScaledAreaProp>]
+
+    public Rectangle( double width, double height )
+    {
+        this.Width = width;
+        this.Height = height;
     }
 }

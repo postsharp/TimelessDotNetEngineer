@@ -2,16 +2,15 @@
 
 using Metalama.Patterns.Observability;
 
-namespace RectangleArea
+namespace RectangleArea;
+
+// [<snippet RectangleCalcViewModel>]
+[Observable]
+internal partial class RectangleCalcViewModel
 {
-    // [<snippet RectangleCalcViewModel>]
-    [Observable]
-    internal partial class RectangleCalcViewModel
-    {
-        public Rectangle Rectangle { get; set; } = new( 10, 5 );
+    public Rectangle Rectangle { get; set; } = new( 10, 5 );
 
-        public double Area => this.Rectangle.Area;
-    }
-
-    // [<endsnippet RectangleCalcViewModel>]
+    public double Area => this.Rectangle.Area;
 }
+
+// [<endsnippet RectangleCalcViewModel>]

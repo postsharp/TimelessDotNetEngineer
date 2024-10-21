@@ -2,16 +2,15 @@
 
 using System.ComponentModel;
 
-namespace RectangleArea
+namespace RectangleArea;
+
+// [<snippet Polygon>]
+internal partial class Polygon : INotifyPropertyChanged
 {
-    // [<snippet Polygon>]
-    internal partial class Polygon : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-        // This attribute represents a multiplier for dimensions
-        public double ScaleFactor { get; set; } = 1;
-    }
-
-    // [<endsnippet Polygon>]
+    // This attribute represents a multiplier for dimensions
+    public double ScaleFactor { get; set; } = 1;
 }
+
+// [<endsnippet Polygon>]

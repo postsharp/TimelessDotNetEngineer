@@ -2,15 +2,14 @@
 
 using Metalama.Patterns.Observability;
 
-namespace RectangleArea
-{
-    // [<snippet Polygon>]
-    [Observable]
-    internal partial class Polygon
-    {
-        // This attribute represents a multiplier for dimensions
-        public double ScaleFactor { get; set; } = 1;
-    }
+namespace RectangleArea;
 
-    // [<endsnippet Polygon>]
+// [<snippet Polygon>]
+[Observable]
+internal partial class Polygon
+{
+    // This attribute represents a multiplier for dimensions
+    public double ScaleFactor { get; set; } = 1;
 }
+
+// [<endsnippet Polygon>]

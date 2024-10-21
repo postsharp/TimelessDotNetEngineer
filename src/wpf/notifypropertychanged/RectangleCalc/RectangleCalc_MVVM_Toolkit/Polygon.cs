@@ -2,15 +2,14 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace RectangleArea
-{
-    //[<snippet Polygon>]
-    internal partial class Polygon : ObservableObject
-    {
-        // This attribute represents a multiplier for dimensions
-        [ObservableProperty]
-        public double scaleFactor = 1;
-    }
+namespace RectangleArea;
 
-    //[<endsnippet Polygon>]
+//[<snippet Polygon>]
+internal partial class Polygon : ObservableObject
+{
+    // This attribute represents a multiplier for dimensions
+    [ObservableProperty]
+    public double scaleFactor = 1;
 }
+
+//[<endsnippet Polygon>]
