@@ -14,13 +14,7 @@ namespace RectangleArea
     {
         // This attribute represents a multiplier for dimensions
         [ObservableProperty]
-        public double scaleFactor;
-
-        public Polygon()
-        {
-            this.scaleFactor = 1;
-        }
+        public double scaleFactor = 1;
     }
-
     //[<endsnippet Polygon>]
 }

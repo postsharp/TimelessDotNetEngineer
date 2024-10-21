@@ -14,13 +14,7 @@ namespace RectangleArea
     internal partial class Polygon
     {
         // This attribute represents a multiplier for dimensions
-        public double ScaleFactor { get; set; }
-
-        public Polygon()
-        {
-            this.ScaleFactor = 1;
-        }
+        public double ScaleFactor { get; set; } = 1;
     }
-
     // [<endsnippet Polygon>]
 }

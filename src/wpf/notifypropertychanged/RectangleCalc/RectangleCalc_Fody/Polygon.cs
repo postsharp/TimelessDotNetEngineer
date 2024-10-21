@@ -16,12 +16,7 @@ namespace RectangleArea
         public event PropertyChangedEventHandler PropertyChanged;
 
         // This attribute represents a multiplier for dimensions
-        public double ScaleFactor { get; set; }
-
-        public Polygon()
-        {
-            this.ScaleFactor = 1;
-        }
+        public double ScaleFactor { get; set; } = 1;
     }
 
     // [<endsnippet Polygon>]

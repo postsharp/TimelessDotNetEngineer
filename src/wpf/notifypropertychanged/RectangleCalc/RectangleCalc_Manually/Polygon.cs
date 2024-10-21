@@ -6,7 +6,7 @@ namespace RectangleArea
 {
     internal partial class Polygon : INotifyPropertyChanged
     {
-        private double _scaleFactor;
+        private double _scaleFactor = 1;
 
         // This attribute represents a multiplier for dimensions
         public double ScaleFactor
@@ -25,12 +25,7 @@ namespace RectangleArea
                 }
             }
         }
-
-        public Polygon()
-        {
-            this.ScaleFactor = 1;
-        }
-
+        
         protected virtual void OnPropertyChanged( string propertyName )
         {
             this.PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
