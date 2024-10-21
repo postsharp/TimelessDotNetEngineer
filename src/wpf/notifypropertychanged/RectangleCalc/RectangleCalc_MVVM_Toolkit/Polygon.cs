@@ -1,11 +1,6 @@
 ﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RectangleArea
 {
@@ -16,5 +11,6 @@ namespace RectangleArea
         [ObservableProperty]
         public double scaleFactor = 1;
     }
+
     //[<endsnippet Polygon>]
 }

@@ -6,13 +6,8 @@ namespace RectangleArea
 {
     internal partial class RectangleCalcViewModel : INotifyPropertyChanged
     {
-        public RectangleCalcViewModel()
-        {
-            this.Rectangle = new Rectangle( 10, 5 );
-        }
-
         // [<snippet AreaChildProperty>]
-        private Rectangle _rectangle;
+        private Rectangle _rectangle = new( 10, 5 );
 
         public Rectangle Rectangle
         {
@@ -48,9 +43,10 @@ namespace RectangleArea
             {
                 var propertyName = e.PropertyName;
 
-                if ( propertyName is null or "Area" or "Width" or "Height" )
+                if ( propertyName is null or nameof(this.Rectangle.Width)
+                    or nameof(this.Rectangle.Height) )
                 {
-                    this.OnPropertyChanged( "Area" );
+                    this.OnPropertyChanged( nameof(this.Area) );
                 }
             }
         }
