@@ -1,51 +1,56 @@
-﻿using System.ComponentModel;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using System.ComponentModel;
 
 namespace RectangleArea
 {
-    partial class RectangleCalcViewModel : INotifyPropertyChanged
+    internal partial class RectangleCalcViewModel : INotifyPropertyChanged
     {
         public RectangleCalcViewModel()
         {
-            Rectangle = new Rectangle(10, 5);
+            this.Rectangle = new Rectangle( 10, 5 );
         }
 
         // [<snippet AreaChildProperty>]
         private Rectangle _rectangle;
+
         public Rectangle Rectangle
         {
-            get => _rectangle;
+            get => this._rectangle;
 
             set
             {
-                if (!object.ReferenceEquals(value, _rectangle))
+                if ( !ReferenceEquals( value, this._rectangle ) )
                 {
-                    UnsubscribeFromRectangle();
-                    _rectangle = value;
-                    this.OnPropertyChanged(nameof(Rectangle));
-                    SubscribeToRectangle(Rectangle);
+                    this.UnsubscribeFromRectangle();
+                    this._rectangle = value;
+                    this.OnPropertyChanged( nameof(this.Rectangle) );
+                    this.SubscribeToRectangle( this.Rectangle );
                 }
             }
         }
+
         // [<snippet AreaProp>]
         public double Area => this.Rectangle.Area;
+
         // [<endsnippet AreaProp>]
 
-        private void SubscribeToRectangle(Rectangle value)
+        private void SubscribeToRectangle( Rectangle value )
         {
-            if (value != null)
+            if ( value != null )
             {
-                value.PropertyChanged += HandleRectanglePropertyChanged;
+                value.PropertyChanged += this.HandleRectanglePropertyChanged;
             }
-            
         }
-        
-        private void HandleRectanglePropertyChanged(object? sender, PropertyChangedEventArgs e)
+
+        private void HandleRectanglePropertyChanged( object? sender, PropertyChangedEventArgs e )
         {
             {
                 var propertyName = e.PropertyName;
-                if (propertyName is null or "Area" or "Width" or "Height")
+
+                if ( propertyName is null or "Area" or "Width" or "Height" )
                 {
-                    OnPropertyChanged("Area");
+                    this.OnPropertyChanged( "Area" );
                 }
             }
         }
@@ -56,13 +61,13 @@ namespace RectangleArea
             {
                 this._rectangle.PropertyChanged -= this.HandleRectanglePropertyChanged;
             }
-            
         }
+
         // [<endsnippet AreaChildProperty>]
 
-        protected virtual void OnPropertyChanged(string propertyName)
+        protected virtual void OnPropertyChanged( string propertyName )
         {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

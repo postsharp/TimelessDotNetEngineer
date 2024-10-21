@@ -1,4 +1,6 @@
-﻿using Metalama.Patterns.Observability;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using Metalama.Patterns.Observability;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,11 +14,12 @@ namespace RectangleArea
 {
     // [<snippet RectangleCalcViewModel>]
     [Observable]
-    partial class RectangleCalcViewModel
+    internal partial class RectangleCalcViewModel
     {
-        public Rectangle Rectangle { get; set; } = new Rectangle(10, 5);
+        public Rectangle Rectangle { get; set; } = new( 10, 5 );
 
         public double Area => this.Rectangle.Area;
     }
+
     // [<endsnippet RectangleCalcViewModel>]
 }

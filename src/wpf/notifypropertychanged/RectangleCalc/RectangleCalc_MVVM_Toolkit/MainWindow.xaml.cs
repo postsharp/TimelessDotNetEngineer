@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -18,7 +20,7 @@ namespace RectangleArea
     {
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

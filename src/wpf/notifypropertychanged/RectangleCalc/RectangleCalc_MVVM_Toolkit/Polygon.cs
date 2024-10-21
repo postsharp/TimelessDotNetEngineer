@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +10,17 @@ using System.Threading.Tasks;
 namespace RectangleArea
 {
     //[<snippet Polygon>]
-    partial class Polygon : ObservableObject
+    internal partial class Polygon : ObservableObject
     {
         // This attribute represents a multiplier for dimensions
         [ObservableProperty]
         public double scaleFactor;
 
-        public Polygon() {
-            scaleFactor = 1;
+        public Polygon()
+        {
+            this.scaleFactor = 1;
         }
     }
+
     //[<endsnippet Polygon>]
 }

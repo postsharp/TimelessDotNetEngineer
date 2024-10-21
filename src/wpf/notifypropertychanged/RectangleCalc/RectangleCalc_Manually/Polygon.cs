@@ -1,8 +1,10 @@
-﻿using System.ComponentModel;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using System.ComponentModel;
 
 namespace RectangleArea
 {
-    partial class Polygon : INotifyPropertyChanged
+    internal partial class Polygon : INotifyPropertyChanged
     {
         private double _scaleFactor;
 
@@ -11,15 +13,15 @@ namespace RectangleArea
         {
             get
             {
-                return _scaleFactor;
+                return this._scaleFactor;
             }
 
             set
             {
-                if (_scaleFactor != value)
+                if ( this._scaleFactor != value )
                 {
-                    _scaleFactor = value;
-                    OnPropertyChanged(nameof(ScaleFactor));
+                    this._scaleFactor = value;
+                    this.OnPropertyChanged( nameof(this.ScaleFactor) );
                 }
             }
         }
@@ -29,9 +31,9 @@ namespace RectangleArea
             this.ScaleFactor = 1;
         }
 
-        protected virtual void OnPropertyChanged(string propertyName)
+        protected virtual void OnPropertyChanged( string propertyName )
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

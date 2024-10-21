@@ -11,20 +11,25 @@
     </Window.DataContext>
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="23*"/>
-            <ColumnDefinition Width="13*"/>
+            <ColumnDefinition Width="23*" />
+            <ColumnDefinition Width="13*" />
         </Grid.ColumnDefinitions>
-        <Label Content="Width:" Grid.Column="0" VerticalAlignment="Center" Height="26" HorizontalAlignment="Left"/>
-        <TextBox Grid.Column="1" TextWrapping="Wrap" Text="{Binding Path=Rectangle.Width, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="18"/>
-        <Label Content="Height:" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Height="26" HorizontalAlignment="Left"/>
-        <TextBox Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Path=Rectangle.Height, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Height="18"/>
+        <Label Content="Width:" Grid.Column="0" VerticalAlignment="Center" Height="26" HorizontalAlignment="Left" />
+        <TextBox Grid.Column="1" TextWrapping="Wrap"
+                 Text="{Binding Path=Rectangle.Width, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"
+                 Height="18" />
+        <Label Content="Height:" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Height="26"
+               HorizontalAlignment="Left" />
+        <TextBox Grid.Column="1" Grid.Row="1" TextWrapping="Wrap"
+                 Text="{Binding Path=Rectangle.Height, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"
+                 Height="18" />
         <Label Grid.Row="2" VerticalAlignment="Center" Height="26" HorizontalAlignment="Left">
             <TextBlock>
                 <TextBlock.Text>
@@ -35,12 +40,18 @@
                 </TextBlock.Text>
             </TextBlock>
         </Label>
-        <Label Grid.Column="1" Grid.Row="2"  Content="{Binding Path=Area}" VerticalAlignment="Center" Height="26" Padding="0,5,0,5"/>
+        <Label Grid.Column="1" Grid.Row="2" Content="{Binding Path=Area}" VerticalAlignment="Center" Height="26"
+               Padding="0,5,0,5" />
 
-        <Label Content="Scale Factor:" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Height="26" HorizontalAlignment="Left"/>
-        <TextBox Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Text="{Binding Path=Rectangle.ScaleFactor, UpdateSourceTrigger=PropertyChanged, Delay=400}" VerticalAlignment="Center" Height="18"/>
+        <Label Content="Scale Factor:" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Height="26"
+               HorizontalAlignment="Left" />
+        <TextBox Grid.Column="1" Grid.Row="3" TextWrapping="Wrap"
+                 Text="{Binding Path=Rectangle.ScaleFactor, UpdateSourceTrigger=PropertyChanged, Delay=400}"
+                 VerticalAlignment="Center" Height="18" />
 
-        <Label Content="Scaled Area:" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" Height="26" HorizontalAlignment="Left"/>
-        <Label Grid.Column="1" Grid.Row="4"  Content="{Binding Path=Rectangle.ScaledArea}" VerticalAlignment="Center" Height="26" Padding="0,5,0,5"/>
+        <Label Content="Scaled Area:" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" Height="26"
+               HorizontalAlignment="Left" />
+        <Label Grid.Column="1" Grid.Row="4" Content="{Binding Path=Rectangle.ScaledArea}" VerticalAlignment="Center"
+               Height="26" Padding="0,5,0,5" />
     </Grid>
 </Window>

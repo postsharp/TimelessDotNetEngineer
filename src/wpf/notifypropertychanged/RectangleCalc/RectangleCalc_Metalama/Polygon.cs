@@ -1,4 +1,6 @@
-﻿using Metalama.Patterns.Observability;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using Metalama.Patterns.Observability;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +11,16 @@ namespace RectangleArea
 {
     // [<snippet Polygon>]
     [Observable]
-    partial class Polygon
+    internal partial class Polygon
     {
         // This attribute represents a multiplier for dimensions
         public double ScaleFactor { get; set; }
 
-        public Polygon() {
-            ScaleFactor = 1;
+        public Polygon()
+        {
+            this.ScaleFactor = 1;
         }
     }
+
     // [<endsnippet Polygon>]
 }
