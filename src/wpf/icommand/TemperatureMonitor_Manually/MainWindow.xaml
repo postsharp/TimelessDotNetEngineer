@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TemperatureMonitor"
         mc:Ignorable="d"
-        Title="Temperature Monitor" Height="250" Width="350">
+        Title="Temperature Monitor" Height="200" Width="350">
     <Window.DataContext>
         <local:TemperatureViewModel />
     </Window.DataContext>
 
-    
+
     <StackPanel>
         <CheckBox Content="Turn on/off the Temperature Sensor" HorizontalAlignment="Left" Margin="15,25,0,0" IsChecked="{Binding IsMonitorEnabled, Mode=OneWay}" Command="{Binding ToggleTemperatureSensorCommand}"/>
-        <GroupBox Header="Sensor" HorizontalAlignment="Center" Width="322" IsEnabled="{Binding IsSensorEnabled}">
+        <GroupBox Header="Sensor" HorizontalAlignment="Center" Width="322" IsEnabled="{Binding IsSensorEnabled}" Margin="0,10,0,0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -31,7 +31,7 @@
                 <Button Content="Measure temperature" Grid.Column="0" Grid.Row="1" Command="{Binding MeasureTemperatureCommand}"/>
                 <Label Content="{Binding CurrentTemperature}" Grid.Column="1" Grid.Row="1"/>
 
-                <Label Content="{Binding TemperatureStatus}" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" />
+                <Label Content="{Binding TemperatureStatus}" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,10,0,0" />
             </Grid>
         </GroupBox>
     </StackPanel>

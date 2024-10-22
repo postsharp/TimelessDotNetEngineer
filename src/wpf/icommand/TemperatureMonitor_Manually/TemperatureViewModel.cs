@@ -26,10 +26,11 @@ namespace TemperatureMonitor
             }
         }
 
+        // [<snippet ToggleTemperatureSensorCommandProperty>]
         public ICommand ToggleTemperatureSensorCommand { get; }
+        // [<endsnippet ToggleTemperatureSensorCommandProperty>]
         public ICommand SetThresholdCommand { get; }
         public ICommand MeasureTemperatureCommand { get; }
-
 
         public TemperatureViewModel()
         {
@@ -37,7 +38,9 @@ namespace TemperatureMonitor
             
             Threshold = this.Sensor.Threshold;
 
+            // [<snippet ToggleTemperatureSensorCommandCtor>]
             ToggleTemperatureSensorCommand = new ToggleTemperatureSensorCommand(this.Sensor);
+            // [<endsnippet ToggleTemperatureSensorCommandCtor>]
             SetThresholdCommand = new SetThresholdCommand(this.Sensor);
             MeasureTemperatureCommand = new MeasureTemperatureCommand(this.Sensor);
         }
