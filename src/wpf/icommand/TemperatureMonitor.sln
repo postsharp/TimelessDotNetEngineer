@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemperatureMonitor_Manually", "TemperatureMonitor_Manually\TemperatureMonitor_Manually.csproj", "{79B64E5A-C841-44DC-943C-4948EB015CE3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemperatureMonitor_Metalama", "TemperatureMonitor_Metalama\TemperatureMonitor_Metalama.csproj", "{AF333A2E-3F1B-453E-9854-164B9D056B52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{79B64E5A-C841-44DC-943C-4948EB015CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79B64E5A-C841-44DC-943C-4948EB015CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79B64E5A-C841-44DC-943C-4948EB015CE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF333A2E-3F1B-453E-9854-164B9D056B52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF333A2E-3F1B-453E-9854-164B9D056B52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF333A2E-3F1B-453E-9854-164B9D056B52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF333A2E-3F1B-453E-9854-164B9D056B52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
