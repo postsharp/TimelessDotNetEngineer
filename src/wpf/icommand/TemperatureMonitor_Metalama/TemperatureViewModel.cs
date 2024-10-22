@@ -1,4 +1,5 @@
 ﻿using Metalama.Patterns.Observability;
+using Metalama.Patterns.Wpf;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -12,23 +13,35 @@ namespace TemperatureMonitor
     {
         public TemperatureSensor Sensor { get; set; }
 
-        // [<snippet ToggleTemperatureSensorCommandProperty>]
-        public ICommand ToggleTemperatureSensorCommand { get; }
-        // [<endsnippet ToggleTemperatureSensorCommandProperty>]
-        public ICommand SetThresholdCommand { get; }
-        public ICommand MeasureTemperatureCommand { get; }
+        // [<snippet ToggleTemperatureSensorCommand>] 
+        [Command]
+        public void ToggleTemperatureSensor()
+        {
+            this.Sensor.IsEnabled = !this.Sensor.IsEnabled;
+        }
+        // [<endsnippet ToggleTemperatureSensorCommand>]
+
+        [Command]
+        public void SetThreshold(double threshold)
+        {
+            this.Sensor.Threshold = threshold;
+        }
+
+        // [<snippet MeasureTemperatureCommand>]
+        [Command]
+        public async void MeasureTemperature()
+        {
+            this.Sensor.Temperature = await this.Sensor.MeasureTemperature();
+        }
+
+        public bool CanMeasureTemperature => this.Sensor.IsEnabled && !this.Sensor.IsMeasuring;
+        // [<endsnippet MeasureTemperatureCommand>]
 
         public TemperatureViewModel()
         {
             this.Sensor = new TemperatureSensor();
             
             Threshold = this.Sensor.Threshold;
-
-            // [<snippet ToggleTemperatureSensorCommandCtor>]
-            ToggleTemperatureSensorCommand = new ToggleTemperatureSensorCommand(this.Sensor);
-            // [<endsnippet ToggleTemperatureSensorCommandCtor>]
-            SetThresholdCommand = new SetThresholdCommand(this.Sensor);
-            MeasureTemperatureCommand = new MeasureTemperatureCommand(this.Sensor);
         }
         public bool IsSensorEnabled => this.Sensor.IsEnabled;
 
