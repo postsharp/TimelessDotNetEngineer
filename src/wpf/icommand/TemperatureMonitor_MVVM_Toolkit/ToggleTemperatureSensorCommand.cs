@@ -5,27 +5,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace TemperatureMonitor
+namespace TemperatureMonitor;
+
+class ToggleTemperatureSensorCommand : ICommand
 {
-    class ToggleTemperatureSensorCommand : ICommand
+    private readonly TemperatureSensor _sensor;
+
+    public ToggleTemperatureSensorCommand(TemperatureSensor sensor)
     {
-        private readonly TemperatureSensor _sensor;
+        _sensor = sensor;
+    }
 
-        public ToggleTemperatureSensorCommand(TemperatureSensor sensor)
-        {
-            _sensor = sensor;
-        }
+    public event EventHandler? CanExecuteChanged;
 
-        public event EventHandler? CanExecuteChanged;
+    public bool CanExecute(object? parameter)
+    {
+        return true;
+    }
 
-        public bool CanExecute(object? parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object? parameter)
-        {
-           _sensor.IsEnabled = !_sensor.IsEnabled;
-        }
+    public void Execute(object? parameter)
+    {
+       _sensor.IsEnabled = !_sensor.IsEnabled;
     }
 }

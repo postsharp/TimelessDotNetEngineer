@@ -6,109 +6,108 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace TemperatureMonitor
+namespace TemperatureMonitor;
+
+public partial class TemperatureViewModel : ObservableObject
 {
-    public partial class TemperatureViewModel : ObservableObject
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(MeasureTemperatureCommand))]
+    private TemperatureSensor _sensor;
+
+    partial void OnSensorChanging(TemperatureSensor? sensor)
     {
-        [ObservableProperty]
-        [NotifyCanExecuteChangedFor(nameof(MeasureTemperatureCommand))]
-        private TemperatureSensor _sensor;
+        this.UnsubscribeFromSensor();
+    }
 
-        partial void OnSensorChanging(TemperatureSensor? sensor)
+    partial void OnSensorChanged(TemperatureSensor sensor)
+    {
+        this.SubscribeToSensor(sensor);
+    }
+
+    // [<snippet ToggleTemperatureSensorCommand>] 
+    [RelayCommand]
+    public void ToggleTemperatureSensor()
+    {
+        this.Sensor.IsEnabled = !this.Sensor.IsEnabled;
+    }
+    // [<endsnippet ToggleTemperatureSensorCommand>]
+
+    [RelayCommand]
+    public void SetThreshold(double threshold)
+    {
+        this.Sensor.Threshold = threshold;
+    }
+
+    // [<snippet MeasureTemperatureCommand>]
+    [RelayCommand(CanExecute = nameof(CanMeasureTemperature))]
+    public async Task MeasureTemperature()
+    {
+        this.Sensor.Temperature = await this.Sensor.MeasureTemperature();
+    }
+
+    private bool CanMeasureTemperature => this.Sensor.IsEnabled && !this.Sensor.IsMeasuring;
+    // [<endsnippet MeasureTemperatureCommand>]
+
+    public TemperatureViewModel()
+    {
+        this.Sensor = new TemperatureSensor();
+        
+        Threshold = this.Sensor.Threshold;
+    }
+    public bool IsSensorEnabled => this.Sensor.IsEnabled;
+
+    [ObservableProperty]
+    private double _threshold;
+
+    public double CurrentTemperature => this.Sensor.Temperature;
+
+    public string TemperatureStatus
+    {
+        get
         {
-            this.UnsubscribeFromSensor();
-        }
-
-        partial void OnSensorChanged(TemperatureSensor sensor)
-        {
-            this.SubscribeToSensor(sensor);
-        }
-
-        // [<snippet ToggleTemperatureSensorCommand>] 
-        [RelayCommand]
-        public void ToggleTemperatureSensor()
-        {
-            this.Sensor.IsEnabled = !this.Sensor.IsEnabled;
-        }
-        // [<endsnippet ToggleTemperatureSensorCommand>]
-
-        [RelayCommand]
-        public void SetThreshold(double threshold)
-        {
-            this.Sensor.Threshold = threshold;
-        }
-
-        // [<snippet MeasureTemperatureCommand>]
-        [RelayCommand(CanExecute = nameof(CanMeasureTemperature))]
-        public async Task MeasureTemperature()
-        {
-            this.Sensor.Temperature = await this.Sensor.MeasureTemperature();
-        }
-
-        private bool CanMeasureTemperature => this.Sensor.IsEnabled && !this.Sensor.IsMeasuring;
-        // [<endsnippet MeasureTemperatureCommand>]
-
-        public TemperatureViewModel()
-        {
-            this.Sensor = new TemperatureSensor();
-            
-            Threshold = this.Sensor.Threshold;
-        }
-        public bool IsSensorEnabled => this.Sensor.IsEnabled;
-
-        [ObservableProperty]
-        private double _threshold;
-
-        public double CurrentTemperature => this.Sensor.Temperature;
-
-        public string TemperatureStatus
-        {
-            get
+            if (this.Sensor.Temperature > this.Sensor.Threshold)
             {
-                if (this.Sensor.Temperature > this.Sensor.Threshold)
-                {
-                    return "Temperature is above threshold!";
-                }
-                else
-                {
-                    return "Temperature is below threshold.";
-                }
+                return "Temperature is above threshold!";
+            }
+            else
+            {
+                return "Temperature is below threshold.";
             }
         }
+    }
 
-        private void SubscribeToSensor(TemperatureSensor value)
+    private void SubscribeToSensor(TemperatureSensor value)
+    {
+        if (value != null)
         {
-            if (value != null)
+            value.PropertyChanged += this.HandleSensorPropertyChanged;
+        }
+    }
+
+    private void HandleSensorPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        {
+            var propertyName = e.PropertyName;
+
+            if (propertyName is nameof(this.Sensor.IsEnabled))
             {
-                value.PropertyChanged += this.HandleSensorPropertyChanged;
+                this.OnPropertyChanged(nameof(this.IsSensorEnabled));
+                this.MeasureTemperatureCommand.NotifyCanExecuteChanged();
+            }
+
+            if (propertyName is nameof(this.Sensor.Temperature) or nameof(this.Sensor.Threshold))
+            {
+                this.OnPropertyChanged(nameof(this.CurrentTemperature));
+                this.OnPropertyChanged(nameof(this.TemperatureStatus));
             }
         }
+    }
 
-        private void HandleSensorPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private void UnsubscribeFromSensor()
+    {
+        if (this._sensor != null!)
         {
-            {
-                var propertyName = e.PropertyName;
-
-                if (propertyName is nameof(this.Sensor.IsEnabled))
-                {
-                    this.OnPropertyChanged(nameof(this.IsSensorEnabled));
-                    this.MeasureTemperatureCommand.NotifyCanExecuteChanged();
-                }
-
-                if (propertyName is nameof(this.Sensor.Temperature) or nameof(this.Sensor.Threshold))
-                {
-                    this.OnPropertyChanged(nameof(this.CurrentTemperature));
-                    this.OnPropertyChanged(nameof(this.TemperatureStatus));
-                }
-            }
-        }
-
-        private void UnsubscribeFromSensor()
-        {
-            if (this._sensor != null!)
-            {
-                this._sensor.PropertyChanged -= this.HandleSensorPropertyChanged;
-            }
+            this._sensor.PropertyChanged -= this.HandleSensorPropertyChanged;
         }
     }
 }
