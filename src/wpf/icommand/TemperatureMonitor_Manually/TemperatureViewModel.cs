@@ -21,7 +21,7 @@ public class TemperatureViewModel : INotifyPropertyChanged
                 this.UnsubscribeFromSensor();
                 this._sensor = value;
                 this.OnPropertyChanged(nameof(this.Sensor));
-                this.SubscribeToSensor(this.Sensor);
+                this.SubscribeToSensor();
             }
         }
     }
@@ -80,11 +80,11 @@ public class TemperatureViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    private void SubscribeToSensor(TemperatureSensor value)
+    private void SubscribeToSensor()
     {
-        if (value != null)
+        if (this._sensor != null)
         {
-            value.PropertyChanged += this.HandleSensorPropertyChanged;
+            this._sensor.PropertyChanged += this.HandleSensorPropertyChanged;
         }
     }
 
