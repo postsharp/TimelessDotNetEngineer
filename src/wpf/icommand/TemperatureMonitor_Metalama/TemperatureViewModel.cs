@@ -51,16 +51,8 @@ public partial class TemperatureViewModel
 
     public string TemperatureStatus
     {
-        get
-        {
-            if (this.Sensor.Temperature > this.Sensor.Threshold)
-            {
-                return "Temperature is above threshold!";
-            }
-            else
-            {
-                return "Temperature is below threshold.";
-            }
-        }
+        get => this.Sensor.Temperature > this.Sensor.Threshold ? 
+            "Temperature is above threshold!" : 
+            "Temperature is below threshold.";
     }
 }

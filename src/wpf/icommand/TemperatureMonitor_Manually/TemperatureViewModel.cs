@@ -10,6 +10,7 @@ public class TemperatureViewModel : INotifyPropertyChanged
 {
     private TemperatureSensor _sensor;
 
+    // [<snippet Sensor>]
     public TemperatureSensor Sensor
     {
         get => this._sensor;
@@ -26,6 +27,9 @@ public class TemperatureViewModel : INotifyPropertyChanged
         }
     }
 
+    public bool IsSensorEnabled => this.Sensor.IsEnabled;
+    // [<endsnippet Sensor>]
+
     // [<snippet ToggleTemperatureSensorCommandProperty>]
     public ICommand ToggleTemperatureSensorCommand { get; }
     // [<endsnippet ToggleTemperatureSensorCommandProperty>]
@@ -35,7 +39,7 @@ public class TemperatureViewModel : INotifyPropertyChanged
     public TemperatureViewModel()
     {
         this.Sensor = new TemperatureSensor();
-        
+
         Threshold = this.Sensor.Threshold;
 
         // [<snippet ToggleTemperatureSensorCommandCtor>]
@@ -44,7 +48,6 @@ public class TemperatureViewModel : INotifyPropertyChanged
         SetThresholdCommand = new SetThresholdCommand(this.Sensor);
         MeasureTemperatureCommand = new MeasureTemperatureCommand(this.Sensor);
     }
-    public bool IsSensorEnabled => this.Sensor.IsEnabled;
 
     private double _threshold;
     public double Threshold
@@ -80,6 +83,7 @@ public class TemperatureViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
+    // [<snippet SubscribeToSensorChanges>]
     private void SubscribeToSensor()
     {
         if (this._sensor != null)
@@ -105,6 +109,7 @@ public class TemperatureViewModel : INotifyPropertyChanged
             }
         }
     }
+    // [<endsnippet SubscribeToSensorChanges>]
 
     private void UnsubscribeFromSensor()
     {
