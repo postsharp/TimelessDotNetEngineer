@@ -19,14 +19,14 @@ public partial class TemperatureSensor
 
     public double Threshold { get; set; } = 25; // Default threshold
 
-    public async Task<double> MeasureTemperature()
+    public double MeasureTemperature()
     {
         IsMeasuring = true;
         // Simulate measuring the temperature
-        await Task.Delay(2000);
-        IsMeasuring = false;
+        Thread.Sleep(2000);
 
         Random random = new Random();
+        IsMeasuring = false;
         return random.Next(10, 36);
     }
 }

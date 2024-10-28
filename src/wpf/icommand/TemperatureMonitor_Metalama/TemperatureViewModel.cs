@@ -29,9 +29,9 @@ public partial class TemperatureViewModel
 
     // [<snippet MeasureTemperatureCommand>]
     [Command]
-    public async void MeasureTemperature()
+    public void MeasureTemperature()
     {
-        this.Sensor.Temperature = await this.Sensor.MeasureTemperature();
+        this.Sensor.Temperature = this.Sensor.MeasureTemperature();
     }
 
     public bool CanMeasureTemperature => this.Sensor.IsEnabled && !this.Sensor.IsMeasuring;
