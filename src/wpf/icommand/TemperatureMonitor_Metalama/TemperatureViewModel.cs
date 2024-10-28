@@ -21,11 +21,13 @@ public partial class TemperatureViewModel
     }
     // [<endsnippet ToggleTemperatureSensorCommand>]
 
+    // [<snippet SetThresholdCommand>]
     [Command]
     public void SetThreshold(double threshold)
     {
         this.Sensor.Threshold = threshold;
     }
+    // [<endsnippet SetThresholdCommand>]
 
     // [<snippet MeasureTemperatureCommand>]
     [Command]

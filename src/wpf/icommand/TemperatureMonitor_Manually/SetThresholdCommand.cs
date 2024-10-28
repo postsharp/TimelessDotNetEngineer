@@ -25,10 +25,12 @@ class SetThresholdCommand : ICommand
         return _sensor.IsEnabled;
     }
 
+    // [<snippet SetThresholdCommandExecute>] 
     public void Execute(object? parameter)
     {
         _sensor.Threshold = Convert.ToDouble(parameter);
     }
+    // [<endsnippet SetThresholdCommandExecute>]
 
     private void OnSensorPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
