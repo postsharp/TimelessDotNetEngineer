@@ -24,19 +24,19 @@ public partial class TemperatureViewModel : ObservableObject
         this.SubscribeToSensor(sensor);
     }
 
-    // [<snippet ToggleTemperatureSensorCommand>] 
+    // [<snippet MVVMCommands>] 
     [RelayCommand]
     public void ToggleTemperatureSensor()
     {
         this.Sensor.IsEnabled = !this.Sensor.IsEnabled;
     }
-    // [<endsnippet ToggleTemperatureSensorCommand>]
 
     [RelayCommand]
     public void SetThreshold(double threshold)
     {
         this.Sensor.Threshold = threshold;
     }
+    // [<endsnippet MVVMCommands>]
 
     // [<snippet MeasureTemperatureCommand>]
     [RelayCommand(CanExecute = nameof(CanMeasureTemperature))]
