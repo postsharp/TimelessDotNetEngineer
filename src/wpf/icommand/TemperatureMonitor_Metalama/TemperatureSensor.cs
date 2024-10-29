@@ -1,17 +1,13 @@
-﻿using Metalama.Patterns.Observability;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using Metalama.Patterns.Observability;
 
 namespace TemperatureMonitor;
 
 [Observable]
 public partial class TemperatureSensor
 {
-    public bool IsEnabled { get; set; } = false;
+    public bool IsEnabled { get; set; }
 
     public bool IsMeasuring { get; set; }
 
@@ -21,12 +17,14 @@ public partial class TemperatureSensor
 
     public double MeasureTemperature()
     {
-        IsMeasuring = true;
-        // Simulate measuring the temperature
-        Thread.Sleep(2000);
+        this.IsMeasuring = true;
 
-        Random random = new Random();
-        IsMeasuring = false;
-        return random.Next(10, 36);
+        // Simulate measuring the temperature
+        Thread.Sleep( 2000 );
+
+        var random = new Random();
+        this.IsMeasuring = false;
+
+        return random.Next( 10, 36 );
     }
 }

@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:TemperatureMonitor_MVVM_Toolkit"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
     </Application.Resources>
 </Application>

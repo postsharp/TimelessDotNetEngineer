@@ -12,26 +12,34 @@
 
 
     <StackPanel>
-        <CheckBox Content="Turn on/off the Temperature Sensor" HorizontalAlignment="Left" Margin="15,25,0,0" IsChecked="{Binding IsMonitorEnabled, Mode=OneWay}" Command="{Binding ToggleTemperatureSensorCommand}"/>
-        <GroupBox Header="Sensor" HorizontalAlignment="Center" Width="322" IsEnabled="{Binding IsSensorEnabled}" Margin="0,10,0,0">
+        <CheckBox Content="Turn on/off the Temperature Sensor" HorizontalAlignment="Left" Margin="15,25,0,0"
+                  IsChecked="{Binding IsMonitorEnabled, Mode=OneWay}"
+                  Command="{Binding ToggleTemperatureSensorCommand}" />
+        <GroupBox Header="Sensor" HorizontalAlignment="Center" Width="322" IsEnabled="{Binding IsSensorEnabled}"
+                  Margin="0,10,0,0">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label Content="Threshold" Grid.Column="0" Grid.Row="0" />
-                <TextBox Text="{Binding Threshold, Mode=TwoWay}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" />
-                <Button Content="Set" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="119,0,0,0" Width="36" Command="{Binding SetThresholdCommand}" CommandParameter="{Binding Threshold}" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding Threshold, Mode=TwoWay}" Grid.Column="1" Grid.Row="0"
+                         VerticalAlignment="Center" />
+                <Button Content="Set" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="119,0,0,0"
+                        Width="36" Command="{Binding SetThresholdCommand}" CommandParameter="{Binding Threshold}"
+                        VerticalAlignment="Center" />
 
-                <Button Content="Measure temperature" Grid.Column="0" Grid.Row="1" Command="{Binding MeasureTemperatureCommand}"/>
-                <Label Content="{Binding CurrentTemperature}" Grid.Column="1" Grid.Row="1"/>
+                <Button Content="Measure temperature" Grid.Column="0" Grid.Row="1"
+                        Command="{Binding MeasureTemperatureCommand}" />
+                <Label Content="{Binding CurrentTemperature}" Grid.Column="1" Grid.Row="1" />
 
-                <Label Content="{Binding TemperatureStatus}" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,10,0,0" />
+                <Label Content="{Binding TemperatureStatus}" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
+                       HorizontalAlignment="Center" Margin="0,10,0,0" />
             </Grid>
         </GroupBox>
     </StackPanel>

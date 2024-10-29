@@ -1,43 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 using System.Windows.Input;
 
 namespace TemperatureMonitor;
 
-class SetThresholdCommand : ICommand
+internal sealed class SetThresholdCommand : ICommand
 {
     private readonly TemperatureSensor _sensor;
 
-    public SetThresholdCommand(TemperatureSensor sensor)
+    public SetThresholdCommand( TemperatureSensor sensor )
     {
-        _sensor = sensor;
-        _sensor.PropertyChanged += OnSensorPropertyChanged; // Subscribe to sensor property changes
+        this._sensor = sensor;
+
+        this._sensor.PropertyChanged +=
+            this.OnSensorPropertyChanged; // Subscribe to sensor property changes
     }
 
     public event EventHandler? CanExecuteChanged;
 
-    public bool CanExecute(object? parameter)
+    public bool CanExecute( object? parameter )
     {
-        return _sensor.IsEnabled;
+        return this._sensor.IsEnabled;
     }
 
     // [<snippet SetThresholdCommandExecute>] 
-    public void Execute(object? parameter)
+    public void Execute( object? parameter )
     {
-        _sensor.Threshold = Convert.ToDouble(parameter);
+        this._sensor.Threshold = Convert.ToDouble( parameter!, CultureInfo.CurrentCulture );
     }
+
     // [<endsnippet SetThresholdCommandExecute>]
 
-    private void OnSensorPropertyChanged(object sender, PropertyChangedEventArgs e)
+    private void OnSensorPropertyChanged( object? sender, PropertyChangedEventArgs e )
     {
-        if (e.PropertyName is null or nameof(TemperatureSensor.IsEnabled))
+        if ( e.PropertyName is null or nameof(TemperatureSensor.IsEnabled) )
         {
             // Notify WPF that CanExecute has changed
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            this.CanExecuteChanged?.Invoke( this, EventArgs.Empty );
         }
     }
 }

@@ -1,30 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
 using System.Windows.Input;
 
 namespace TemperatureMonitor;
 
-class ToggleTemperatureSensorCommand : ICommand
+internal sealed class ToggleTemperatureSensorCommand : ICommand
 {
     private readonly TemperatureSensor _sensor;
 
-    public ToggleTemperatureSensorCommand(TemperatureSensor sensor)
+    public ToggleTemperatureSensorCommand( TemperatureSensor sensor )
     {
-        _sensor = sensor;
+        this._sensor = sensor;
     }
 
     public event EventHandler? CanExecuteChanged;
 
-    public bool CanExecute(object? parameter)
+    public bool CanExecute( object? parameter )
     {
         return true;
     }
 
-    public void Execute(object? parameter)
+    public void Execute( object? parameter )
     {
-       _sensor.IsEnabled = !_sensor.IsEnabled;
+        this._sensor.IsEnabled = !this._sensor.IsEnabled;
     }
 }

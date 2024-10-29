@@ -1,18 +1,15 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace TemperatureMonitor;
 
 public partial class TemperatureSensor : ObservableObject
 {
-    public TemperatureSensor() {
-        IsEnabled = false;
-        Threshold = 25; // Default threshold
+    public TemperatureSensor()
+    {
+        this.IsEnabled = false;
+        this.Threshold = 25; // Default threshold
     }
 
     [ObservableProperty]
@@ -29,12 +26,14 @@ public partial class TemperatureSensor : ObservableObject
 
     public async Task<double> MeasureTemperature()
     {
-        IsMeasuring = true;
-        // Simulate measuring the temperature
-        await Task.Delay(2000);
-        IsMeasuring = false;
+        this.IsMeasuring = true;
 
-        Random random = new Random();
-        return random.Next(10, 36);
+        // Simulate measuring the temperature
+        await Task.Delay( 2000 );
+        this.IsMeasuring = false;
+
+        var random = new Random();
+
+        return random.Next( 10, 36 );
     }
 }

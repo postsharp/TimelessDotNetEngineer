@@ -1,10 +1,7 @@
-﻿using Metalama.Patterns.Observability;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using Metalama.Patterns.Observability;
 using Metalama.Patterns.Wpf;
-using System;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
 
 namespace TemperatureMonitor;
 
@@ -19,11 +16,12 @@ public partial class TemperatureViewModel
     {
         this.Sensor.IsEnabled = !this.Sensor.IsEnabled;
     }
+
     // [<endsnippet ToggleTemperatureSensorCommand>]
 
     // [<snippet SetThresholdCommand>]
     [Command]
-    public void SetThreshold(double threshold)
+    public void SetThreshold( double threshold )
     {
         this.Sensor.Threshold = threshold;
     }
@@ -36,15 +34,16 @@ public partial class TemperatureViewModel
         this.Sensor.Temperature = this.Sensor.MeasureTemperature();
     }
 
-    public bool CanMeasureTemperature => this.Sensor.IsEnabled && !this.Sensor.IsMeasuring;
+    public bool CanMeasureTemperature => this.Sensor is { IsEnabled: true, IsMeasuring: false };
     // [<endsnippet MeasureTemperatureCommand>]
 
     public TemperatureViewModel()
     {
         this.Sensor = new TemperatureSensor();
-        
-        Threshold = this.Sensor.Threshold;
+
+        this.Threshold = this.Sensor.Threshold;
     }
+
     public bool IsSensorEnabled => this.Sensor.IsEnabled;
 
     public double Threshold { get; set; }
@@ -53,8 +52,9 @@ public partial class TemperatureViewModel
 
     public string TemperatureStatus
     {
-        get => this.Sensor.Temperature > this.Sensor.Threshold ? 
-            "Temperature is above threshold!" : 
-            "Temperature is below threshold.";
+        get
+            => this.Sensor.Temperature > this.Sensor.Threshold
+                ? "Temperature is above threshold!"
+                : "Temperature is below threshold.";
     }
 }

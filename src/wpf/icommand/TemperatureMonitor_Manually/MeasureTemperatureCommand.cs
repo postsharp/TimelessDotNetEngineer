@@ -1,41 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace TemperatureMonitor;
 
-class MeasureTemperatureCommand : ICommand
+internal sealed class MeasureTemperatureCommand : ICommand
 {
     private readonly TemperatureSensor _sensor;
 
-    public MeasureTemperatureCommand(TemperatureSensor sensor)
+    public MeasureTemperatureCommand( TemperatureSensor sensor )
     {
-        _sensor = sensor;
-        _sensor.PropertyChanged += OnSensorPropertyChanged; // Subscribe to sensor property changes
+        this._sensor = sensor;
+
+        this._sensor.PropertyChanged +=
+            this.OnSensorPropertyChanged; // Subscribe to sensor property changes
     }
 
     public event EventHandler? CanExecuteChanged;
 
-    public bool CanExecute(object? parameter)
+    public bool CanExecute( object? parameter )
     {
-        return _sensor.IsEnabled && !_sensor.IsMeasuring;
+        return this._sensor is { IsEnabled: true, IsMeasuring: false };
     }
 
-    public async void Execute(object? parameter)
+    public async void Execute( object? parameter )
     {
-        _sensor.Temperature = await _sensor.MeasureTemperature();
+        this._sensor.Temperature = await this._sensor.MeasureTemperature();
     }
 
-    private void OnSensorPropertyChanged(object sender, PropertyChangedEventArgs e)
+    private void OnSensorPropertyChanged( object? sender, PropertyChangedEventArgs e )
     {
-        if (e.PropertyName is null or nameof(TemperatureSensor.IsEnabled) or nameof(TemperatureSensor.IsMeasuring))
+        if ( e.PropertyName is null or nameof(TemperatureSensor.IsEnabled)
+            or nameof(TemperatureSensor.IsMeasuring) )
         {
             // Notify WPF that CanExecute has changed
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            this.CanExecuteChanged?.Invoke( this, EventArgs.Empty );
         }
     }
 }

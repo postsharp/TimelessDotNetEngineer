@@ -1,11 +1,7 @@
-﻿using ReactiveUI;
-using System;
-using System.ComponentModel;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using ReactiveUI;
 using System.Reactive;
-using System.Reflection.Metadata;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
 
 namespace TemperatureMonitor;
 
@@ -17,18 +13,21 @@ public class TemperatureViewModel : ReactiveObject
     public TemperatureSensor Sensor
     {
         get => this._sensor;
-        set => this.RaiseAndSetIfChanged(ref this._sensor, value);
+        set => this.RaiseAndSetIfChanged( ref this._sensor, value );
     }
 
     public bool IsSensorEnabled => this.Sensor.IsEnabled;
+
     // [<endsnippet Sensor>]
 
     // [<snippet ToggleTemperatureSensorCommandProperty>]
     public ReactiveCommand<Unit, Unit> ToggleTemperatureSensorCommand { get; }
+
     // [<endsnippet ToggleTemperatureSensorCommandProperty>]
 
     // [<snippet SetThresholdCommandProperty>]
-    public ReactiveCommand<Double, Unit> SetThresholdCommand { get; }
+    public ReactiveCommand<double, Unit> SetThresholdCommand { get; }
+
     // [<endsnippet SetThresholdCommandProperty>]
 
     public ReactiveCommand<Unit, Unit> MeasureTemperatureCommand { get; }
@@ -37,54 +36,67 @@ public class TemperatureViewModel : ReactiveObject
     {
         this.Sensor = new TemperatureSensor();
 
-        Threshold = this.Sensor.Threshold;
+        this.Threshold = this.Sensor.Threshold;
 
         // [<snippet ToggleTemperatureSensorCommandCtor>]
-        ToggleTemperatureSensorCommand = ReactiveCommand.Create(() => {
-            Sensor.IsEnabled = !Sensor.IsEnabled;
-        });
-        this.Sensor.WhenAnyValue(s => s.IsEnabled)
-               .Subscribe(_ => this.RaisePropertyChanged(nameof(IsSensorEnabled)));
+        this.ToggleTemperatureSensorCommand = ReactiveCommand.Create(
+            () =>
+            {
+                this.Sensor.IsEnabled = !this.Sensor.IsEnabled;
+            } );
+
+        this.Sensor.WhenAnyValue( s => s.IsEnabled )
+            .Subscribe( _ => this.RaisePropertyChanged( nameof(this.IsSensorEnabled) ) );
+
         // [<endsnippet ToggleTemperatureSensorCommandCtor>]
 
         // [<snippet SetThresholdCommandCtor>]
-        SetThresholdCommand = ReactiveCommand.Create((Double parameter) => {
-            Sensor.Threshold = Convert.ToDouble(parameter);
-        });
-        this.Sensor.WhenAnyValue(s => s.Threshold)
-        .Subscribe(_ => 
-        {
-            this.RaisePropertyChanged(nameof(TemperatureStatus));
-            this.RaisePropertyChanged(nameof(CurrentTemperature));
-        });
+        this.SetThresholdCommand = ReactiveCommand.Create(
+            ( double parameter ) =>
+            {
+                this.Sensor.Threshold = Convert.ToDouble( parameter );
+            } );
+
+        this.Sensor.WhenAnyValue( s => s.Threshold )
+            .Subscribe(
+                _ =>
+                {
+                    this.RaisePropertyChanged( nameof(this.TemperatureStatus) );
+                    this.RaisePropertyChanged( nameof(this.CurrentTemperature) );
+                } );
+
         // [<endsnippet SetThresholdCommandCtor>]
 
-        MeasureTemperatureCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            Sensor.Temperature = await Sensor.MeasureTemperature();
-        });
+        this.MeasureTemperatureCommand = ReactiveCommand.CreateFromTask(
+            async () =>
+            {
+                this.Sensor.Temperature = await this.Sensor.MeasureTemperature();
+            } );
 
-        this.Sensor.WhenAnyValue(s => s.Temperature)
-       .Subscribe(_ =>
-       {
-           this.RaisePropertyChanged(nameof(TemperatureStatus));
-           this.RaisePropertyChanged(nameof(CurrentTemperature));
-       });
+        this.Sensor.WhenAnyValue( s => s.Temperature )
+            .Subscribe(
+                _ =>
+                {
+                    this.RaisePropertyChanged( nameof(this.TemperatureStatus) );
+                    this.RaisePropertyChanged( nameof(this.CurrentTemperature) );
+                } );
     }
 
     private double _threshold;
+
     public double Threshold
     {
-        get => _threshold;
-        set => this.RaiseAndSetIfChanged(ref _threshold, value);
+        get => this._threshold;
+        set => this.RaiseAndSetIfChanged( ref this._threshold, value );
     }
+
     public double CurrentTemperature => this.Sensor.Temperature;
 
     public string TemperatureStatus
     {
         get
         {
-            if (this.Sensor.Temperature > this.Sensor.Threshold)
+            if ( this.Sensor.Temperature > this.Sensor.Threshold )
             {
                 return "Temperature is above threshold!";
             }

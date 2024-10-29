@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:TemperatureMonitor_ReactiveUI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
     </Application.Resources>
 </Application>

@@ -1,63 +1,67 @@
-﻿using ReactiveUI;
-using System;
-using System.Collections.Generic;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using ReactiveUI;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TemperatureMonitor;
 
 public class TemperatureSensor : ReactiveObject
 {
-    public TemperatureSensor() {
-        IsEnabled = false;
-        Threshold = 25; // Default threshold
+    public TemperatureSensor()
+    {
+        this.IsEnabled = false;
+        this.Threshold = 25; // Default threshold
     }
 
     private bool _isEnabled;
+
     public bool IsEnabled
     {
-        get => _isEnabled;
-        set => this.RaiseAndSetIfChanged(ref _isEnabled, value);
+        get => this._isEnabled;
+        set => this.RaiseAndSetIfChanged( ref this._isEnabled, value );
     }
 
     private bool _isMeasuring;
+
     public bool IsMeasuring
     {
-        get => _isMeasuring;
-        set => this.RaiseAndSetIfChanged(ref _isMeasuring, value);
+        get => this._isMeasuring;
+        set => this.RaiseAndSetIfChanged( ref this._isMeasuring, value );
     }
 
     private double _temperature;
+
     public double Temperature
     {
-        get => _temperature;
-        set => this.RaiseAndSetIfChanged(ref _temperature, value);
+        get => this._temperature;
+        set => this.RaiseAndSetIfChanged( ref this._temperature, value );
     }
 
-    public double _threshold;
+    private double _threshold;
+
     public double Threshold
     {
-        get => _threshold;
-        set => this.RaiseAndSetIfChanged(ref _threshold, value);
+        get => this._threshold;
+        set => this.RaiseAndSetIfChanged( ref this._threshold, value );
     }
 
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected void OnPropertyChanged(string propertyName)
+    protected void OnPropertyChanged( string propertyName )
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        this.PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
     }
 
     public async Task<double> MeasureTemperature()
     {
-        IsMeasuring = true;
-        // Simulate measuring the temperature
-        await Task.Delay(2000);
-        IsMeasuring = false;
+        this.IsMeasuring = true;
 
-        Random random = new Random();
-        return random.Next(10, 36);
+        // Simulate measuring the temperature
+        await Task.Delay( 2000 );
+        this.IsMeasuring = false;
+
+        var random = new Random();
+
+        return random.Next( 10, 36 );
     }
 }
