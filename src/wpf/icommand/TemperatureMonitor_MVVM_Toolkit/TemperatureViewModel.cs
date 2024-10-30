@@ -17,10 +17,12 @@ public partial class TemperatureViewModel : ObservableObject
         this.UnsubscribeFromSensor();
     }
 
+    // [<snippet OnSensorChanged>]
     partial void OnSensorChanged( TemperatureSensor sensor )
     {
         this.SubscribeToSensor( sensor );
     }
+    // [<endsnippet OnSensorChanged>]
 
     // [<snippet MVVMCommands>] 
     [RelayCommand]
@@ -76,6 +78,7 @@ public partial class TemperatureViewModel : ObservableObject
         }
     }
 
+    // [<snippet SubscribeToSensorChanges>]
     private void SubscribeToSensor( TemperatureSensor? value )
     {
         if ( value != null )
@@ -102,6 +105,7 @@ public partial class TemperatureViewModel : ObservableObject
             }
         }
     }
+    // [<endsnippet SubscribeToSensorChanges>]
 
     private void UnsubscribeFromSensor()
     {
