@@ -14,8 +14,8 @@ internal sealed class SetThresholdCommand : ICommand
     {
         this._sensor = sensor;
 
-        this._sensor.PropertyChanged +=
-            this.OnSensorPropertyChanged; // Subscribe to sensor property changes
+        // Subscribe to sensor property changes
+        this._sensor.PropertyChanged += this.OnSensorPropertyChanged; 
     }
 
     public event EventHandler? CanExecuteChanged;
@@ -30,7 +30,6 @@ internal sealed class SetThresholdCommand : ICommand
     {
         this._sensor.Threshold = Convert.ToDouble( parameter!, CultureInfo.CurrentCulture );
     }
-
     // [<endsnippet SetThresholdCommandExecute>]
 
     private void OnSensorPropertyChanged( object? sender, PropertyChangedEventArgs e )
