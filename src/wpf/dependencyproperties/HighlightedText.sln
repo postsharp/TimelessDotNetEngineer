@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HighlightedText_Manually", "HighlightedText_Manually\HighlightedText_Manually.csproj", "{FCEA820F-53B1-40B4-AF4F-6E262C5C9551}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighlightedText_Metalama", "HighlightedText_Metalama\HighlightedText_Metalama.csproj", "{219F3536-ABDC-4693-B965-7F732CFDBFEC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FCEA820F-53B1-40B4-AF4F-6E262C5C9551}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCEA820F-53B1-40B4-AF4F-6E262C5C9551}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCEA820F-53B1-40B4-AF4F-6E262C5C9551}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCEA820F-53B1-40B4-AF4F-6E262C5C9551}.Release|Any CPU.Build.0 = Release|Any CPU
+		{219F3536-ABDC-4693-B965-7F732CFDBFEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{219F3536-ABDC-4693-B965-7F732CFDBFEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{219F3536-ABDC-4693-B965-7F732CFDBFEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{219F3536-ABDC-4693-B965-7F732CFDBFEC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6041FBAD-3922-477E-9EC8-47440374F1AA}
+	EndGlobalSection
+EndGlobal
