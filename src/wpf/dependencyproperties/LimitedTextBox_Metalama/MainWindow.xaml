@@ -1,0 +1,17 @@
+﻿<Window x:Class="LimitedTextBox_Manually.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LimitedTextBox_Manually"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="423" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Write anything you want (and see how many characters you have left):" VerticalAlignment="Top" Grid.Row="0" Margin="10,0,0,0"/>
+        <local:LimitedTextBox MaxLength="50" Text="Initial text" Grid.Row="1" Margin="10" />
+    </Grid>
+</Window>
