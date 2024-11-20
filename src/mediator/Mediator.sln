@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Step0", "Mediator.Step0\Mediator.Step0.csproj", "{521DCF18-D18B-4EDD-9EDE-E8E61601F895}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Step1", "Mediator.Step1\Mediator.Step1.csproj", "{359EC5B9-C6D5-413E-BF1A-609C09637654}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Step2", "Mediator.Step2\Mediator.Step2.csproj", "{F0E5C82C-F3FE-4776-9C63-5B6831D60BD8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		LamaDebug|Any CPU = LamaDebug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{521DCF18-D18B-4EDD-9EDE-E8E61601F895}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{521DCF18-D18B-4EDD-9EDE-E8E61601F895}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{521DCF18-D18B-4EDD-9EDE-E8E61601F895}.LamaDebug|Any CPU.ActiveCfg = LamaDebug|Any CPU
+		{521DCF18-D18B-4EDD-9EDE-E8E61601F895}.LamaDebug|Any CPU.Build.0 = LamaDebug|Any CPU
+		{521DCF18-D18B-4EDD-9EDE-E8E61601F895}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{521DCF18-D18B-4EDD-9EDE-E8E61601F895}.Release|Any CPU.Build.0 = Release|Any CPU
+		{359EC5B9-C6D5-413E-BF1A-609C09637654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{359EC5B9-C6D5-413E-BF1A-609C09637654}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{359EC5B9-C6D5-413E-BF1A-609C09637654}.LamaDebug|Any CPU.ActiveCfg = LamaDebug|Any CPU
+		{359EC5B9-C6D5-413E-BF1A-609C09637654}.LamaDebug|Any CPU.Build.0 = LamaDebug|Any CPU
+		{359EC5B9-C6D5-413E-BF1A-609C09637654}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{359EC5B9-C6D5-413E-BF1A-609C09637654}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0E5C82C-F3FE-4776-9C63-5B6831D60BD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0E5C82C-F3FE-4776-9C63-5B6831D60BD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0E5C82C-F3FE-4776-9C63-5B6831D60BD8}.LamaDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0E5C82C-F3FE-4776-9C63-5B6831D60BD8}.LamaDebug|Any CPU.Build.0 = Debug|Any CPU
+		{F0E5C82C-F3FE-4776-9C63-5B6831D60BD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0E5C82C-F3FE-4776-9C63-5B6831D60BD8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {73030782-4264-41EF-9DCA-622D012FAC73}
+	EndGlobalSection
+EndGlobal
