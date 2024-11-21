@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -23,7 +25,7 @@ namespace LimitedTextBox_Manually
     {
         public LimitedTextBox()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         // [<snippet MaxLength_Property>]
@@ -31,67 +33,84 @@ namespace LimitedTextBox_Manually
             nameof(MaxLength),
             typeof(int),
             typeof(LimitedTextBox),
-            new PropertyMetadata(100, OnMaxLengthChanged),
-            ValidateMaxLength); 
+            new PropertyMetadata( 100, OnMaxLengthChanged ),
+            ValidateMaxLength );
 
         public int MaxLength
         {
-            get { return (int)GetValue(MaxLengthProperty); }
-            set { SetValue(MaxLengthProperty, value); }
+            get { return (int) this.GetValue( MaxLengthProperty ); }
+            set
+            {
+                this.SetValue( MaxLengthProperty, value );
+            }
         }
+
         // [<endsnippet MaxLength_Property>]
 
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
             nameof(Text),
             typeof(string),
             typeof(LimitedTextBox),
-            new PropertyMetadata(string.Empty, OnTextChanged),
-            ValidateText);
+            new PropertyMetadata( string.Empty, OnTextChanged ),
+            ValidateText );
 
         public string Text
         {
-            get { return (string)GetValue(TextProperty); }
-            set { SetValue(TextProperty, value); }
+            get { return (string) this.GetValue( TextProperty ); }
+            set
+            {
+                this.SetValue( TextProperty, value );
+            }
         }
 
         // [<snippet OnMaxLengthChanged>]
-        private static void OnMaxLengthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnMaxLengthChanged(
+            DependencyObject d,
+            DependencyPropertyChangedEventArgs e )
         {
-            var control = (LimitedTextBox)d;
-            control.UpdateRemainingCharsText(control._textBox.Text);
+            var control = (LimitedTextBox) d;
+            control.UpdateRemainingCharsText( control._textBox.Text );
         }
+
         // [<endsnippet OnMaxLengthChanged>]
 
-        private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnTextChanged(
+            DependencyObject d,
+            DependencyPropertyChangedEventArgs e )
         {
-            var control = (LimitedTextBox)d;
-            control.UpdateRemainingCharsText((string)e.NewValue);
+            var control = (LimitedTextBox) d;
+            control.UpdateRemainingCharsText( (string) e.NewValue );
         }
 
-        private void UpdateRemainingCharsText(string updateTextValue)
+        private void UpdateRemainingCharsText( string updateTextValue )
         {
-            int remainingChars = MaxLength - updateTextValue.Length;
-            _remainingCharsTextBlock.Text = $"{remainingChars} characters remaining";
+            var remainingChars = this.MaxLength - updateTextValue.Length;
+            this._remainingCharsTextBlock.Text = $"{remainingChars} characters remaining";
         }
 
         // [<snippet ValidateMaxLength>]
-        private static bool ValidateMaxLength(object value)
+        private static bool ValidateMaxLength( object value )
         {
-            if (value is int maxLength && maxLength > 0)
+            if ( value is int maxLength && maxLength > 0 )
             {
                 return true;
             }
+
             return false;
         }
+
         // [<endsnippet ValidateMaxLength>]
 
-        private static bool ValidateText(object value)
+        private static bool ValidateText( object value )
         {
-            string? text = value as string;
-            if (!string.IsNullOrWhiteSpace(text) && !text.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+            var text = value as string;
+
+            if ( !string.IsNullOrWhiteSpace( text )
+                 && !text.All( c => char.IsLetter( c ) || char.IsWhiteSpace( c ) ) )
             {
                 return false;
             }
+
             return true;
         }
     }

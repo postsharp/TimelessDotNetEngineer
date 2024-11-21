@@ -8,10 +8,11 @@
         Title="MainWindow" Height="423" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Text="Write anything you want (and see how many characters you have left):" VerticalAlignment="Top" Grid.Row="0" Margin="10,0,0,0"/>
+        <TextBlock Text="Write anything you want (and see how many characters you have left):" VerticalAlignment="Top"
+                   Grid.Row="0" Margin="10,0,0,0" />
         <local:LimitedTextBox MaxLength="50" Text="Initial text" Grid.Row="1" Margin="10" />
     </Grid>
 </Window>

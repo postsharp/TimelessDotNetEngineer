@@ -12,9 +12,6 @@ namespace LimitedTextBox_Metalama
     /// </summary>
     public partial class App : Application
     {
-        public App()
-        {
-
-        }
+        public App() { }
     }
 }

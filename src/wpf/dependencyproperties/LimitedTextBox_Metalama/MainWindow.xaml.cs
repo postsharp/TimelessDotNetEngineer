@@ -20,7 +20,7 @@ namespace LimitedTextBox_Manually
     {
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Metalama.Patterns.Contracts;
+﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
+
+using Metalama.Patterns.Contracts;
 using Metalama.Patterns.Wpf;
 using System;
 using System.Collections.Generic;
@@ -25,14 +27,16 @@ namespace LimitedTextBox_Manually
     {
         public LimitedTextBox()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         // [<snippet MaxLength_Property_WithContract>]
-        [StrictlyGreaterThan(0)]
+        [StrictlyGreaterThan( 0 )]
+
         // [<snippet MaxLength_Property>]
         [DependencyProperty]
         public int MaxLength { get; set; } = 100;
+
         // [<endsnippet MaxLength_Property>]
         // [<endsnippet MaxLength_Property_WithContract>]
 
@@ -40,32 +44,37 @@ namespace LimitedTextBox_Manually
         public string Text { get; set; } = string.Empty;
 
         // [<snippet OnPropertyChanged>]
-        private void OnMaxLengthChanged(int oldValue, int newValue)
+        private void OnMaxLengthChanged( int oldValue, int newValue )
         {
-            this.UpdateRemainingCharsText(this._textBox.Text);
+            this.UpdateRemainingCharsText( this._textBox.Text );
         }
 
-        private void OnTextChanged(string oldValue, string newValue)
+        private void OnTextChanged( string oldValue, string newValue )
         {
-            this.UpdateRemainingCharsText(newValue);
+            this.UpdateRemainingCharsText( newValue );
         }
+
         // [<endsnippet OnPropertyChanged>]
 
         // [<snippet ValidateText>]
-        private void ValidateText(object value)
+        private void ValidateText( object value )
         {
-            string? text = value as string;
-            if (!string.IsNullOrWhiteSpace(text) && !text.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+            var text = value as string;
+
+            if ( !string.IsNullOrWhiteSpace( text )
+                 && !text.All( c => char.IsLetter( c ) || char.IsWhiteSpace( c ) ) )
             {
-                throw new ArgumentException("Invalid Text value. Only English characters are allowed.");
+                throw new ArgumentException(
+                    "Invalid Text value. Only English characters are allowed." );
             }
         }
+
         // [<endsnippet ValidateText>]
 
-        private void UpdateRemainingCharsText(string updateTextValue)
+        private void UpdateRemainingCharsText( string updateTextValue )
         {
-            int remainingChars = MaxLength - updateTextValue.Length;
-            _remainingCharsTextBlock.Text = $"{remainingChars} characters remaining";
+            var remainingChars = this.MaxLength - updateTextValue.Length;
+            this._remainingCharsTextBlock.Text = $"{remainingChars} characters remaining";
         }
     }
 }
