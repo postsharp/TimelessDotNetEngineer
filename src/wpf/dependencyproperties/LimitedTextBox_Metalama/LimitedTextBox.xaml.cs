@@ -42,15 +42,13 @@ public partial class LimitedTextBox
     // [<endsnippet OnPropertyChanged>]
 
     // [<snippet ValidateText>]
-    private void ValidateText( object value )
+    private void ValidateText( string value )
     {
-        var text = value as string;
-
-        if ( !string.IsNullOrWhiteSpace( text )
-             && !text.All( c => char.IsLetter( c ) || char.IsWhiteSpace( c ) ) )
+        if ( !string.IsNullOrWhiteSpace( value )
+             && !value.All( c => char.IsLetter( c ) || char.IsWhiteSpace( c ) ) )
         {
             throw new ArgumentException(
-                "Invalid Text value. Only English characters are allowed." );
+                "Invalid Text value. Only letters and whitespace are allowed." );
         }
     }
 
