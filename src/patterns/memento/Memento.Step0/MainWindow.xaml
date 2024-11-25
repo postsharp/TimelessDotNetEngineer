@@ -27,7 +27,7 @@
         <ListView Name="list"
                   Grid.Column="0"
                   Grid.Row="1"
-                  ItemsSource="{Binding FishTank.Fishes}"
+                  ItemsSource="{Binding Fishes}"
                   SelectedItem="{Binding CurrentFish, Mode=TwoWay}"
                   SelectionMode="Single"
                   IsEnabled="{Binding IsEditing, Converter={StaticResource NotConverter}, UpdateSourceTrigger=PropertyChanged}">
