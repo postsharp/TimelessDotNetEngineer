@@ -55,6 +55,7 @@ public partial class LimitedTextBox : UserControl
 
     // [<endsnippet OnMaxLengthChanged>]
 
+    // [<snippet OnTextChanged>]
     private static void OnTextChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e )
@@ -68,6 +69,7 @@ public partial class LimitedTextBox : UserControl
         var remainingChars = this.MaxLength - updateTextValue.Length;
         this._remainingCharsTextBlock.Text = $"{remainingChars} characters remaining";
     }
+    // [<endsnippet OnTextChanged>]
 
     // [<snippet ValidateMaxLength>]
     private static bool ValidateMaxLength( object value ) => value is > 0;
@@ -81,6 +83,11 @@ public partial class LimitedTextBox : UserControl
              && !text.All( c => char.IsLetter( c ) || char.IsWhiteSpace( c ) ) )
         {
             return false;
+        }
+
+        if ( text.Length > this.MaxLength )
+        {
+            
         }
 
         return true;
