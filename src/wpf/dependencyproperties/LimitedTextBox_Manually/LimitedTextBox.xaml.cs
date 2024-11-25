@@ -70,15 +70,7 @@ public partial class LimitedTextBox : UserControl
     }
 
     // [<snippet ValidateMaxLength>]
-    private static bool ValidateMaxLength( object value )
-    {
-        if ( value is > 0 )
-        {
-            return true;
-        }
-
-        return false;
-    }
+    private static bool ValidateMaxLength( object value ) => value is > 0;
     // [<endsnippet ValidateMaxLength>]
 
     private static bool ValidateText( object value )
