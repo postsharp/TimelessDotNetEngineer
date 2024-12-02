@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "factory-method", "factory-m
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "abstract-factory", "abstract-factory\abstract-factory.csproj", "{E2A37D44-7D3E-4045-9AE3-A95A8A388F99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "abstract-factory-metalama", "abstract-factory-metalama\abstract-factory-metalama.csproj", "{A5B88ED6-66F2-4D6D-9C40-92A2FD03CE1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{E2A37D44-7D3E-4045-9AE3-A95A8A388F99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2A37D44-7D3E-4045-9AE3-A95A8A388F99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2A37D44-7D3E-4045-9AE3-A95A8A388F99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5B88ED6-66F2-4D6D-9C40-92A2FD03CE1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5B88ED6-66F2-4D6D-9C40-92A2FD03CE1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5B88ED6-66F2-4D6D-9C40-92A2FD03CE1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5B88ED6-66F2-4D6D-9C40-92A2FD03CE1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
