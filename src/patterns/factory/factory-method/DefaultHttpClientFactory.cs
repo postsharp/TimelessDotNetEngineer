@@ -10,10 +10,9 @@ namespace Factory
 {
     internal class DefaultHttpClientFactory : IHttpClientFactory
     {
-        public DefaultHttpClientFactory()
-        {
-        }
-        public HttpClient CreateClient(string name)
+        public DefaultHttpClientFactory() { }
+
+        public HttpClient CreateClient( string name )
         {
             throw new NotImplementedException();
         }

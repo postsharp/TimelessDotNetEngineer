@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace Factory;
 
-class FileSystemStorageAdapter : IStorageAdapter
+internal class FileSystemStorageAdapter : IStorageAdapter
 {
     private readonly string _filePath;
 
-    public FileSystemStorageAdapter(string filePath)
+    public FileSystemStorageAdapter( string filePath )
     {
-        _filePath = filePath;
+        this._filePath = filePath;
     }
 
-    public Task<Stream> OpenReadAsync() =>
-        Task.FromResult((Stream)File.OpenRead(_filePath));
+    public Task<Stream> OpenReadAsync()
+        => Task.FromResult( (Stream) File.OpenRead( this._filePath ) );
 
-    public async Task WriteAsync(Func<Stream, Task> write)
+    public async Task WriteAsync( Func<Stream, Task> write )
     {
-        await using var stream = File.OpenWrite(_filePath);
-        await write(stream);
+        await using var stream = File.OpenWrite( this._filePath );
+        await write( stream );
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Factory;
 
-interface IStorageAdapterFactory
+internal interface IStorageAdapterFactory
 {
-    IStorageAdapter CreateStorageAdapter(string url);
+    IStorageAdapter CreateStorageAdapter( string url );
 }

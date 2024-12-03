@@ -9,17 +9,19 @@ using System.Threading.Tasks;
 
 namespace Factory
 {
-    class StorageAdapterFactory
+    internal class StorageAdapterFactory
     {
-        public IStorageAdapter CreateStorageAdapter(string pathOrUrl)
+        public IStorageAdapter CreateStorageAdapter( string pathOrUrl )
         {
             // Logic to determine storage adapter type
-            if (pathOrUrl.StartsWith("https://"))
+            if ( pathOrUrl.StartsWith( "https://" ) )
             {
                 var httpClientFactory = new DefaultHttpClientFactory(); // Simulated DI
-                return new HttpStorageAdapter(httpClientFactory, pathOrUrl);
+
+                return new HttpStorageAdapter( httpClientFactory, pathOrUrl );
             }
-            return new FileSystemStorageAdapter(pathOrUrl);
+
+            return new FileSystemStorageAdapter( pathOrUrl );
         }
     }
 }

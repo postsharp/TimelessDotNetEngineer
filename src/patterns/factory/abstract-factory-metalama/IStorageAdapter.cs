@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Factory;
 
-interface IStorageAdapter
+internal interface IStorageAdapter
 {
     Task<Stream> OpenReadAsync();
-    Task WriteAsync(Func<Stream, Task> write);
+
+    Task WriteAsync( Func<Stream, Task> write );
 }

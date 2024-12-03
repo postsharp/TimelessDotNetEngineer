@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Factory;
 
-class TestStorageAdapterFactory : IStorageAdapterFactory
+internal class TestStorageAdapterFactory : IStorageAdapterFactory
 {
     private readonly ConcurrentDictionary<string, TestStorageAdapter> _storageAdapters = new();
 
-    public IStorageAdapter CreateStorageAdapter(string url)
+    public IStorageAdapter CreateStorageAdapter( string url )
     {
-        return this._storageAdapters.GetOrAdd(url, s => new TestStorageAdapter());
+        return this._storageAdapters.GetOrAdd( url, s => new TestStorageAdapter() );
     }
 }

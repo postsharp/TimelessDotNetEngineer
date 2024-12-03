@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace Factory;
 
-class TestStorageAdapter : IStorageAdapter
+internal class TestStorageAdapter : IStorageAdapter
 {
     private byte[] _buffer = [];
 
     public Task<Stream> OpenReadAsync()
     {
-        return Task.FromResult<Stream>(new MemoryStream(this._buffer));
+        return Task.FromResult<Stream>( new MemoryStream( this._buffer ) );
     }
 
-    public async Task WriteAsync(Func<Stream, Task> write)
+    public async Task WriteAsync( Func<Stream, Task> write )
     {
         using var memoryStream = new MemoryStream();
-        await write(memoryStream);
+        await write( memoryStream );
         this._buffer = memoryStream.ToArray();
     }
 }

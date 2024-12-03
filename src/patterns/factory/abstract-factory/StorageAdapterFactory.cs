@@ -9,24 +9,24 @@ using System.Threading.Tasks;
 
 namespace Factory;
 
-class StorageAdapterFactory : IStorageAdapterFactory
+internal class StorageAdapterFactory : IStorageAdapterFactory
 {
     private readonly IHttpClientFactory _httpClientFactory;
 
-    public StorageAdapterFactory(IHttpClientFactory httpClientFactory)
+    public StorageAdapterFactory( IHttpClientFactory httpClientFactory )
     {
         this._httpClientFactory = httpClientFactory;
     }
 
-    public IStorageAdapter CreateStorageAdapter(string url)
+    public IStorageAdapter CreateStorageAdapter( string url )
     {
-        if (url.StartsWith("https://"))
+        if ( url.StartsWith( "https://" ) )
         {
-            return new HttpStorageAdapter(this._httpClientFactory, url);
+            return new HttpStorageAdapter( this._httpClientFactory, url );
         }
         else
         {
-            return new FileSystemStorageAdapter(url);
+            return new FileSystemStorageAdapter( url );
         }
     }
 }

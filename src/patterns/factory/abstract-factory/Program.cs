@@ -3,9 +3,10 @@
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Factory;
-class Program
+
+internal class Program
 {
-    static async Task Main(string[] args)
+    private static async Task Main( string[] args )
     {
         var services = new ServiceCollection();
         services.AddSingleton<IStorageAdapterFactory, StorageAdapterFactory>();
@@ -13,10 +14,9 @@ class Program
 
         var factory = services.BuildServiceProvider().GetRequiredService<IStorageAdapterFactory>();
 
-        var storage = factory.CreateStorageAdapter("https://www.google.com");
+        var storage = factory.CreateStorageAdapter( "https://www.google.com" );
         await using var stream = await storage.OpenReadAsync();
-        using var reader = new StreamReader(stream);
-        Console.WriteLine(await reader.ReadToEndAsync());
-
+        using var reader = new StreamReader( stream );
+        Console.WriteLine( await reader.ReadToEndAsync() );
     }
 }

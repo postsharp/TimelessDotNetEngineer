@@ -9,9 +9,11 @@ namespace Factory;
 
 internal class ConcreteFactoryProductAttribute : TypeAspect
 {
-    public override void BuildAspect(IAspectBuilder<INamedType> builder) =>
-        builder.Outbound.SelectMany(t => t.Constructors)
-            .CanOnlyBeUsedFrom(scope => scope.Namespace("**.Tests")
-                    .Or().Type(typeof(IStorageAdapterFactory)),
-                "The class is a concrete factory.");
+    public override void BuildAspect( IAspectBuilder<INamedType> builder )
+        => builder.Outbound.SelectMany( t => t.Constructors )
+            .CanOnlyBeUsedFrom(
+                scope => scope.Namespace( "**.Tests" )
+                    .Or()
+                    .Type( typeof(IStorageAdapterFactory) ),
+                "The class is a concrete factory." );
 }
