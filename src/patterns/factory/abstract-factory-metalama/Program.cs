@@ -1,7 +1,5 @@
 ﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Factory;
 
 internal class Program

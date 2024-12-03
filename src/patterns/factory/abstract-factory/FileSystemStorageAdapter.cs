@@ -1,11 +1,5 @@
 ﻿// Copyright (c) SharpCrafters s.r.o. Released under the MIT License.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Factory;
 
 internal class FileSystemStorageAdapter : IStorageAdapter
@@ -17,10 +11,8 @@ internal class FileSystemStorageAdapter : IStorageAdapter
         this._filePath = filePath;
     }
 
-    public Task<Stream> OpenReadAsync()
-    {
-        return Task.FromResult( (Stream) File.OpenRead( this._filePath ) );
-    }
+    public Task<Stream> OpenReadAsync() 
+        => Task.FromResult( (Stream) File.OpenRead( this._filePath ) );
 
     public async Task WriteAsync( Func<Stream, Task> write )
     {
