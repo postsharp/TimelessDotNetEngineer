@@ -6,12 +6,14 @@ internal class Program
 {
     private static async Task Main( string[] args )
     {
+        var url = args[0];
+        
         // Direct instantiation
-        var storageAdapter = new FileSystemStorageAdapter( "path/to/file.txt" );
+        IStorageAdapter storageAdapter = url.StartsWith( "https://" ) 
+            ? new HttpStorageAdapter(url)
+            : new FileSystemStorageAdapter( "url" );
 
-        // Or:
-        // var storageAdapter = new HttpStorageAdapter(httpClientFactory, "https://example.com");
-
+        // Using the adapter.
         await using var stream = await storageAdapter.OpenReadAsync();
         using var reader = new StreamReader( stream );
         Console.WriteLine( await reader.ReadToEndAsync() );

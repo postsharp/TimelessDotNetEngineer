@@ -11,8 +11,10 @@ namespace Factory
             {
                 return new HttpStorageAdapter( pathOrUrl );
             }
-
-            return new FileSystemStorageAdapter( pathOrUrl );
+            else
+            {
+                return new FileSystemStorageAdapter( pathOrUrl );
+            }
         }
     }
 }
