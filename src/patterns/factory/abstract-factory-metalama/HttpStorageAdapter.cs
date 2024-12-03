@@ -2,7 +2,7 @@
 
 namespace Factory;
 
-[ConcreteFactoryProduct]
+[ConcreteStorageAdapter]
 internal class HttpStorageAdapter : IStorageAdapter
 {
     private readonly IHttpClientFactory _httpClientFactory;

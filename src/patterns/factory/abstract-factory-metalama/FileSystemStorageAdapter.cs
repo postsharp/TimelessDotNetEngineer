@@ -2,7 +2,7 @@
 
 namespace Factory;
 
-[ConcreteFactoryProduct]
+[ConcreteStorageAdapter]
 internal class FileSystemStorageAdapter : IStorageAdapter
 {
     private readonly string _filePath;

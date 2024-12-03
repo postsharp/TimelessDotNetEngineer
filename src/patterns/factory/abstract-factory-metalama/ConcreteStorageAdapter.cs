@@ -7,7 +7,7 @@ using Metalama.Framework.Code;
 
 namespace Factory;
 
-internal class ConcreteFactoryProductAttribute : TypeAspect
+internal class ConcreteStorageAdapter : TypeAspect
 {
     public override void BuildAspect( IAspectBuilder<INamedType> builder )
         => builder.Outbound.SelectMany( t => t.Constructors )
@@ -15,5 +15,8 @@ internal class ConcreteFactoryProductAttribute : TypeAspect
                 scope => scope.Namespace( "**.Tests" )
                     .Or()
                     .Type( typeof(IStorageAdapterFactory) ),
-                "The class is a concrete factory." );
+                """
+                        The class is a concrete factory and can be only instantiated 
+                        from a class implementing IStorageAdapterFactory.
+                        """ );
 }
