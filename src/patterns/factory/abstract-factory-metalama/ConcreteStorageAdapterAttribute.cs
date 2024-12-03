@@ -7,7 +7,7 @@ using Metalama.Framework.Code;
 
 namespace Factory;
 
-internal class ConcreteStorageAdapter : TypeAspect
+internal class ConcreteStorageAdapterAttribute : TypeAspect
 {
     public override void BuildAspect( IAspectBuilder<INamedType> builder )
         => builder.Outbound.SelectMany( t => t.Constructors )
