@@ -1,9 +1,11 @@
+// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using TodoList.ApiService.Model;
 using TodoList.ApiService.Services;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder( args );
 
 // Add service defaults & Aspire components.
 builder.AddServiceDefaults();
@@ -38,47 +40,56 @@ using ( var scope = app.Services.CreateScope() )
     await db.Database.EnsureCreatedAsync();
 }
 
-app.MapGet( "/todo", ( TodoService todos, CancellationToken cancellationToken )
-    => todos.GetTodosAsync( cancellationToken ) );
+app.MapGet(
+    "/todo",
+    ( TodoService todos, CancellationToken cancellationToken )
+        => todos.GetTodosAsync( cancellationToken ) );
 
-app.MapGet( "/todo/{id}", ( TodoService todos, int id, CancellationToken cancellationToken )
-    => todos.GetTodoAsync( id, cancellationToken ) );
+app.MapGet(
+    "/todo/{id}",
+    ( TodoService todos, int id, CancellationToken cancellationToken )
+        => todos.GetTodoAsync( id, cancellationToken ) );
 
-app.MapPost( "/todo", async ( TodoService todos, Todo todo, CancellationToken cancellationToken ) =>
-{
-    var newTodo = await todos.AddTodoAsync( todo, cancellationToken );
-    return Results.Created( $"/todo/{newTodo.Id}", newTodo );
-} );
-
-app.MapPut( "/todo/{id}", async ( TodoService todos, int id, Todo todo, CancellationToken cancellationToken ) =>
-{
-    if ( id != todo.Id )
+app.MapPost(
+    "/todo",
+    async ( TodoService todos, Todo todo, CancellationToken cancellationToken ) =>
     {
-        return Results.BadRequest( "The ID in the URL does not match the ID in the request body." );
-    }
+        var newTodo = await todos.AddTodoAsync( todo, cancellationToken );
 
-    if ( await todos.UpdateTodoAsync( todo, cancellationToken ) )
-    {
-        return Results.NoContent();
+        return Results.Created( $"/todo/{newTodo.Id}", newTodo );
+    } );
 
-    }
-    else
+app.MapPut(
+    "/todo/{id}",
+    async ( TodoService todos, int id, Todo todo, CancellationToken cancellationToken ) =>
     {
-        return Results.NotFound();
-    }
-} );
+        if ( id != todo.Id )
+        {
+            return Results.BadRequest( "The ID in the URL does not match the ID in the request body." );
+        }
 
-app.MapDelete( "/todo/{id}", async ( TodoService todos, int id, CancellationToken cancellationToken ) =>
-{
-    if ( await todos.DeleteTodoAsync( id, cancellationToken ) )
-    {
-        return Results.NoContent();
+        if ( await todos.UpdateTodoAsync( todo, cancellationToken ) )
+        {
+            return Results.NoContent();
+        }
+        else
+        {
+            return Results.NotFound();
+        }
+    } );
 
-    }
-    else
+app.MapDelete(
+    "/todo/{id}",
+    async ( TodoService todos, int id, CancellationToken cancellationToken ) =>
     {
-        return Results.NotFound();
-    }
-} );
+        if ( await todos.DeleteTodoAsync( id, cancellationToken ) )
+        {
+            return Results.NoContent();
+        }
+        else
+        {
+            return Results.NotFound();
+        }
+    } );
 
 app.Run();

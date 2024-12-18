@@ -1,4 +1,6 @@
-﻿public static class LoggingRecursionGuard
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
+public static class LoggingRecursionGuard
 {
     [ThreadStatic]
     public static bool IsLogging;
@@ -12,6 +14,7 @@
         else
         {
             IsLogging = true;
+
             return new DisposeCookie( true );
         }
     }

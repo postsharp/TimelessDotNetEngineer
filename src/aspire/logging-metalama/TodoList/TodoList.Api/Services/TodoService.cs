@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
+using Microsoft.EntityFrameworkCore;
 using TodoList.ApiService.Model;
 
 namespace TodoList.ApiService.Services;
@@ -12,6 +14,7 @@ public partial class TodoService( ApplicationDbContext db )
     [Log]
     public async Task<Todo?> GetTodoAsync( int id, CancellationToken cancellationToken = default )
         => await db.Todos.FindAsync( id );
+
     // [<endsnippet LogUsingAttribute>]
 
     public async Task<Todo> AddTodoAsync( Todo todo, CancellationToken cancellationToken = default )

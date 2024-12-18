@@ -1,4 +1,6 @@
-﻿using Metalama.Extensions.DependencyInjection;
+﻿// Copyright (c) SharpCrafters s.r.o. See the LICENSE.md file in the root directory of this repository root for details.
+
+using Metalama.Extensions.DependencyInjection;
 using Metalama.Framework.Aspects;
 using Metalama.Framework.Code;
 using Metalama.Framework.Code.SyntaxBuilders;
@@ -12,9 +14,9 @@ public class LogAttribute : OverrideMethodAspect
     [IntroduceDependency]
     private readonly ILogger _logger;
 
-    public override void BuildEligibility(IEligibilityBuilder<IMethod> builder)
+    public override void BuildEligibility( IEligibilityBuilder<IMethod> builder )
     {
-        base.BuildEligibility(builder);
+        base.BuildEligibility( builder );
 
         // We cannot introduce dependencies to static classes.
         builder.DeclaringType().MustNotBeStatic();
@@ -55,7 +57,7 @@ public class LogAttribute : OverrideMethodAspect
                         // Display the success message. The message is different when the method is void.
                         var successMessage = BuildInterpolatedString( true );
                         ExpressionBuilder arguments;
-                        var isVoid = meta.Target.Method.GetAsyncInfo().ResultType.Is( typeof( void ) );
+                        var isVoid = meta.Target.Method.GetAsyncInfo().ResultType.Is( typeof(void) );
 
                         if ( isVoid )
                         {
@@ -77,6 +79,7 @@ public class LogAttribute : OverrideMethodAspect
                                 arguments = BuildArguments( true, true );
                             }
                         }
+
                         this._logger.LogTrace( (string) successMessage.ToValue(), (object?[]) arguments.ToValue()! );
                     }
                 }
@@ -95,7 +98,6 @@ public class LogAttribute : OverrideMethodAspect
                     var arguments = BuildArguments();
                     failureMessage.AddText( " failed: " );
                     failureMessage.AddExpression( e.Message );
-
 
                     this._logger.LogWarning( (string) failureMessage.ToValue(), (object?[]) arguments.ToValue()! );
                 }
@@ -120,12 +122,12 @@ public class LogAttribute : OverrideMethodAspect
         // Include a placeholder for each parameter.
         foreach ( var p in meta.Target.Parameters )
         {
-            if (!isFirst)
+            if ( !isFirst )
             {
                 stringBuilder.AddText( ", " );
             }
 
-            stringBuilder.AddText($"{{{p.Name}}}");
+            stringBuilder.AddText( $"{{{p.Name}}}" );
 
             isFirst = false;
         }
@@ -135,17 +137,20 @@ public class LogAttribute : OverrideMethodAspect
         return stringBuilder;
     }
 
-    private static ExpressionBuilder BuildArguments(bool includeOutParameters = false, bool includeResult = false, bool isResultRedacted = false)
+    private static ExpressionBuilder BuildArguments(
+        bool includeOutParameters = false,
+        bool includeResult = false,
+        bool isResultRedacted = false )
     {
         var arguments = new ExpressionBuilder();
-        arguments.AppendVerbatim("[");
+        arguments.AppendVerbatim( "[" );
         var isFirst = true;
 
         foreach ( var p in meta.Target.Parameters )
         {
-            if (!isFirst)
+            if ( !isFirst )
             {
-                arguments.AppendVerbatim(", ");
+                arguments.AppendVerbatim( ", " );
             }
 
             if ( SensitiveParameterFilter.IsSensitive( p ) )
@@ -167,24 +172,25 @@ public class LogAttribute : OverrideMethodAspect
             isFirst = false;
         }
 
-        if (includeResult)
+        if ( includeResult )
         {
-            if (!isFirst)
+            if ( !isFirst )
             {
-                arguments.AppendVerbatim(", ");
+                arguments.AppendVerbatim( ", " );
             }
 
-            if (isResultRedacted)
+            if ( isResultRedacted )
             {
-                arguments.AppendVerbatim("\"<redacted>\"");
+                arguments.AppendVerbatim( "\"<redacted>\"" );
             }
             else
             {
-                arguments.AppendVerbatim("result");
+                arguments.AppendVerbatim( "result" );
             }
         }
 
-        arguments.AppendVerbatim("]");
+        arguments.AppendVerbatim( "]" );
+
         return arguments;
     }
 }

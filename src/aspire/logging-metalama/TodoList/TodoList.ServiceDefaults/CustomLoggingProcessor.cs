@@ -27,7 +27,7 @@ internal class CustomLoggingProcessor : BaseProcessor<LogRecord>
 
         public int Count => this._state.Count;
 
-        public KeyValuePair<string, object?> this[int index]
+        public KeyValuePair<string, object?> this[ int index ]
         {
             get
             {
@@ -35,7 +35,7 @@ internal class CustomLoggingProcessor : BaseProcessor<LogRecord>
                 var key = item.Key;
                 var value = SafeSerializeObject( item.Value );
 
-                return new( key, value );
+                return new KeyValuePair<string, object?>( key, value );
             }
         }
 
@@ -72,7 +72,7 @@ internal class CustomLoggingProcessor : BaseProcessor<LogRecord>
             {
                 builder.Append( CultureInfo.CurrentCulture, $"<{type.Name}> " );
             }
-            
+
             if ( value is DateTime )
             {
                 builder.Append( CultureInfo.CurrentCulture, $"\"{value:o}\"" );
@@ -81,9 +81,7 @@ internal class CustomLoggingProcessor : BaseProcessor<LogRecord>
             {
                 SerializeEnumerable( collection, depth, builder );
             }
-            else if ( value is CancellationToken )
-            {
-            }
+            else if ( value is CancellationToken ) { }
             else
             {
                 SerializeComplexObject( value, depth, builder );
